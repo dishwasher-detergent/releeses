@@ -1,11 +1,12 @@
 "use client";
 
-import { useTransition } from "react";
-import { createPost } from "@/lib/actions";
-import { cn } from "@/lib/utils";
-import { useParams, useRouter } from "next/navigation";
 import LoadingDots from "@/components/icons/loading-dots";
+import { Release } from "@/interfaces/release";
+import { createRelease } from "@/lib/actions";
+import { cn } from "@/lib/utils";
 import va from "@vercel/analytics";
+import { useParams, useRouter } from "next/navigation";
+import { useTransition } from "react";
 
 export default function CreatePostButton() {
   const router = useRouter();
@@ -16,10 +17,12 @@ export default function CreatePostButton() {
     <button
       onClick={() =>
         startTransition(async () => {
-          const post = await createPost(null, id, null);
+          console.log("test");
+          const release: Release = await createRelease(null, id, null);
+          console.log(release);
           va.track("Created Post");
           router.refresh();
-          router.push(`/post/${post.id}`);
+          router.push(`/post/${release.$id}`);
         })
       }
       className={cn(

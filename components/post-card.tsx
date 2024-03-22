@@ -1,20 +1,15 @@
 import BlurImage from "@/components/blur-image";
-import { placeholderBlurhash, random } from "@/lib/utils";
-import { Post, Site } from "@prisma/client";
-import { BarChart, ExternalLink } from "lucide-react";
+import { Release } from "@/interfaces/release";
+import { placeholderBlurhash } from "@/lib/utils";
 import Link from "next/link";
 
-export default function PostCard({
-  data,
-}: {
-  data: Post & { site: Site | null };
-}) {
-  const url = `${data.site?.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}/${data.slug}`;
+export default function PostCard({ data }: { data: Release }) {
+  const url = `${data.organization?.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}/${data.slug}`;
 
   return (
     <div className="relative rounded-lg border border-stone-200 pb-10 shadow-md transition-all hover:shadow-xl dark:border-stone-700 dark:hover:border-white">
       <Link
-        href={`/post/${data.id}`}
+        href={`/post/${data.$id}`}
         className="flex flex-col overflow-hidden rounded-lg"
       >
         <div className="relative h-44 overflow-hidden">
@@ -47,7 +42,7 @@ export default function PostCard({
           href={
             process.env.NEXT_PUBLIC_VERCEL_ENV
               ? `https://${url}`
-              : `http://${data.site?.subdomain}.localhost:3000/${data.slug}`
+              : `http://${data.organization?.subdomain}.localhost:3000/${data.slug}`
           }
           target="_blank"
           rel="noreferrer"

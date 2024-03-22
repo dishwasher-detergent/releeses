@@ -1,26 +1,24 @@
 "use client";
 
-import { useEffect, useState, useTransition } from "react";
-import { Post } from "@prisma/client";
-import { updatePost, updatePostMetadata } from "@/lib/actions";
-import { Editor as NovelEditor } from "novel";
-import TextareaAutosize from "react-textarea-autosize";
+import { Release } from "@/interfaces/release";
+import { updateRelease, updateReleaseMetadata } from "@/lib/actions";
 import { cn } from "@/lib/utils";
-import LoadingDots from "./icons/loading-dots";
 import { ExternalLink } from "lucide-react";
+import { Editor as NovelEditor } from "novel";
+import { useEffect, useState, useTransition } from "react";
+import TextareaAutosize from "react-textarea-autosize";
 import { toast } from "sonner";
+import LoadingDots from "./icons/loading-dots";
 
-type PostWithSite = Post & { site: { subdomain: string | null } | null };
-
-export default function Editor({ post }: { post: PostWithSite }) {
+export default function Editor({ post }: { post: Release }) {
   let [isPendingSaving, startTransitionSaving] = useTransition();
   let [isPendingPublishing, startTransitionPublishing] = useTransition();
-  const [data, setData] = useState<PostWithSite>(post);
+  const [data, setData] = useState<Release>(post);
   const [hydrated, setHydrated] = useState(false);
 
   const url = process.env.NEXT_PUBLIC_VERCEL_ENV
-    ? `https://${data.site?.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}/${data.slug}`
-    : `http://${data.site?.subdomain}.localhost:3000/${data.slug}`;
+    ? `https://${data.organization?.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}/${data.slug}`
+    : `http://${data.organization?.subdomain}.localhost:3000/${data.slug}`;
 
   // listen to CMD + S and override the default behavior
   useEffect(() => {
@@ -28,7 +26,7 @@ export default function Editor({ post }: { post: PostWithSite }) {
       if (e.metaKey && e.key === "s") {
         e.preventDefault();
         startTransitionSaving(async () => {
-          await updatePost(data);
+          await updateRelease(data);
         });
       }
     };
@@ -60,7 +58,7 @@ export default function Editor({ post }: { post: PostWithSite }) {
             console.log(data.published, typeof data.published);
             formData.append("published", String(!data.published));
             startTransitionPublishing(async () => {
-              await updatePostMetadata(formData, post.id, "published").then(
+              await updateReleaseMetadata(formData, post.$id, "published").then(
                 () => {
                   toast.success(
                     `Successfully ${
@@ -121,7 +119,7 @@ export default function Editor({ post }: { post: PostWithSite }) {
             return;
           }
           startTransitionSaving(async () => {
-            await updatePost(data);
+            await updateRelease(data);
           });
         }}
       />

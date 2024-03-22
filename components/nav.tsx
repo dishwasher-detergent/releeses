@@ -1,10 +1,12 @@
 "use client";
 
-import Link from "next/link";
+import { getOrganizationFromReleaseId } from "@/lib/actions";
 import {
   ArrowLeft,
   BarChart3,
   Edit3,
+  FileCode,
+  Github,
   Globe,
   Layout,
   LayoutDashboard,
@@ -12,17 +14,15 @@ import {
   Menu,
   Newspaper,
   Settings,
-  FileCode,
-  Github,
 } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
 import {
   useParams,
   usePathname,
   useSelectedLayoutSegments,
 } from "next/navigation";
 import { ReactNode, useEffect, useMemo, useState } from "react";
-import { getSiteFromPostId } from "@/lib/actions";
-import Image from "next/image";
 
 const externalLinks = [
   {
@@ -70,7 +70,7 @@ export default function Nav({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (segments[0] === "post" && id) {
-      getSiteFromPostId(id).then((id) => {
+      getOrganizationFromReleaseId(id).then((id) => {
         setSiteId(id);
       });
     }

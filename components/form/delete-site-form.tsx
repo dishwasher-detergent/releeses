@@ -1,12 +1,12 @@
 "use client";
 
 import LoadingDots from "@/components/icons/loading-dots";
+import { deleteOrganization } from "@/lib/actions";
 import { cn } from "@/lib/utils";
+import va from "@vercel/analytics";
 import { useParams, useRouter } from "next/navigation";
 import { useFormStatus } from "react-dom";
 import { toast } from "sonner";
-import { deleteSite } from "@/lib/actions";
-import va from "@vercel/analytics";
 
 export default function DeleteSiteForm({ siteName }: { siteName: string }) {
   const { id } = useParams() as { id: string };
@@ -15,7 +15,7 @@ export default function DeleteSiteForm({ siteName }: { siteName: string }) {
     <form
       action={async (data: FormData) =>
         window.confirm("Are you sure you want to delete your site?") &&
-        deleteSite(data, id, "delete")
+        deleteOrganization(data, id, "delete")
           .then(async (res) => {
             if (res.error) {
               toast.error(res.error);

@@ -1,10 +1,10 @@
 "use client";
 
-import { Post } from "@prisma/client";
-import { MDXRemote, MDXRemoteProps } from "next-mdx-remote";
-import { replaceLinks } from "@/lib/remark-plugins";
-import { Tweet } from "react-tweet";
 import BlurImage from "@/components/blur-image";
+import { Release } from "@/interfaces/release";
+import { replaceLinks } from "@/lib/remark-plugins";
+import { MDXRemote, MDXRemoteProps } from "next-mdx-remote";
+import { Tweet } from "react-tweet";
 import styles from "./mdx.module.css";
 
 export default function MDX({ source }: { source: MDXRemoteProps }) {
@@ -27,7 +27,7 @@ export default function MDX({ source }: { source: MDXRemoteProps }) {
 }
 
 interface ExampleCardProps
-  extends Pick<Post, "description" | "image" | "imageBlurhash"> {
+  extends Pick<Release, "description" | "image" | "imageBlurhash"> {
   name: string | null;
   url: string | null;
 }

@@ -1,78 +1,19 @@
-import { getServerSession, type NextAuthOptions } from "next-auth";
-import GitHubProvider from "next-auth/providers/github";
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import prisma from "@/lib/prisma";
-
-const VERCEL_DEPLOYMENT = !!process.env.VERCEL_URL;
-
-export const authOptions: NextAuthOptions = {
-  providers: [
-    GitHubProvider({
-      clientId: process.env.AUTH_GITHUB_ID as string,
-      clientSecret: process.env.AUTH_GITHUB_SECRET as string,
-      profile(profile) {
-        return {
-          id: profile.id.toString(),
-          name: profile.name || profile.login,
-          gh_username: profile.login,
-          email: profile.email,
-          image: profile.avatar_url,
-        };
-      },
-    }),
-  ],
-  pages: {
-    signIn: `/login`,
-    verifyRequest: `/login`,
-    error: "/login", // Error code passed in query string as ?error=
-  },
-  adapter: PrismaAdapter(prisma),
-  session: { strategy: "jwt" },
-  cookies: {
-    sessionToken: {
-      name: `${VERCEL_DEPLOYMENT ? "__Secure-" : ""}next-auth.session-token`,
-      options: {
-        httpOnly: true,
-        sameSite: "lax",
-        path: "/",
-        // When working on localhost, the cookie domain must be omitted entirely (https://stackoverflow.com/a/1188145)
-        domain: VERCEL_DEPLOYMENT
-          ? `.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`
-          : undefined,
-        secure: VERCEL_DEPLOYMENT,
-      },
-    },
-  },
-  callbacks: {
-    jwt: async ({ token, user }) => {
-      if (user) {
-        token.user = user;
-      }
-      return token;
-    },
-    session: async ({ session, token }) => {
-      session.user = {
-        ...session.user,
-        // @ts-expect-error
-        id: token.sub,
-        // @ts-expect-error
-        username: token?.user?.username || token?.user?.gh_username,
-      };
-      return session;
-    },
-  },
-};
+import { Organization } from "@/interfaces/organization";
+import { Release } from "@/interfaces/release";
+import { db } from "./appwrite";
+import { ORGANIZATION_COLLECTION_ID, RELEASE_COLLECTION_ID } from "./constants";
 
 export function getSession() {
-  return getServerSession(authOptions) as Promise<{
+  return {
     user: {
-      id: string;
-      name: string;
-      username: string;
-      email: string;
-      image: string;
-    };
-  } | null>;
+      id: "1",
+      name: "Kenny",
+      username: "KennyBass",
+      email: "test@test.com",
+      image:
+        "https://images.unsplash.com/photo-1704236041747-615d800a8b0a?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    },
+  };
 }
 
 export function withSiteAuth(action: any) {
@@ -81,18 +22,21 @@ export function withSiteAuth(action: any) {
     siteId: string,
     key: string | null,
   ) => {
-    const session = await getSession();
+    const session = {
+      user: {
+        id: "1",
+      },
+    };
+
     if (!session) {
       return {
         error: "Not authenticated",
       };
     }
-    const site = await prisma.site.findUnique({
-      where: {
-        id: siteId,
-      },
-    });
-    if (!site || site.userId !== session.user.id) {
+
+    const site = await db.get<Organization>(ORGANIZATION_COLLECTION_ID, siteId);
+
+    if (!site || site.user.$id !== session.user.id) {
       return {
         error: "Not authorized",
       };
@@ -108,21 +52,29 @@ export function withPostAuth(action: any) {
     postId: string,
     key: string | null,
   ) => {
-    const session = await getSession();
+    const session = {
+      user: {
+        id: "1",
+      },
+    };
+
     if (!session?.user.id) {
       return {
         error: "Not authenticated",
       };
     }
-    const post = await prisma.post.findUnique({
-      where: {
-        id: postId,
-      },
-      include: {
-        site: true,
-      },
-    });
-    if (!post || post.userId !== session.user.id) {
+
+    let post;
+
+    try {
+      post = await db.get<Release>(RELEASE_COLLECTION_ID, postId);
+
+      if (!post || post.user.$id !== session.user.id) {
+        return {
+          error: "Post not found",
+        };
+      }
+    } catch (error: any) {
       return {
         error: "Post not found",
       };

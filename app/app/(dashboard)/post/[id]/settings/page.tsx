@@ -1,9 +1,11 @@
-import { getSession } from "@/lib/auth";
-import prisma from "@/lib/prisma";
-import { notFound, redirect } from "next/navigation";
 import Form from "@/components/form";
-import { updatePostMetadata } from "@/lib/actions";
 import DeletePostForm from "@/components/form/delete-post-form";
+import { Release } from "@/interfaces/release";
+import { updateReleaseMetadata } from "@/lib/actions";
+import { db } from "@/lib/appwrite";
+import { getSession } from "@/lib/auth";
+import { RELEASE_COLLECTION_ID } from "@/lib/constants";
+import { notFound, redirect } from "next/navigation";
 
 export default async function PostSettings({
   params,
@@ -14,11 +16,10 @@ export default async function PostSettings({
   if (!session) {
     redirect("/login");
   }
-  const data = await prisma.post.findUnique({
-    where: {
-      id: decodeURIComponent(params.id),
-    },
-  });
+  const data = await db.get<Release>(
+    RELEASE_COLLECTION_ID,
+    decodeURIComponent(params.id),
+  );
   if (!data || data.userId !== session.user.id) {
     notFound();
   }
@@ -38,7 +39,7 @@ export default async function PostSettings({
             defaultValue: data?.slug!,
             placeholder: "slug",
           }}
-          handleSubmit={updatePostMetadata}
+          handleSubmit={updateReleaseMetadata}
         />
 
         <Form
@@ -50,7 +51,7 @@ export default async function PostSettings({
             type: "file",
             defaultValue: data?.image!,
           }}
-          handleSubmit={updatePostMetadata}
+          handleSubmit={updateReleaseMetadata}
         />
 
         <DeletePostForm postName={data?.title!} />

@@ -1,14 +1,14 @@
 "use client";
 
-import { toast } from "sonner";
-import { createSite } from "@/lib/actions";
-import { useRouter } from "next/navigation";
-import { useFormStatus } from "react-dom";
-import { cn } from "@/lib/utils";
 import LoadingDots from "@/components/icons/loading-dots";
-import { useModal } from "./provider";
+import { createOrganization } from "@/lib/actions";
+import { cn } from "@/lib/utils";
 import va from "@vercel/analytics";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useFormStatus } from "react-dom";
+import { toast } from "sonner";
+import { useModal } from "./provider";
 
 export default function CreateSiteModal() {
   const router = useRouter();
@@ -33,14 +33,14 @@ export default function CreateSiteModal() {
   return (
     <form
       action={async (data: FormData) =>
-        createSite(data).then((res: any) => {
+        createOrganization(data).then((res: any) => {
           if (res.error) {
             toast.error(res.error);
           } else {
             va.track("Created Site");
-            const { id } = res;
+            const { $id } = res;
             router.refresh();
-            router.push(`/site/${id}`);
+            router.push(`/site/${$id}`);
             modal?.hide();
             toast.success(`Successfully created site!`);
           }

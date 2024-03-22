@@ -1,7 +1,9 @@
-import { getSession } from "@/lib/auth";
-import prisma from "@/lib/prisma";
-import { notFound, redirect } from "next/navigation";
 import AnalyticsMockup from "@/components/analytics";
+import { Organization } from "@/interfaces/organization";
+import { db } from "@/lib/appwrite";
+import { getSession } from "@/lib/auth";
+import { ORGANIZATION_COLLECTION_ID } from "@/lib/constants";
+import { notFound, redirect } from "next/navigation";
 
 export default async function SiteAnalytics({
   params,
@@ -12,11 +14,10 @@ export default async function SiteAnalytics({
   if (!session) {
     redirect("/login");
   }
-  const data = await prisma.site.findUnique({
-    where: {
-      id: decodeURIComponent(params.id),
-    },
-  });
+  const data = await db.get<Organization>(
+    ORGANIZATION_COLLECTION_ID,
+    decodeURIComponent(params.id),
+  );
   if (!data || data.userId !== session.user.id) {
     notFound();
   }

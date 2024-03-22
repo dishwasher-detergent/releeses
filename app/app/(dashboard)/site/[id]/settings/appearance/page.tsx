@@ -1,17 +1,18 @@
-import prisma from "@/lib/prisma";
 import Form from "@/components/form";
-import { updateSite } from "@/lib/actions";
+import { Organization } from "@/interfaces/organization";
+import { updateOrganization } from "@/lib/actions";
+import { db } from "@/lib/appwrite";
+import { ORGANIZATION_COLLECTION_ID } from "@/lib/constants";
 
 export default async function SiteSettingsAppearance({
   params,
 }: {
   params: { id: string };
 }) {
-  const data = await prisma.site.findUnique({
-    where: {
-      id: decodeURIComponent(params.id),
-    },
-  });
+  const data = await db.get<Organization>(
+    ORGANIZATION_COLLECTION_ID,
+    decodeURIComponent(params.id),
+  );
 
   return (
     <div className="flex flex-col space-y-6">
@@ -24,7 +25,7 @@ export default async function SiteSettingsAppearance({
           type: "file",
           defaultValue: data?.image!,
         }}
-        handleSubmit={updateSite}
+        handleSubmit={updateOrganization}
       />
       <Form
         title="Logo"
@@ -35,7 +36,7 @@ export default async function SiteSettingsAppearance({
           type: "file",
           defaultValue: data?.logo!,
         }}
-        handleSubmit={updateSite}
+        handleSubmit={updateOrganization}
       />
       <Form
         title="Font"
@@ -46,7 +47,7 @@ export default async function SiteSettingsAppearance({
           type: "select",
           defaultValue: data?.font!,
         }}
-        handleSubmit={updateSite}
+        handleSubmit={updateOrganization}
       />
       <Form
         title="404 Page Message"
@@ -59,7 +60,7 @@ export default async function SiteSettingsAppearance({
           placeholder: "Blimey! You've found a page that doesn't exist.",
           maxLength: 240,
         }}
-        handleSubmit={updateSite}
+        handleSubmit={updateOrganization}
       />
     </div>
   );

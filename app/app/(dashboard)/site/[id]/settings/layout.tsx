@@ -1,7 +1,9 @@
-import { ReactNode } from "react";
+import { Organization } from "@/interfaces/organization";
+import { db } from "@/lib/appwrite";
 import { getSession } from "@/lib/auth";
-import prisma from "@/lib/prisma";
+import { ORGANIZATION_COLLECTION_ID } from "@/lib/constants";
 import { notFound, redirect } from "next/navigation";
+import { ReactNode } from "react";
 import SiteSettingsNav from "./nav";
 
 export default async function SiteAnalyticsLayout({
@@ -15,12 +17,10 @@ export default async function SiteAnalyticsLayout({
   if (!session) {
     redirect("/login");
   }
-  const data = await prisma.site.findUnique({
-    where: {
-      id: decodeURIComponent(params.id),
-    },
-  });
-
+  const data = await db.get<Organization>(
+    ORGANIZATION_COLLECTION_ID,
+    decodeURIComponent(params.id),
+  );
   if (!data || data.userId !== session.user.id) {
     notFound();
   }

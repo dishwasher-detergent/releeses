@@ -1,17 +1,18 @@
-import prisma from "@/lib/prisma";
 import Form from "@/components/form";
-import { updateSite } from "@/lib/actions";
+import { Organization } from "@/interfaces/organization";
+import { updateOrganization } from "@/lib/actions";
+import { db } from "@/lib/appwrite";
+import { ORGANIZATION_COLLECTION_ID } from "@/lib/constants";
 
 export default async function SiteSettingsDomains({
   params,
 }: {
   params: { id: string };
 }) {
-  const data = await prisma.site.findUnique({
-    where: {
-      id: decodeURIComponent(params.id),
-    },
-  });
+  const data = await db.get<Organization>(
+    ORGANIZATION_COLLECTION_ID,
+    decodeURIComponent(params.id),
+  );
 
   return (
     <div className="flex flex-col space-y-6">
@@ -26,7 +27,7 @@ export default async function SiteSettingsDomains({
           placeholder: "subdomain",
           maxLength: 32,
         }}
-        handleSubmit={updateSite}
+        handleSubmit={updateOrganization}
       />
       <Form
         title="Custom Domain"
@@ -40,7 +41,7 @@ export default async function SiteSettingsDomains({
           maxLength: 64,
           pattern: "^[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}$",
         }}
-        handleSubmit={updateSite}
+        handleSubmit={updateOrganization}
       />
     </div>
   );

@@ -1,8 +1,11 @@
+import { Release } from "@/interfaces/release";
+import { db } from "@/lib/appwrite";
 import { getSession } from "@/lib/auth";
-import { redirect } from "next/navigation";
-import prisma from "@/lib/prisma";
-import PostCard from "./post-card";
+import { RELEASE_COLLECTION_ID } from "@/lib/constants";
 import Image from "next/image";
+import { redirect } from "next/navigation";
+import { Query } from "node-appwrite";
+import PostCard from "./post-card";
 
 export default async function Posts({
   siteId,
@@ -15,24 +18,21 @@ export default async function Posts({
   if (!session?.user) {
     redirect("/login");
   }
-  const posts = await prisma.post.findMany({
-    where: {
-      userId: session.user.id as string,
-      ...(siteId ? { siteId } : {}),
-    },
-    orderBy: {
-      updatedAt: "desc",
-    },
-    include: {
-      site: true,
-    },
-    ...(limit ? { take: limit } : {}),
-  });
 
-  return posts.length > 0 ? (
+  const queries = siteId
+    ? [
+        Query.equal("organizationId", siteId),
+        Query.equal("userId", session.user.id),
+        Query.orderAsc("$createdAt"),
+      ]
+    : [];
+
+  const releases = await db.list<Release>(RELEASE_COLLECTION_ID, queries);
+
+  return releases.documents.length > 0 ? (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-      {posts.map((post) => (
-        <PostCard key={post.id} data={post} />
+      {releases.documents.map((release) => (
+        <PostCard key={release.$id} data={release} />
       ))}
     </div>
   ) : (

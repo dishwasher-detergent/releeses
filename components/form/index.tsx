@@ -2,14 +2,13 @@
 
 import LoadingDots from "@/components/icons/loading-dots";
 import { cn } from "@/lib/utils";
-import { useSession } from "next-auth/react";
+import va from "@vercel/analytics";
 import { useParams, useRouter } from "next/navigation";
 import { useFormStatus } from "react-dom";
 import { toast } from "sonner";
-import DomainStatus from "./domain-status";
 import DomainConfiguration from "./domain-configuration";
+import DomainStatus from "./domain-status";
 import Uploader from "./uploader";
-import va from "@vercel/analytics";
 
 export default function Form({
   title,
@@ -33,7 +32,6 @@ export default function Form({
 }) {
   const { id } = useParams() as { id?: string };
   const router = useRouter();
-  const { update } = useSession();
   return (
     <form
       action={async (data: FormData) => {
@@ -53,7 +51,6 @@ export default function Form({
             if (id) {
               router.refresh();
             } else {
-              await update();
               router.refresh();
             }
             toast.success(`Successfully updated ${inputAttrs.name}!`);
