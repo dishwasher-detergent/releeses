@@ -52,7 +52,7 @@ export default async function SiteHomePage({
         {releases.length > 0 ? (
           <div className="mx-auto w-full max-w-screen-xl md:mb-28 lg:w-5/6">
             <Link href={`/${releases[0].slug}`}>
-              <div className="group relative mx-auto h-80 w-full overflow-hidden sm:h-150 lg:rounded-xl">
+              <div className="sm:h-150 group relative mx-auto h-80 w-full overflow-hidden lg:rounded-xl">
                 <BlurImage
                   alt={releases[0].title ?? ""}
                   blurDataURL={releases[0].imageBlurhash ?? placeholderBlurhash}
@@ -64,7 +64,7 @@ export default async function SiteHomePage({
                 />
               </div>
               <div className="mx-auto mt-10 w-5/6 lg:w-full">
-                <h2 className="my-10 font-title text-4xl dark:text-white md:text-6xl">
+                <h2 className="font-title my-10 text-4xl dark:text-white md:text-6xl">
                   {releases[0].title}
                 </h2>
                 <p className="w-full text-base dark:text-white md:text-lg lg:w-2/3">
@@ -81,7 +81,7 @@ export default async function SiteHomePage({
                         src={data.documents[0].user?.image}
                       />
                     ) : (
-                      <div className="absolute flex h-full w-full select-none items-center justify-center bg-stone-100 text-4xl text-stone-500">
+                      <div className="absolute flex h-full w-full select-none items-center justify-center bg-slate-100 text-4xl text-slate-500">
                         ?
                       </div>
                     )}
@@ -89,8 +89,8 @@ export default async function SiteHomePage({
                   <p className="ml-3 inline-block whitespace-nowrap align-middle text-sm font-semibold dark:text-white md:text-base">
                     {data.documents[0].user?.name}
                   </p>
-                  <div className="h-6 border-l border-stone-600 dark:border-stone-400" />
-                  <p className="m-auto my-5 w-10/12 text-sm font-light text-stone-500 dark:text-stone-400 md:text-base">
+                  <div className="h-6 border-l border-slate-600 dark:border-slate-400" />
+                  <p className="m-auto my-5 w-10/12 text-sm font-light text-slate-500 dark:text-slate-400 md:text-base">
                     {toDateString(releases[0].$createdAt)}
                   </p>
                 </div>
@@ -113,7 +113,7 @@ export default async function SiteHomePage({
               height={400}
               className="hidden dark:block"
             />
-            <p className="font-title text-2xl text-stone-600 dark:text-stone-400">
+            <p className="font-title text-2xl text-slate-600 dark:text-slate-400">
               No posts yet.
             </p>
           </div>
@@ -122,7 +122,7 @@ export default async function SiteHomePage({
 
       {releases.length > 1 && (
         <div className="mx-5 mb-20 max-w-screen-xl lg:mx-24 2xl:mx-auto">
-          <h2 className="mb-10 font-title text-4xl dark:text-white md:text-5xl">
+          <h2 className="font-title mb-10 text-4xl dark:text-white md:text-5xl">
             More stories
           </h2>
           <div className="grid w-full grid-cols-1 gap-x-4 gap-y-8 md:grid-cols-2 xl:grid-cols-3">

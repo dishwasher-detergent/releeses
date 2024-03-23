@@ -1,7 +1,7 @@
 import { getSession } from "@/lib/auth";
-import { redirect } from "next/navigation";
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
+import { redirect } from "next/navigation";
 import LogoutButton from "./logout-button";
 
 export default async function Profile() {
@@ -14,7 +14,7 @@ export default async function Profile() {
     <div className="flex w-full items-center justify-between">
       <Link
         href="/settings"
-        className="flex w-full flex-1 items-center space-x-3 rounded-lg px-2 py-1.5 transition-all duration-150 ease-in-out hover:bg-stone-200 active:bg-stone-300 dark:text-white dark:hover:bg-stone-700 dark:active:bg-stone-800"
+        className="flex w-full flex-1 items-center space-x-3 rounded-lg px-2 py-1.5 transition-all duration-150 ease-in-out hover:bg-slate-200 active:bg-slate-300 dark:text-white dark:hover:bg-slate-700 dark:active:bg-slate-800"
       >
         <Image
           src={

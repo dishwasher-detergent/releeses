@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useCallback, useMemo, ChangeEvent } from "react";
-import { toast } from "sonner";
 import LoadingDots from "@/components/icons/loading-dots";
+import { ChangeEvent, useCallback, useMemo, useState } from "react";
+import { toast } from "sonner";
 
 export default function Uploader() {
   const [data, setData] = useState<{
@@ -55,11 +55,11 @@ export default function Uploader() {
             toast(
               <div className="relative">
                 <div className="p-2">
-                  <p className="font-semibold text-gray-900">File uploaded!</p>
-                  <p className="mt-1 text-sm text-gray-500">
+                  <p className="font-semibold text-slate-900">File uploaded!</p>
+                  <p className="mt-1 text-sm text-slate-500">
                     Your file has been uploaded to{" "}
                     <a
-                      className="font-medium text-gray-900 underline"
+                      className="font-medium text-slate-900 underline"
                       href={url}
                       target="_blank"
                       rel="noopener noreferrer"
@@ -81,13 +81,13 @@ export default function Uploader() {
       <div>
         <div className="mb-4 space-y-1">
           <h2 className="text-xl font-semibold">Upload a file</h2>
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-slate-500">
             Accepted formats: .png, .jpg, .gif, .mp4
           </p>
         </div>
         <label
           htmlFor="image-upload"
-          className="group relative mt-2 flex h-72 cursor-pointer flex-col items-center justify-center rounded-md border border-gray-300 bg-white shadow-sm transition-all hover:bg-gray-50"
+          className="group relative mt-2 flex h-72 cursor-pointer flex-col items-center justify-center rounded-md border border-slate-300 bg-white shadow-sm transition-all hover:bg-slate-50"
         >
           <div
             className="absolute z-[5] h-full w-full rounded-md"
@@ -135,13 +135,13 @@ export default function Uploader() {
             } absolute z-[3] flex h-full w-full flex-col items-center justify-center rounded-md px-10 transition-all ${
               data.image
                 ? "bg-white/80 opacity-0 hover:opacity-100 hover:backdrop-blur-md"
-                : "bg-white opacity-100 hover:bg-gray-50"
+                : "bg-white opacity-100 hover:bg-slate-50"
             }`}
           >
             <svg
               className={`${
                 dragActive ? "scale-110" : "scale-100"
-              } h-7 w-7 text-gray-500 transition-all duration-75 group-hover:scale-110 group-active:scale-95`}
+              } h-7 w-7 text-slate-500 transition-all duration-75 group-hover:scale-110 group-active:scale-95`}
               xmlns="http://www.w3.org/2000/svg"
               width="24"
               height="24"
@@ -156,10 +156,10 @@ export default function Uploader() {
               <path d="M12 12v9"></path>
               <path d="m16 16-4-4-4 4"></path>
             </svg>
-            <p className="mt-2 text-center text-sm text-gray-500">
+            <p className="mt-2 text-center text-sm text-slate-500">
               Drag and drop or click to upload.
             </p>
-            <p className="mt-2 text-center text-sm text-gray-500">
+            <p className="mt-2 text-center text-sm text-slate-500">
               Max file size: 50MB
             </p>
             <span className="sr-only">Photo upload</span>
@@ -189,7 +189,7 @@ export default function Uploader() {
         disabled={saveDisabled}
         className={`${
           saveDisabled
-            ? "cursor-not-allowed border-gray-200 bg-gray-100 text-gray-400"
+            ? "cursor-not-allowed border-slate-200 bg-slate-100 text-slate-400"
             : "border-black bg-black text-white hover:bg-white hover:text-black"
         } flex h-10 w-full items-center justify-center rounded-md border text-sm transition-all focus:outline-none`}
       >

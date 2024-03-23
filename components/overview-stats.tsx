@@ -1,7 +1,7 @@
 "use client";
 
 import { random } from "@/lib/utils";
-import { Card, Metric, Text, AreaChart, BadgeDelta, Flex } from "@tremor/react";
+import { AreaChart, BadgeDelta, Card, Flex, Metric, Text } from "@tremor/react";
 import { useMemo } from "react";
 
 export default function OverviewStats() {
@@ -21,14 +21,14 @@ export default function OverviewStats() {
 
   return (
     <div className="grid gap-6 sm:grid-cols-2">
-      <Card className="dark:!bg-stone-900">
+      <Card className="dark:!bg-slate-900">
         <Text>Total Visitors</Text>
         <Flex
           className="space-x-3 truncate"
           justifyContent="start"
           alignItems="baseline"
         >
-          <Metric className="font-cal">170,418</Metric>
+          <Metric>170,418</Metric>
           <BadgeDelta
             deltaType="moderateIncrease"
             className="dark:bg-green-900 dark:bg-opacity-50 dark:text-green-400"

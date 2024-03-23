@@ -1,8 +1,7 @@
-import { ReactNode } from "react";
 import Form from "@/components/form";
+import { editUser } from "@/lib/actions";
 import { getSession } from "@/lib/auth";
 import { redirect } from "next/navigation";
-import { editUser } from "@/lib/actions";
 
 export default async function SettingsPage() {
   const session = await getSession();
@@ -12,9 +11,7 @@ export default async function SettingsPage() {
   return (
     <div className="flex max-w-screen-xl flex-col space-y-12 p-8">
       <div className="flex flex-col space-y-6">
-        <h1 className="font-cal text-3xl font-bold dark:text-white">
-          Settings
-        </h1>
+        <h1 className="text-3xl font-bold dark:text-white">Settings</h1>
         <Form
           title="Name"
           description="Your name on this app."

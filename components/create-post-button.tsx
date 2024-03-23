@@ -28,8 +28,8 @@ export default function CreatePostButton() {
       className={cn(
         "flex h-8 w-36 items-center justify-center space-x-2 rounded-lg border text-sm transition-all focus:outline-none sm:h-9",
         isPending
-          ? "cursor-not-allowed border-stone-200 bg-stone-100 text-stone-400 dark:border-stone-700 dark:bg-stone-800 dark:text-stone-300"
-          : "border border-black bg-black text-white hover:bg-white hover:text-black active:bg-stone-100 dark:border-stone-700 dark:hover:border-stone-200 dark:hover:bg-black dark:hover:text-white dark:active:bg-stone-800",
+          ? "cursor-not-allowed border-slate-200 bg-slate-100 text-slate-400 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300"
+          : "border border-black bg-black text-white hover:bg-white hover:text-black active:bg-slate-100 dark:border-slate-700 dark:hover:border-slate-200 dark:hover:bg-black dark:hover:text-white dark:active:bg-slate-800",
       )}
       disabled={isPending}
     >

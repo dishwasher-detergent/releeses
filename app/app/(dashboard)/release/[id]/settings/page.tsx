@@ -1,5 +1,6 @@
 import Form from "@/components/form";
-import DeletePostForm from "@/components/form/delete-post-form";
+import DeleteReleaseForm from "@/components/form/delete-release-form";
+import { Separator } from "@/components/ui/separator";
 import { Release } from "@/interfaces/release";
 import { updateReleaseMetadata } from "@/lib/actions";
 import { db } from "@/lib/appwrite";
@@ -24,38 +25,37 @@ export default async function PostSettings({
     notFound();
   }
   return (
-    <div className="flex max-w-screen-xl flex-col space-y-12 p-6">
-      <div className="flex flex-col space-y-6">
-        <h1 className="font-cal text-3xl font-bold dark:text-white">
-          Post Settings
-        </h1>
-        <Form
-          title="Post Slug"
-          description="The slug is the URL-friendly version of the name. It is usually all lowercase and contains only letters, numbers, and hyphens."
-          helpText="Please use a slug that is unique to this post."
-          inputAttrs={{
-            name: "slug",
-            type: "text",
-            defaultValue: data?.slug!,
-            placeholder: "slug",
-          }}
-          handleSubmit={updateReleaseMetadata}
-        />
-
-        <Form
-          title="Thumbnail image"
-          description="The thumbnail image for your post. Accepted formats: .png, .jpg, .jpeg"
-          helpText="Max file size 50MB. Recommended size 1200x630."
-          inputAttrs={{
-            name: "image",
-            type: "file",
-            defaultValue: data?.image!,
-          }}
-          handleSubmit={updateReleaseMetadata}
-        />
-
-        <DeletePostForm postName={data?.title!} />
+    <>
+      <div className="flex h-[52px] items-center justify-between px-4 py-2">
+        <h1 className="text-xl font-bold">Release Settings</h1>
       </div>
-    </div>
+      <Separator />
+      <Form
+        title="Post Slug"
+        description="The slug is the URL-friendly version of the name. It is usually all lowercase and contains only letters, numbers, and hyphens."
+        helpText="Please use a slug that is unique to this post."
+        inputAttrs={{
+          name: "slug",
+          type: "text",
+          defaultValue: data?.slug!,
+          placeholder: "slug",
+        }}
+        handleSubmit={updateReleaseMetadata}
+      />
+      <Separator />
+      <Form
+        title="Thumbnail image"
+        description="The thumbnail image for your post. Accepted formats: .png, .jpg, .jpeg"
+        helpText="Max file size 50MB. Recommended size 1200x630."
+        inputAttrs={{
+          name: "image",
+          type: "file",
+          defaultValue: data?.image!,
+        }}
+        handleSubmit={updateReleaseMetadata}
+      />
+      <Separator />
+      <DeleteReleaseForm postName={data?.title!} />
+    </>
   );
 }

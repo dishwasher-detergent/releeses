@@ -1,15 +1,12 @@
-import PlaceholderCard from "@/components/placeholder-card";
 import CreateOrg from "@/components/ui/create-org";
-import OrgCard from "@/components/ui/org-card";
+import Organizations from "@/components/ui/organizations";
 import { Separator } from "@/components/ui/separator";
 import { Organization } from "@/interfaces/organization";
 import { db } from "@/lib/appwrite";
 import { getSession } from "@/lib/auth";
 import { ORGANIZATION_COLLECTION_ID } from "@/lib/constants";
-import { LucideGhost } from "lucide-react";
 import { redirect } from "next/navigation";
 import { Query } from "node-appwrite";
-import { Suspense } from "react";
 
 export default async function AllOrganizations({
   params,
@@ -33,30 +30,7 @@ export default async function AllOrganizations({
         <CreateOrg />
       </div>
       <Separator />
-      <Suspense
-        fallback={
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {Array.from({ length: 8 }).map((_, i) => (
-              <PlaceholderCard key={i} />
-            ))}
-          </div>
-        }
-      >
-        <div className="p-4">
-          {organizations.documents.length > 0 ? (
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-              {organizations.documents.map((org) => (
-                <OrgCard key={org.$id} data={org} />
-              ))}
-            </div>
-          ) : (
-            <div className="bg-secondary flex h-24 w-full flex-row items-center justify-center gap-4 rounded-3xl">
-              <LucideGhost className="bg-primary-foreground text-primary dark:bg-primary dark:text-primary-foreground h-10 w-10 flex-none rounded-xl p-2" />
-              <p>You've not got any organizations, yet!</p>
-            </div>
-          )}
-        </div>
-      </Suspense>
+      <Organizations />
     </>
   );
 }

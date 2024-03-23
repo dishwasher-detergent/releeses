@@ -1,6 +1,6 @@
 import { Providers } from "@/app/providers";
 import { cn } from "@/lib/utils";
-import { cal, inter } from "@/styles/fonts";
+import { inter, nunito } from "@/styles/fonts";
 import "@/styles/globals.css";
 import { Metadata } from "next";
 
@@ -36,7 +36,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${cn(cal.variable, inter.variable)} h-screen w-screen`}>
+      <body
+        className={`${cn(inter.variable, nunito.variable)} ${
+          nunito.className
+        } h-screen w-screen`}
+      >
         <Providers>
           {children}
           {/* <Analytics /> */}

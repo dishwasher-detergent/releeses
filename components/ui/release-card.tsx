@@ -23,7 +23,7 @@ export default function ReleaseCard({ data, org }: ReleaseCardProps) {
   const url = `${org?.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}/${data.slug}`;
 
   return (
-    <Card className="relative flex flex-col overflow-hidden">
+    <Card className="relative flex flex-col overflow-hidden rounded-none border-l-0 border-t-0 shadow-none">
       <CardContent className="flex-1 p-0">
         <BlurImage
           alt={data.title ?? "Card thumbnail"}
@@ -40,7 +40,7 @@ export default function ReleaseCard({ data, org }: ReleaseCardProps) {
         </CardHeader>
       </CardContent>
       <CardFooter>
-        <Badge className="z-10 px-2 py-1">
+        <Badge className="z-10 px-2 py-1" variant="secondary">
           <a
             href={
               process.env.NEXT_PUBLIC_VERCEL_ENV
@@ -51,8 +51,8 @@ export default function ReleaseCard({ data, org }: ReleaseCardProps) {
             rel="noreferrer"
             className="flex flex-row items-center gap-2"
           >
-            {url}
-            <LucideExternalLink className="size-4" />
+            <span className="flex-1 truncate">{url}</span>
+            <LucideExternalLink className="size-4 flex-none" />
           </a>
         </Badge>
       </CardFooter>

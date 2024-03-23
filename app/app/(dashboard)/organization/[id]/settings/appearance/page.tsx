@@ -1,4 +1,5 @@
 import Form from "@/components/form";
+import { Separator } from "@/components/ui/separator";
 import { Organization } from "@/interfaces/organization";
 import { updateOrganization } from "@/lib/actions";
 import { db } from "@/lib/appwrite";
@@ -15,7 +16,7 @@ export default async function SiteSettingsAppearance({
   );
 
   return (
-    <div className="flex flex-col space-y-6">
+    <div className="flex flex-col">
       <Form
         title="Thumbnail image"
         description="The thumbnail image for your site. Accepted formats: .png, .jpg, .jpeg"
@@ -27,6 +28,7 @@ export default async function SiteSettingsAppearance({
         }}
         handleSubmit={updateOrganization}
       />
+      <Separator />
       <Form
         title="Logo"
         description="The logo for your site. Accepted formats: .png, .jpg, .jpeg"
@@ -38,6 +40,7 @@ export default async function SiteSettingsAppearance({
         }}
         handleSubmit={updateOrganization}
       />
+      <Separator />
       <Form
         title="Font"
         description="The font for the heading text your site."
@@ -49,6 +52,7 @@ export default async function SiteSettingsAppearance({
         }}
         handleSubmit={updateOrganization}
       />
+      <Separator />
       <Form
         title="404 Page Message"
         description="Message to be displayed on the 404 page."

@@ -2,13 +2,14 @@
 
 import { Release } from "@/interfaces/release";
 import { updateRelease, updateReleaseMetadata } from "@/lib/actions";
-import { cn } from "@/lib/utils";
 import { ExternalLink } from "lucide-react";
 import { Editor as NovelEditor } from "novel";
 import { useEffect, useState, useTransition } from "react";
 import TextareaAutosize from "react-textarea-autosize";
 import { toast } from "sonner";
-import LoadingDots from "./icons/loading-dots";
+import { Badge } from "./badge";
+import { Button, buttonVariants } from "./button";
+import { Separator } from "./separator";
 
 export default function Editor({ post }: { post: Release }) {
   let [isPendingSaving, startTransitionSaving] = useTransition();
@@ -37,25 +38,24 @@ export default function Editor({ post }: { post: Release }) {
   }, [data, startTransitionSaving]);
 
   return (
-    <div className="relative min-h-[500px] w-full max-w-screen-lg border-stone-200 p-12 px-8 dark:border-stone-700 sm:mb-[calc(20vh)] sm:rounded-lg sm:border sm:px-12 sm:shadow-lg">
+    <>
       <div className="absolute right-5 top-5 mb-5 flex items-center space-x-3">
         {data.published && (
           <a
             href={url}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center space-x-1 text-sm text-stone-400 hover:text-stone-500"
+            className={buttonVariants({ variant: "ghost", size: "icon" })}
           >
             <ExternalLink className="h-4 w-4" />
           </a>
         )}
-        <div className="rounded-lg bg-stone-100 px-2 py-1 text-sm text-stone-400 dark:bg-stone-800 dark:text-stone-500">
+        <Badge variant="secondary" className="px-3 py-2">
           {isPendingSaving ? "Saving..." : "Saved"}
-        </div>
-        <button
+        </Badge>
+        <Button
           onClick={() => {
             const formData = new FormData();
-            console.log(data.published, typeof data.published);
             formData.append("published", String(!data.published));
             startTransitionPublishing(async () => {
               await updateReleaseMetadata(formData, post.$id, "published").then(
@@ -70,29 +70,24 @@ export default function Editor({ post }: { post: Release }) {
               );
             });
           }}
-          className={cn(
-            "flex h-7 w-24 items-center justify-center space-x-2 rounded-lg border text-sm transition-all focus:outline-none",
-            isPendingPublishing
-              ? "cursor-not-allowed border-stone-200 bg-stone-100 text-stone-400 dark:border-stone-700 dark:bg-stone-800 dark:text-stone-300"
-              : "border border-black bg-black text-white hover:bg-white hover:text-black active:bg-stone-100 dark:border-stone-700 dark:hover:border-stone-200 dark:hover:bg-black dark:hover:text-white dark:active:bg-stone-800",
-          )}
+          size="sm"
           disabled={isPendingPublishing}
         >
           {isPendingPublishing ? (
-            <LoadingDots />
+            "loading"
           ) : (
             <p>{data.published ? "Unpublish" : "Publish"}</p>
           )}
-        </button>
+        </Button>
       </div>
-      <div className="mb-5 flex flex-col space-y-3 border-b border-stone-200 pb-5 dark:border-stone-700">
+      <div className="flex flex-col space-y-3 p-4">
         <input
           type="text"
           placeholder="Title"
           defaultValue={post?.title || ""}
           autoFocus
           onChange={(e) => setData({ ...data, title: e.target.value })}
-          className="dark:placeholder-text-600 border-none px-0 font-cal text-3xl placeholder:text-stone-400 focus:outline-none focus:ring-0 dark:bg-black dark:text-white"
+          className="dark:placeholder-text-600 font-cal border-none px-0 text-3xl placeholder:text-stone-400 focus:outline-none focus:ring-0 dark:bg-black dark:text-white"
         />
         <TextareaAutosize
           placeholder="Description"
@@ -101,8 +96,9 @@ export default function Editor({ post }: { post: Release }) {
           className="dark:placeholder-text-600 w-full resize-none border-none px-0 placeholder:text-stone-400 focus:outline-none focus:ring-0 dark:bg-black dark:text-white"
         />
       </div>
+      <Separator />
       <NovelEditor
-        className="relative block"
+        className="h-full overflow-y-auto"
         defaultValue={post?.content || undefined}
         onUpdate={(editor) => {
           setData((prev) => ({
@@ -123,6 +119,6 @@ export default function Editor({ post }: { post: Release }) {
           });
         }}
       />
-    </div>
+    </>
   );
 }

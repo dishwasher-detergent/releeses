@@ -1,5 +1,6 @@
 import Form from "@/components/form";
-import DeleteSiteForm from "@/components/form/delete-site-form";
+import DeleteOrgForm from "@/components/form/delete-org-form";
+import { Separator } from "@/components/ui/separator";
 import { Organization } from "@/interfaces/organization";
 import { updateOrganization } from "@/lib/actions";
 import { db } from "@/lib/appwrite";
@@ -16,7 +17,7 @@ export default async function SiteSettingsIndex({
   );
 
   return (
-    <div className="flex flex-col space-y-6">
+    <div className="flex flex-col">
       <Form
         title="Name"
         description="The name of your site. This will be used as the meta title on Google as well."
@@ -30,7 +31,7 @@ export default async function SiteSettingsIndex({
         }}
         handleSubmit={updateOrganization}
       />
-
+      <Separator />
       <Form
         title="Description"
         description="The description of your site. This will be used as the meta description on Google as well."
@@ -43,8 +44,8 @@ export default async function SiteSettingsIndex({
         }}
         handleSubmit={updateOrganization}
       />
-
-      <DeleteSiteForm siteName={data?.name!} />
+      <Separator />
+      <DeleteOrgForm siteName={data?.name!} />
     </div>
   );
 }

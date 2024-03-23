@@ -1,5 +1,8 @@
 "use client";
 
+import useWindowSize from "@/lib/hooks/use-window-size";
+import FocusTrap from "focus-trap-react";
+import { AnimatePresence, motion } from "framer-motion";
 import {
   Dispatch,
   SetStateAction,
@@ -7,10 +10,7 @@ import {
   useEffect,
   useRef,
 } from "react";
-import FocusTrap from "focus-trap-react";
-import { AnimatePresence, motion } from "framer-motion";
 import Leaflet from "./leaflet";
-import useWindowSize from "@/lib/hooks/use-window-size";
 
 export default function Modal({
   children,
@@ -65,7 +65,7 @@ export default function Modal({
               </FocusTrap>
               <motion.div
                 key="desktop-backdrop"
-                className="fixed inset-0 z-30 bg-gray-100 bg-opacity-10 backdrop-blur"
+                className="fixed inset-0 z-30 bg-slate-100 bg-opacity-10 backdrop-blur"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}

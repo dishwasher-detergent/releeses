@@ -1,4 +1,4 @@
-import Editor from "@/components/editor";
+import Editor from "@/components/ui/editor";
 import { Release } from "@/interfaces/release";
 import { db } from "@/lib/appwrite";
 import { getSession } from "@/lib/auth";

@@ -1,8 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 
 import { truncate } from "@/lib/utils";
-import { ImageResponse } from "next/og";
 import { sql } from "@vercel/postgres";
+import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
 
@@ -46,10 +46,10 @@ export default async function PostOG({
     (
       <div tw="flex flex-col items-center w-full h-full bg-white">
         <div tw="flex flex-col items-center justify-center mt-8">
-          <h1 tw="text-6xl font-bold text-gray-900 leading-none tracking-tight">
+          <h1 tw="text-6xl font-bold text-slate-900 leading-none tracking-tight">
             {data.title}
           </h1>
-          <p tw="mt-4 text-xl text-gray-600 max-w-xl text-center">
+          <p tw="mt-4 text-xl text-slate-600 max-w-xl text-center">
             {truncate(data.description, 120)}
           </p>
           <div tw="flex items-center justify-center">
@@ -58,10 +58,10 @@ export default async function PostOG({
               src={data.authorImage}
               alt={data.authorName}
             />
-            <p tw="text-xl font-medium text-gray-900">by {data.authorName}</p>
+            <p tw="text-xl font-medium text-slate-900">by {data.authorName}</p>
           </div>
           <img
-            tw="mt-4 w-5/6 rounded-2xl border border-gray-200 shadow-md"
+            tw="mt-4 w-5/6 rounded-2xl border border-slate-200 shadow-md"
             src={data.image}
             alt={data.title}
           />

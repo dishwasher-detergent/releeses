@@ -1,4 +1,5 @@
 import Form from "@/components/form";
+import { Separator } from "@/components/ui/separator";
 import { Organization } from "@/interfaces/organization";
 import { updateOrganization } from "@/lib/actions";
 import { db } from "@/lib/appwrite";
@@ -15,7 +16,7 @@ export default async function SiteSettingsDomains({
   );
 
   return (
-    <div className="flex flex-col space-y-6">
+    <div className="flex flex-col">
       <Form
         title="Subdomain"
         description="The subdomain for your site."
@@ -29,6 +30,7 @@ export default async function SiteSettingsDomains({
         }}
         handleSubmit={updateOrganization}
       />
+      <Separator />
       <Form
         title="Custom Domain"
         description="The custom domain for your site."

@@ -100,13 +100,13 @@ export default async function SitePostPage({
     <>
       <div className="flex flex-col items-center justify-center">
         <div className="m-auto w-full text-center md:w-7/12">
-          <p className="m-auto my-5 w-10/12 text-sm font-light text-stone-500 dark:text-stone-400 md:text-base">
+          <p className="m-auto my-5 w-10/12 text-sm font-light text-slate-500 dark:text-slate-400 md:text-base">
             {toDateString(data.documents[0].$createdAt)}
           </p>
-          <h1 className="mb-10 font-title text-3xl font-bold text-stone-800 dark:text-white md:text-6xl">
+          <h1 className="font-title mb-10 text-3xl font-bold text-slate-800 dark:text-white md:text-6xl">
             {data.documents[0].title}
           </h1>
-          <p className="text-md m-auto w-10/12 text-stone-600 dark:text-stone-400 md:text-lg">
+          <p className="text-md m-auto w-10/12 text-slate-600 dark:text-slate-400 md:text-lg">
             {data.documents[0].description}
           </p>
         </div>
@@ -130,7 +130,7 @@ export default async function SitePostPage({
                   width={80}
                 />
               ) : (
-                <div className="absolute flex h-full w-full select-none items-center justify-center bg-stone-100 text-4xl text-stone-500">
+                <div className="absolute flex h-full w-full select-none items-center justify-center bg-slate-100 text-4xl text-slate-500">
                   ?
                 </div>
               )}
@@ -144,7 +144,7 @@ export default async function SitePostPage({
           </div>
         </a>
       </div>
-      <div className="relative m-auto mb-10 h-80 w-full max-w-screen-lg overflow-hidden md:mb-20 md:h-150 md:w-5/6 md:rounded-2xl lg:w-2/3">
+      <div className="md:h-150 relative m-auto mb-10 h-80 w-full max-w-screen-lg overflow-hidden md:mb-20 md:w-5/6 md:rounded-2xl lg:w-2/3">
         <BlurImage
           alt={data.documents[0].title ?? "Post image"}
           width={1200}
@@ -164,10 +164,10 @@ export default async function SitePostPage({
             className="absolute inset-0 flex items-center"
             aria-hidden="true"
           >
-            <div className="w-full border-t border-stone-300 dark:border-stone-700" />
+            <div className="w-full border-t border-slate-300 dark:border-slate-700" />
           </div>
           <div className="relative flex justify-center">
-            <span className="bg-white px-2 text-sm text-stone-500 dark:bg-black dark:text-stone-400">
+            <span className="bg-white px-2 text-sm text-slate-500 dark:bg-black dark:text-slate-400">
               Continue Reading
             </span>
           </div>

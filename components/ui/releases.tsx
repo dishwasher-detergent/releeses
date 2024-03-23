@@ -1,3 +1,4 @@
+import ReleaesCard from "@/components/ui/release-card";
 import { Release } from "@/interfaces/release";
 import { db } from "@/lib/appwrite";
 import { getSession } from "@/lib/auth";
@@ -5,9 +6,8 @@ import { RELEASE_COLLECTION_ID } from "@/lib/constants";
 import Image from "next/image";
 import { redirect } from "next/navigation";
 import { Query } from "node-appwrite";
-import PostCard from "./post-card";
 
-export default async function Posts({
+export default async function Releases({
   siteId,
   limit,
 }: {
@@ -30,9 +30,13 @@ export default async function Posts({
   const releases = await db.list<Release>(RELEASE_COLLECTION_ID, queries);
 
   return releases.documents.length > 0 ? (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4">
       {releases.documents.map((release) => (
-        <PostCard key={release.$id} data={release} />
+        <ReleaesCard
+          key={release.$id}
+          data={release}
+          org={release.organization}
+        />
       ))}
     </div>
   ) : (

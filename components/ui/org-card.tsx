@@ -17,7 +17,7 @@ export default function OrgCard({ data }: { data: Organization }) {
   const url = `${data.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`;
 
   return (
-    <Card className="relative flex flex-col overflow-hidden">
+    <Card className="relative flex flex-col overflow-hidden rounded-none border-l-0 border-t-0 shadow-none">
       <CardContent className="flex-1 p-0">
         <BlurImage
           alt={data.name ?? "Card thumbnail"}
@@ -34,7 +34,7 @@ export default function OrgCard({ data }: { data: Organization }) {
         </CardHeader>
       </CardContent>
       <CardFooter>
-        <Badge className="z-10 px-2 py-1">
+        <Badge className="z-10 px-2 py-1" variant="secondary">
           <a
             href={
               process.env.NEXT_PUBLIC_VERCEL_ENV

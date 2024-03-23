@@ -66,7 +66,12 @@ export default function DashboardLayoutComponent({
         </Nav>
       </ResizablePanel>
       <ResizableHandle withHandle />
-      <ResizablePanel defaultSize={735}>{children}</ResizablePanel>
+      <ResizablePanel
+        defaultSize={735}
+        className="flex flex-col overflow-hidden"
+      >
+        {children}
+      </ResizablePanel>
     </ResizablePanelGroup>
   );
 }
