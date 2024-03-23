@@ -1,6 +1,5 @@
 import { getSiteData } from "@/lib/fetchers";
 import { headers } from "next/headers";
-import Image from "next/image";
 
 export default async function NotFound() {
   const headersList = headers();
@@ -14,12 +13,6 @@ export default async function NotFound() {
       <h1 className="font-cal text-4xl">
         {data ? `${data.documents[0].name}: ` : ""}404
       </h1>
-      <Image
-        alt="missing site"
-        src="https://illustrations.popsy.co/gray/timed-out-error.svg"
-        width={400}
-        height={400}
-      />
       <p className="text-lg text-slate-500">
         {data
           ? data.documents[0].message404
