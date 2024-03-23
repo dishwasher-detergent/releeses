@@ -1,5 +1,5 @@
-import MDX from "@/components/mdx";
 import BlurImage from "@/components/ui/blur-image";
+import MDX from "@/components/ui/mdx";
 import ReleaseCard from "@/components/ui/release-card";
 import { Separator } from "@/components/ui/separator";
 import { Release } from "@/interfaces/release";

@@ -1,7 +1,6 @@
 "use client";
 
 import Nav from "@/components/ui/nav";
-import { OrgSwitcher } from "@/components/ui/org-switcher";
 import {
   ResizableHandle,
   ResizablePanel,
@@ -9,6 +8,7 @@ import {
 } from "@/components/ui/resizable";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 import { ReactNode, useState } from "react";
 
 export default function DashboardLayoutComponent({
@@ -56,7 +56,9 @@ export default function DashboardLayoutComponent({
             isCollapsed ? "h-[52px]" : "px-2",
           )}
         >
-          <OrgSwitcher isCollapsed={isCollapsed} />
+          <Link href="/" className="font-bold">
+            Releaser.xyz
+          </Link>
         </div>
         <Separator />
         <Nav isCollapsed={isCollapsed} />

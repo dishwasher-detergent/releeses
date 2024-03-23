@@ -137,6 +137,7 @@ export default function Nav({ children, isCollapsed }: NavProps) {
             </Tooltip>
           ) : (
             <Button
+              key={index}
               asChild
               variant="ghost"
               size="sm"
