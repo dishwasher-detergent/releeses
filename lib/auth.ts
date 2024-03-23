@@ -1,7 +1,10 @@
 import { Organization } from "@/interfaces/organization";
 import { Release } from "@/interfaces/release";
-import { db } from "./appwrite";
-import { ORGANIZATION_COLLECTION_ID, RELEASE_COLLECTION_ID } from "./constants";
+import { db } from "@/lib/appwrite";
+import {
+  ORGANIZATION_COLLECTION_ID,
+  RELEASE_COLLECTION_ID,
+} from "@/lib/constants";
 
 export function getSession() {
   return {

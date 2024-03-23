@@ -44,7 +44,7 @@ export default async function SiteHomePage({
     notFound();
   }
 
-  const releases = data.documents[0];
+  const releases = data.documents[0].release;
 
   return (
     <>
@@ -91,7 +91,7 @@ export default async function SiteHomePage({
                   </p>
                   <div className="h-6 border-l border-stone-600 dark:border-stone-400" />
                   <p className="m-auto my-5 w-10/12 text-sm font-light text-stone-500 dark:text-stone-400 md:text-base">
-                    {toDateString(releases[0].createdAt)}
+                    {toDateString(releases[0].$createdAt)}
                   </p>
                 </div>
               </div>

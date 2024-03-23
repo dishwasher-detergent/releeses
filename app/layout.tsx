@@ -1,9 +1,8 @@
-import "@/styles/globals.css";
-import { cal, inter } from "@/styles/fonts";
-import { Analytics } from "@vercel/analytics/react";
-import { Providers } from "./providers";
-import { Metadata } from "next";
+import { Providers } from "@/app/providers";
 import { cn } from "@/lib/utils";
+import { cal, inter } from "@/styles/fonts";
+import "@/styles/globals.css";
+import { Metadata } from "next";
 
 const title =
   "Platforms Starter Kit – The all-in-one starter kit for building multi-tenant applications.";
@@ -37,10 +36,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={cn(cal.variable, inter.variable)}>
+      <body className={`${cn(cal.variable, inter.variable)} h-screen w-screen`}>
         <Providers>
           {children}
-          <Analytics />
+          {/* <Analytics /> */}
         </Providers>
       </body>
     </html>

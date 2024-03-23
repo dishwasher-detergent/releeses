@@ -1,10 +1,10 @@
+import SiteSettingsNav from "@/components/ui/nav";
 import { Organization } from "@/interfaces/organization";
 import { db } from "@/lib/appwrite";
 import { getSession } from "@/lib/auth";
 import { ORGANIZATION_COLLECTION_ID } from "@/lib/constants";
 import { notFound, redirect } from "next/navigation";
 import { ReactNode } from "react";
-import SiteSettingsNav from "./nav";
 
 export default async function SiteAnalyticsLayout({
   params,

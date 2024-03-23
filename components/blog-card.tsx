@@ -1,14 +1,11 @@
+import BlurImage from "@/components/ui/blur-image";
 import Link from "next/link";
-import BlurImage from "./blur-image";
 
 import { Release } from "@/interfaces/release";
 import { placeholderBlurhash, toDateString } from "@/lib/utils";
 
 interface BlogCardProps {
-  data: Pick<
-    Release,
-    "slug" | "image" | "imageBlurhash" | "title" | "description" | "createdAt"
-  >;
+  data: Release;
 }
 
 export default function BlogCard({ data }: BlogCardProps) {
@@ -32,7 +29,7 @@ export default function BlogCard({ data }: BlogCardProps) {
             {data.description}
           </p>
           <p className="my-2 text-sm text-stone-600 dark:text-stone-400">
-            Published {toDateString(data.createdAt)}
+            Published {toDateString(data.$createdAt)}
           </p>
         </div>
       </div>

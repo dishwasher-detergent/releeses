@@ -1,11 +1,14 @@
 import { Organization } from "@/interfaces/organization";
 import { Release } from "@/interfaces/release";
+import { db } from "@/lib/appwrite";
+import {
+  ORGANIZATION_COLLECTION_ID,
+  RELEASE_COLLECTION_ID,
+} from "@/lib/constants";
 import { replaceTweets } from "@/lib/remark-plugins";
 import { serialize } from "next-mdx-remote/serialize";
 import { unstable_cache } from "next/cache";
 import { Query } from "node-appwrite";
-import { db } from "./appwrite";
-import { ORGANIZATION_COLLECTION_ID, RELEASE_COLLECTION_ID } from "./constants";
 
 export async function getSiteData(domain: string) {
   const subdomain = domain.endsWith(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`)

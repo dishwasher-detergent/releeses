@@ -1,3 +1,4 @@
+import OrgCard from "@/components/ui/org-card";
 import { Organization } from "@/interfaces/organization";
 import { db } from "@/lib/appwrite";
 import { getSession } from "@/lib/auth";
@@ -5,9 +6,8 @@ import { ORGANIZATION_COLLECTION_ID } from "@/lib/constants";
 import Image from "next/image";
 import { redirect } from "next/navigation";
 import { Query } from "node-appwrite";
-import SiteCard from "./site-card";
 
-export default async function Sites({ limit }: { limit?: number }) {
+export default async function Organizations({ limit }: { limit?: number }) {
   const session = await getSession();
   if (!session) {
     redirect("/login");
@@ -21,7 +21,7 @@ export default async function Sites({ limit }: { limit?: number }) {
   return organizations.documents.length > 0 ? (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
       {organizations.documents.map((org) => (
-        <SiteCard key={org.$id} data={org} />
+        <OrgCard key={org.$id} data={org} />
       ))}
     </div>
   ) : (

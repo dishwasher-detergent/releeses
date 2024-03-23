@@ -9,7 +9,7 @@ export default function SiteCard({ data }: { data: Organization }) {
   return (
     <div className="relative rounded-lg border border-stone-200 pb-10 shadow-md transition-all hover:shadow-xl dark:border-stone-700 dark:hover:border-white">
       <Link
-        href={`/site/${data.$id}`}
+        href={`/organization/${data.$id}`}
         className="flex flex-col overflow-hidden rounded-lg"
       >
         <BlurImage

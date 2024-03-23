@@ -1,6 +1,6 @@
+import { Release } from "@/interfaces/release";
 import { User } from "@/interfaces/user";
 import { Models } from "node-appwrite";
-import { Release } from "./release";
 
 export interface Organization extends Models.Document {
   name: string;

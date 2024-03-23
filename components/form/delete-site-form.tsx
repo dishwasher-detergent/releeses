@@ -14,15 +14,15 @@ export default function DeleteSiteForm({ siteName }: { siteName: string }) {
   return (
     <form
       action={async (data: FormData) =>
-        window.confirm("Are you sure you want to delete your site?") &&
+        window.confirm("Are you sure you want to delete your organization?") &&
         deleteOrganization(data, id, "delete")
           .then(async (res) => {
             if (res.error) {
               toast.error(res.error);
             } else {
-              va.track("Deleted Site");
+              va.track("Deleted Organization");
               router.refresh();
-              router.push("/sites");
+              router.push("/organizations");
               toast.success(`Successfully deleted site!`);
             }
           })

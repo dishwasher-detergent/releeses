@@ -2,7 +2,7 @@ import OverviewSitesCTA from "@/components/overview-sites-cta";
 import OverviewStats from "@/components/overview-stats";
 import PlaceholderCard from "@/components/placeholder-card";
 import Posts from "@/components/posts";
-import Sites from "@/components/sites";
+import Organizations from "@/components/ui/organizations";
 import { Suspense } from "react";
 
 export default function Overview() {
@@ -33,7 +33,7 @@ export default function Overview() {
             </div>
           }
         >
-          <Sites limit={4} />
+          <Organizations limit={4} />
         </Suspense>
       </div>
 

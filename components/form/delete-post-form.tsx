@@ -1,12 +1,12 @@
 "use client";
 
 import LoadingDots from "@/components/icons/loading-dots";
+import { deleteRelease } from "@/lib/actions";
 import { cn } from "@/lib/utils";
+import va from "@vercel/analytics";
 import { useParams, useRouter } from "next/navigation";
 import { useFormStatus } from "react-dom";
 import { toast } from "sonner";
-import { deletePost } from "@/lib/actions";
-import va from "@vercel/analytics";
 
 export default function DeletePostForm({ postName }: { postName: string }) {
   const { id } = useParams() as { id: string };
@@ -15,7 +15,7 @@ export default function DeletePostForm({ postName }: { postName: string }) {
     <form
       action={async (data: FormData) =>
         window.confirm("Are you sure you want to delete your post?") &&
-        deletePost(data, id, "delete").then((res) => {
+        deleteRelease(data, id, "delete").then((res) => {
           if (res.error) {
             toast.error(res.error);
           } else {

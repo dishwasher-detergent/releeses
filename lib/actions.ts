@@ -2,6 +2,15 @@
 
 import { Organization } from "@/interfaces/organization";
 import { Release } from "@/interfaces/release";
+import { db, storage } from "@/lib/appwrite";
+import { withPostAuth, withSiteAuth } from "@/lib/auth";
+import {
+  ENDPOINT,
+  ORGANIZATION_COLLECTION_ID,
+  PROJECT_ID,
+  RELEASE_BUCKET_ID,
+  RELEASE_COLLECTION_ID,
+} from "@/lib/constants";
 import {
   addDomainToVercel,
   // getApexDomain,
@@ -13,15 +22,6 @@ import { getBlurDataURL } from "@/lib/utils";
 import { put } from "@vercel/blob";
 import { customAlphabet } from "nanoid";
 import { revalidateTag } from "next/cache";
-import { db, storage } from "./appwrite";
-import { withPostAuth, withSiteAuth } from "./auth";
-import {
-  ENDPOINT,
-  ORGANIZATION_COLLECTION_ID,
-  PROJECT_ID,
-  RELEASE_BUCKET_ID,
-  RELEASE_COLLECTION_ID,
-} from "./constants";
 
 const nanoid = customAlphabet(
   "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
