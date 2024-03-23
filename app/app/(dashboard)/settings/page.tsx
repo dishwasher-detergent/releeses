@@ -1,4 +1,5 @@
 import Form from "@/components/form";
+import { Separator } from "@/components/ui/separator";
 import { editUser } from "@/lib/actions";
 import { getSession } from "@/lib/auth";
 import { redirect } from "next/navigation";
@@ -9,9 +10,12 @@ export default async function SettingsPage() {
     redirect("/login");
   }
   return (
-    <div className="flex max-w-screen-xl flex-col space-y-12 p-8">
-      <div className="flex flex-col space-y-6">
-        <h1 className="text-3xl font-bold dark:text-white">Settings</h1>
+    <>
+      <div className="flex h-[52px] items-center justify-between px-4 py-2">
+        <h1 className="text-xl font-bold">Settings</h1>
+      </div>
+      <Separator />
+      <div className="flex flex-1 flex-col overflow-y-auto">
         <Form
           title="Name"
           description="Your name on this app."
@@ -25,6 +29,7 @@ export default async function SettingsPage() {
           }}
           handleSubmit={editUser}
         />
+        <Separator />
         <Form
           title="Email"
           description="Your email on this app."
@@ -38,6 +43,6 @@ export default async function SettingsPage() {
           handleSubmit={editUser}
         />
       </div>
-    </div>
+    </>
   );
 }
