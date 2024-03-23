@@ -1,5 +1,3 @@
-import CTA from "@/components/cta";
-import ReportAbuse from "@/components/report-abuse";
 import { Organization } from "@/interfaces/organization";
 import { getSiteData } from "@/lib/fetchers";
 import { fontMapper } from "@/styles/fonts";
@@ -89,21 +87,13 @@ export default async function SiteLayout({
                 width={40}
               />
             </div>
-            <span className="ml-3 inline-block truncate font-title font-medium">
+            <span className="font-title ml-3 inline-block truncate font-medium">
               {data.documents[0].name}
             </span>
           </Link>
         </div>
       </div>
-
       <div className="mt-20">{children}</div>
-
-      {domain == `demo.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}` ||
-      domain == `platformize.co` ? (
-        <CTA />
-      ) : (
-        <ReportAbuse />
-      )}
     </div>
   );
 }

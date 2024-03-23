@@ -6,6 +6,7 @@ import { db, storage } from "@/lib/appwrite";
 import { withPostAuth, withSiteAuth } from "@/lib/auth";
 import {
   ENDPOINT,
+  ORGANIZATION_BUCKET_ID,
   ORGANIZATION_COLLECTION_ID,
   PROJECT_ID,
   RELEASE_BUCKET_ID,
@@ -19,9 +20,9 @@ import {
   validDomainRegex,
 } from "@/lib/domains";
 import { getBlurDataURL } from "@/lib/utils";
-import { put } from "@vercel/blob";
 import { customAlphabet } from "nanoid";
 import { revalidateTag } from "next/cache";
+import { InputFile } from "node-appwrite";
 
 const nanoid = customAlphabet(
   "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
@@ -142,20 +143,12 @@ export const updateOrganization = withSiteAuth(
           */
         }
       } else if (key === "image" || key === "logo") {
-        if (!process.env.BLOB_READ_WRITE_TOKEN) {
-          return {
-            error:
-              "Missing BLOB_READ_WRITE_TOKEN token. Note: Vercel Blob is currently in beta – please fill out this form for access: https://tally.so/r/nPDMNd",
-          };
-        }
-
         const file = formData.get(key) as File;
         const filename = `${nanoid()}.${file.type.split("/")[1]}`;
+        const newfile = await InputFile.fromBlob(file, filename);
 
-        const { url } = await put(filename, file, {
-          access: "public",
-        });
-
+        const awFile = await storage.upload(ORGANIZATION_BUCKET_ID, newfile);
+        const url = `${ENDPOINT}/storage/buckets/${ORGANIZATION_BUCKET_ID}/files/${awFile.$id}/view?project=${PROJECT_ID}`;
         const blurhash = key === "image" ? await getBlurDataURL(url) : null;
 
         response = await db.update(
@@ -183,6 +176,8 @@ export const updateOrganization = withSiteAuth(
 
       return response;
     } catch (error: any) {
+      console.log(error);
+
       if (error.code === "P2002") {
         return {
           error: `This ${key} is already taken`,
@@ -326,10 +321,11 @@ export const updateReleaseMetadata = withPostAuth(
     try {
       let response;
       if (key === "image") {
-        const file = formData.get("image") as File;
+        const file = formData.get(key) as File;
         const filename = `${nanoid()}.${file.type.split("/")[1]}`;
+        const newfile = await InputFile.fromBlob(file, filename);
 
-        const awFile = await storage.upload(RELEASE_BUCKET_ID, file);
+        const awFile = await storage.upload(RELEASE_BUCKET_ID, newfile);
         const url = `${ENDPOINT}/storage/buckets/${RELEASE_BUCKET_ID}/files/${awFile.$id}/view?project=${PROJECT_ID}`;
         const blurhash = await getBlurDataURL(url);
 

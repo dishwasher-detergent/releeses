@@ -1,14 +1,31 @@
 import { DATABASE_ID, ENDPOINT, PROJECT_ID } from "@/lib/constants";
-import { Client, Databases, ID, Models, Storage } from "node-appwrite";
+import {
+  Client,
+  Databases,
+  ID,
+  InputFile,
+  Models,
+  Storage,
+} from "node-appwrite";
 
-const client = new Client();
-client
-  .setEndpoint(ENDPOINT)
-  .setProject(PROJECT_ID)
-  .setKey(process.env.APPWRITE_API_KEY as string);
+export async function createAdminClient() {
+  "use server";
 
-const database = new Databases(client);
-const storage_client = new Storage(client);
+  const client = new Client();
+  client
+    .setEndpoint(ENDPOINT)
+    .setProject(PROJECT_ID)
+    .setKey(process.env.APPWRITE_API_KEY as string);
+
+  return {
+    get database() {
+      return new Databases(client);
+    },
+    get storage_client() {
+      return new Storage(client);
+    },
+  };
+}
 
 export const db = {
   /**
@@ -20,6 +37,8 @@ export const db = {
    * @returns A promise that resolves to the retrieved document.
    */
   async get<T extends Models.Document>(collectionId: string, id: string) {
+    const database = (await createAdminClient()).database;
+
     const response = await database.getDocument<T>(
       DATABASE_ID,
       collectionId,
@@ -40,6 +59,8 @@ export const db = {
     collectionId: string,
     queries: string[] = [],
   ) {
+    const database = (await createAdminClient()).database;
+
     const response = await database.listDocuments<T>(
       DATABASE_ID,
       collectionId,
@@ -64,6 +85,8 @@ export const db = {
     id: string = ID.unique(),
     permissions: string[] = [],
   ) {
+    const database = (await createAdminClient()).database;
+
     const response = await database.createDocument<T>(
       DATABASE_ID,
       collectionId,
@@ -89,6 +112,8 @@ export const db = {
     data: Omit<T, keyof Models.Document>,
     id: string,
   ) {
+    const database = (await createAdminClient()).database;
+
     const response = await database.updateDocument<T>(
       DATABASE_ID,
       collectionId,
@@ -107,6 +132,8 @@ export const db = {
    * @returns A promise that resolves to the deleted document.
    */
   async delete(collectionId: string, id: string) {
+    const database = (await createAdminClient()).database;
+
     const response = await database.deleteDocument(
       DATABASE_ID,
       collectionId,
@@ -126,6 +153,8 @@ export const storage = {
    * @returns A promise that resolves to the retrieved file.
    */
   async get(bucketId: string, id: string) {
+    const storage_client = (await createAdminClient()).storage_client;
+
     const response = await storage_client.getFile(bucketId, id);
 
     return response;
@@ -138,6 +167,8 @@ export const storage = {
    * @returns A promise that resolves to an array of files.
    */
   async list(bucketId: string) {
+    const storage_client = (await createAdminClient()).storage_client;
+
     const response = await storage_client.listFiles(bucketId);
 
     return response;
@@ -151,7 +182,9 @@ export const storage = {
    * @param {string} [id] - The ID to assign to the uploaded file. If not provided, a unique ID will be generated.
    * @returns A promise that resolves to the response from the server.
    */
-  async upload(bucketId: string, file: File, id: string = ID.unique()) {
+  async upload(bucketId: string, file: InputFile, id: string = ID.unique()) {
+    const storage_client = (await createAdminClient()).storage_client;
+
     const response = await storage_client.createFile(bucketId, id, file);
 
     return response;
@@ -165,6 +198,8 @@ export const storage = {
    * @returns A promise that resolves to the deleted file.
    */
   async delete(bucketId: string, id: string) {
+    const storage_client = (await createAdminClient()).storage_client;
+
     const response = await storage_client.deleteFile(bucketId, id);
 
     return response;

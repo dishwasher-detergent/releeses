@@ -9,14 +9,14 @@ import {
 } from "@/components/ui/resizable";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
-import { ReactNode, Suspense, useState } from "react";
+import { ReactNode, useState } from "react";
 
 export default function DashboardLayoutComponent({
   children,
 }: {
   children: ReactNode;
 }) {
-  const [isCollapsed, setIsCollapsed] = useState(true);
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   return (
     <ResizablePanelGroup
@@ -29,19 +29,19 @@ export default function DashboardLayoutComponent({
       className="h-full items-stretch"
     >
       <ResizablePanel
-        defaultSize={265}
+        defaultSize={20}
         collapsedSize={4}
         collapsible={true}
         minSize={15}
         maxSize={20}
         onCollapse={() => {
-          setIsCollapsed(!isCollapsed);
+          setIsCollapsed(true);
           document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(
             isCollapsed,
           )}`;
         }}
         onExpand={() => {
-          setIsCollapsed(!isCollapsed);
+          setIsCollapsed(false);
           document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(
             isCollapsed,
           )}`;
@@ -59,15 +59,11 @@ export default function DashboardLayoutComponent({
           <OrgSwitcher isCollapsed={isCollapsed} />
         </div>
         <Separator />
-        <Nav isCollapsed={isCollapsed}>
-          <Suspense fallback={<div>Loading...</div>}>
-            {/* <Profile /> */}
-          </Suspense>
-        </Nav>
+        <Nav isCollapsed={isCollapsed} />
       </ResizablePanel>
       <ResizableHandle withHandle />
       <ResizablePanel
-        defaultSize={735}
+        defaultSize={80}
         className="flex flex-col overflow-hidden"
       >
         {children}

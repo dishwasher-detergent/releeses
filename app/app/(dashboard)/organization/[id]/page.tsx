@@ -1,4 +1,4 @@
-import PlaceholderCard from "@/components/placeholder-card";
+import LoadingCard from "@/components/loading/card";
 import { Badge } from "@/components/ui/badge";
 import CreateRelease from "@/components/ui/create-release";
 import Releases from "@/components/ui/releases";
@@ -56,9 +56,9 @@ export default async function SitePosts({
       <Separator />
       <Suspense
         fallback={
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {Array.from({ length: 8 }).map((_, i) => (
-              <PlaceholderCard key={i} />
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <LoadingCard key={i} />
             ))}
           </div>
         }

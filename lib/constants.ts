@@ -13,3 +13,6 @@ export const RELEASE_COLLECTION_ID = process.env
 // Buckets
 export const RELEASE_BUCKET_ID = process.env
   .NEXT_PUBLIC_RELEASE_BUCKET_ID as string;
+
+export const ORGANIZATION_BUCKET_ID = process.env
+  .NEXT_PUBLIC_ORGANIZATION_BUCKET_ID as string;

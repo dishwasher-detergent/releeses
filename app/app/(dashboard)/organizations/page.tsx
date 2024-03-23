@@ -1,27 +1,16 @@
+import LoadingCard from "@/components/loading/card";
 import CreateOrg from "@/components/ui/create-org";
 import Organizations from "@/components/ui/organizations";
 import { Separator } from "@/components/ui/separator";
-import { Organization } from "@/interfaces/organization";
-import { db } from "@/lib/appwrite";
 import { getSession } from "@/lib/auth";
-import { ORGANIZATION_COLLECTION_ID } from "@/lib/constants";
 import { redirect } from "next/navigation";
-import { Query } from "node-appwrite";
+import { Suspense } from "react";
 
-export default async function AllOrganizations({
-  params,
-}: {
-  params: { id: string };
-}) {
+export default async function AllOrganizations() {
   const session = await getSession();
   if (!session) {
     redirect("/login");
   }
-
-  const organizations = await db.list<Organization>(
-    ORGANIZATION_COLLECTION_ID,
-    [Query.equal("userId", session.user.id), Query.orderAsc("$createdAt")],
-  );
 
   return (
     <>
@@ -30,7 +19,17 @@ export default async function AllOrganizations({
         <CreateOrg />
       </div>
       <Separator />
-      <Organizations />
+      <Suspense
+        fallback={
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <LoadingCard key={i} />
+            ))}
+          </div>
+        }
+      >
+        <Organizations />
+      </Suspense>
     </>
   );
 }

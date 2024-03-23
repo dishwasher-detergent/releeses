@@ -1,6 +1,6 @@
-import BlogCard from "@/components/blog-card";
 import MDX from "@/components/mdx";
 import BlurImage from "@/components/ui/blur-image";
+import ReleaseCard from "@/components/ui/release-card";
 import { Release } from "@/interfaces/release";
 import { getPostData, getSiteData } from "@/lib/fetchers";
 import { placeholderBlurhash, toDateString } from "@/lib/utils";
@@ -175,8 +175,8 @@ export default async function SitePostPage({
       )}
       {data.adjacentPosts && (
         <div className="mx-5 mb-20 grid max-w-screen-xl grid-cols-1 gap-x-4 gap-y-8 md:grid-cols-2 xl:mx-auto xl:grid-cols-3">
-          {data.adjacentPosts.documents.map((data: any, index: number) => (
-            <BlogCard key={index} data={data} />
+          {data.adjacentPosts.documents.map((data: Release, index: number) => (
+            <ReleaseCard key={index} data={data} org={data.organization} />
           ))}
         </div>
       )}

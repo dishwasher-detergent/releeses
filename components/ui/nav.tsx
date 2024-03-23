@@ -23,7 +23,7 @@ import { useParams, useSelectedLayoutSegments } from "next/navigation";
 import { ReactNode, useEffect, useMemo, useState } from "react";
 
 interface NavProps {
-  children: ReactNode;
+  children?: ReactNode;
   isCollapsed: boolean;
 }
 
