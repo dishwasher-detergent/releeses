@@ -1,6 +1,5 @@
 "use client";
 
-import LoadingDots from "@/components/icons/loading-dots";
 import { ChangeEvent, useCallback, useMemo, useState } from "react";
 import { toast } from "sonner";
 
@@ -193,11 +192,7 @@ export default function Uploader() {
             : "border-black bg-black text-white hover:bg-white hover:text-black"
         } flex h-10 w-full items-center justify-center rounded-md border text-sm transition-all focus:outline-none`}
       >
-        {saving ? (
-          <LoadingDots color="#808080" />
-        ) : (
-          <p className="text-sm">Confirm upload</p>
-        )}
+        {saving ? "loading" : <p className="text-sm">Confirm upload</p>}
       </button>
     </form>
   );

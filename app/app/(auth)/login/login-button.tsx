@@ -1,6 +1,5 @@
 "use client";
 
-import LoadingDots from "@/components/icons/loading-dots";
 import { signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -32,7 +31,7 @@ export default function LoginButton() {
       } group my-2 flex h-10 w-full items-center justify-center space-x-2 rounded-md border border-slate-200 transition-colors duration-75 focus:outline-none dark:border-slate-700`}
     >
       {loading ? (
-        <LoadingDots color="#A8A29E" />
+        "Loading"
       ) : (
         <>
           <svg

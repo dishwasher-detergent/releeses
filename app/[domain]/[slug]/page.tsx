@@ -1,6 +1,6 @@
 import BlogCard from "@/components/blog-card";
-import BlurImage from "@/components/blur-image";
 import MDX from "@/components/mdx";
+import BlurImage from "@/components/ui/blur-image";
 import { Release } from "@/interfaces/release";
 import { getPostData, getSiteData } from "@/lib/fetchers";
 import { placeholderBlurhash, toDateString } from "@/lib/utils";

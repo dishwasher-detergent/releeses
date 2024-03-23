@@ -1,12 +1,12 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { deleteRelease } from "@/lib/actions";
 import va from "@vercel/analytics";
 import { useParams, useRouter } from "next/navigation";
 import { useFormStatus } from "react-dom";
 import { toast } from "sonner";
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
 
 export default function DeleteReleaseForm({ postName }: { postName: string }) {
   const { id } = useParams() as { id: string };

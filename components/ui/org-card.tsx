@@ -1,5 +1,5 @@
-import BlurImage from "@/components/blur-image";
 import { Badge } from "@/components/ui/badge";
+import BlurImage from "@/components/ui/blur-image";
 import {
   Card,
   CardContent,

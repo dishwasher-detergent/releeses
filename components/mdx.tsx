@@ -1,6 +1,6 @@
 "use client";
 
-import BlurImage from "@/components/blur-image";
+import BlurImage from "@/components/ui/blur-image";
 import { Release } from "@/interfaces/release";
 import { replaceLinks } from "@/lib/remark-plugins";
 import { MDXRemote, MDXRemoteProps } from "next-mdx-remote";

@@ -1,6 +1,5 @@
 "use client";
 
-import LoadingDots from "@/components/icons/loading-dots";
 import { createOrganization } from "@/lib/actions";
 import { cn } from "@/lib/utils";
 import va from "@vercel/analytics";
@@ -133,7 +132,7 @@ function CreateSiteFormButton() {
       )}
       disabled={pending}
     >
-      {pending ? <LoadingDots color="#808080" /> : <p>Create Site</p>}
+      {pending ? "loading" : <p>Create Site</p>}
     </button>
   );
 }
