@@ -25,11 +25,7 @@ export function withSiteAuth(action: any) {
     siteId: string,
     key: string | null,
   ) => {
-    const session = {
-      user: {
-        id: "1",
-      },
-    };
+    const session = await getSession();
 
     if (!session) {
       return {
@@ -55,11 +51,7 @@ export function withPostAuth(action: any) {
     postId: string,
     key: string | null,
   ) => {
-    const session = {
-      user: {
-        id: "1",
-      },
-    };
+    const session = await getSession();
 
     if (!session?.user.id) {
       return {

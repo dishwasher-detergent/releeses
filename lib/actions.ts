@@ -3,7 +3,7 @@
 import { Organization } from "@/interfaces/organization";
 import { Release } from "@/interfaces/release";
 import { db, storage } from "@/lib/appwrite";
-import { withPostAuth, withSiteAuth } from "@/lib/auth";
+import { getSession, withPostAuth, withSiteAuth } from "@/lib/auth";
 import {
   ENDPOINT,
   ORGANIZATION_BUCKET_ID,
@@ -264,11 +264,7 @@ export const createRelease = withSiteAuth(
 
 // creating a separate function for this because we're not using FormData
 export const updateRelease = async (data: Release) => {
-  const session = {
-    user: {
-      id: "1",
-    },
-  };
+  const session = await getSession();
   if (!session?.user.id) {
     return {
       error: "Not authenticated",
@@ -394,11 +390,7 @@ export const editUser = async (
   _id: unknown,
   key: string,
 ) => {
-  const session = {
-    user: {
-      id: "1",
-    },
-  };
+  const session = await getSession();
   if (!session?.user.id) {
     return {
       error: "Not authenticated",
