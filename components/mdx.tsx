@@ -17,7 +17,7 @@ export default function MDX({ source }: { source: MDXRemoteProps }) {
 
   return (
     <article
-      className={`prose-md prose prose-slate m-auto w-11/12 dark:prose-invert sm:prose-lg sm:w-3/4 ${styles.root}`}
+      className={`prose prose-slate dark:prose-invert ${styles.root}`}
       suppressHydrationWarning={true}
     >
       {/* @ts-ignore */}
@@ -47,7 +47,7 @@ function Examples({ data }: { data: string }) {
 function ExamplesCard({ data }: { data: ExampleCardProps }) {
   return (
     <a href={`https://${data.url}`} target="_blank" rel="noreferrer">
-      <div className="ease hidden rounded-2xl border-2 border-slate-100 bg-white shadow-md transition-all duration-200 hover:-translate-y-1 hover:shadow-xl lg:block">
+      <div className="ease hidden rounded-2xl border-2 border-slate-100 bg-background shadow-md transition-all duration-200 hover:-translate-y-1 hover:shadow-xl lg:block">
         <div className="overflow-hidden rounded-t-2xl">
           <BlurImage
             alt={data.name ?? "Card Thumbnail"}
@@ -66,7 +66,7 @@ function ExamplesCard({ data }: { data: ExampleCardProps }) {
           </p>
         </div>
       </div>
-      <div className="ease flex h-36 items-center overflow-hidden rounded-xl border-2 border-slate-100 bg-white transition-all duration-200 focus:border-black active:border-black md:h-48 lg:hidden">
+      <div className="ease flex h-36 items-center overflow-hidden rounded-xl border-2 border-slate-100 bg-background transition-all duration-200 focus:border-black active:border-black md:h-48 lg:hidden">
         <div className="relative h-full w-2/5">
           <BlurImage
             alt={data.name ?? "Card thumbnail"}
@@ -79,7 +79,7 @@ function ExamplesCard({ data }: { data: ExampleCardProps }) {
           />
         </div>
         <div className="w-3/5 px-5 py-6">
-          <h3 className="my-0 truncate text-xl font-bold tracking-wide dark:text-white">
+          <h3 className="my-0 truncate text-xl font-bold tracking-wide ">
             {data.name}
           </h3>
           <p className="mt-3 text-sm font-normal italic leading-snug text-slate-800">

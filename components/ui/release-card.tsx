@@ -17,9 +17,14 @@ import Link from "next/link";
 interface ReleaseCardProps {
   data: Release;
   org: Organization;
+  blog?: boolean;
 }
 
-export default function ReleaseCard({ data, org }: ReleaseCardProps) {
+export default function ReleaseCard({
+  data,
+  org,
+  blog = false,
+}: ReleaseCardProps) {
   const url = `${org?.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}/${data.slug}`;
 
   return (
@@ -35,28 +40,35 @@ export default function ReleaseCard({ data, org }: ReleaseCardProps) {
           blurDataURL={data.imageBlurhash ?? placeholderBlurhash}
         />
         <CardHeader>
-          <CardTitle>{data.title}</CardTitle>
-          <CardDescription>{data.description}</CardDescription>
+          <CardTitle className="truncate">{data.title}</CardTitle>
+          <CardDescription className="line-clamp-4">
+            {data.description}
+          </CardDescription>
         </CardHeader>
       </CardContent>
-      <CardFooter>
-        <Badge className="z-10 px-2 py-1" variant="secondary">
-          <a
-            href={
-              process.env.NEXT_PUBLIC_VERCEL_ENV
-                ? `https://${url}`
-                : `http://${org?.subdomain}.localhost:3000/${data.slug}`
-            }
-            target="_blank"
-            rel="noreferrer"
-            className="flex flex-row items-center gap-2"
-          >
-            <span className="flex-1 truncate">{url}</span>
-            <LucideExternalLink className="size-4 flex-none" />
-          </a>
-        </Badge>
-      </CardFooter>
-      <Link href={`/release/${data.$id}`} className="absolute inset-0" />
+      {!blog && (
+        <CardFooter>
+          <Badge className="z-10 max-w-full px-2 py-1" variant="secondary">
+            <a
+              href={
+                process.env.NEXT_PUBLIC_VERCEL_ENV
+                  ? `https://${url}`
+                  : `http://${org?.subdomain}.localhost:3000/${data.slug}`
+              }
+              target="_blank"
+              rel="noreferrer"
+              className="flex w-full flex-row items-center gap-2 overflow-hidden"
+            >
+              <span className="flex-1 truncate">{url}</span>
+              <LucideExternalLink className="size-4 flex-none" />
+            </a>
+          </Badge>
+        </CardFooter>
+      )}
+      <Link
+        href={blog ? `${data.$id}` : `/release/${data.$id}`}
+        className="absolute inset-0"
+      />
     </Card>
   );
 }

@@ -86,7 +86,7 @@ export default function Uploader() {
         </div>
         <label
           htmlFor="image-upload"
-          className="group relative mt-2 flex h-72 cursor-pointer flex-col items-center justify-center rounded-md border border-slate-300 bg-white shadow-sm transition-all hover:bg-slate-50"
+          className="group relative mt-2 flex h-72 cursor-pointer flex-col items-center justify-center rounded-md border border-slate-300 bg-background shadow-sm transition-all hover:bg-slate-50"
         >
           <div
             className="absolute z-[5] h-full w-full rounded-md"
@@ -133,8 +133,8 @@ export default function Uploader() {
               dragActive ? "border-2 border-black" : ""
             } absolute z-[3] flex h-full w-full flex-col items-center justify-center rounded-md px-10 transition-all ${
               data.image
-                ? "bg-white/80 opacity-0 hover:opacity-100 hover:backdrop-blur-md"
-                : "bg-white opacity-100 hover:bg-slate-50"
+                ? "bg-background/80 opacity-0 hover:opacity-100 hover:backdrop-blur-md"
+                : "bg-background opacity-100 hover:bg-slate-50"
             }`}
           >
             <svg
@@ -189,7 +189,7 @@ export default function Uploader() {
         className={`${
           saveDisabled
             ? "cursor-not-allowed border-slate-200 bg-slate-100 text-slate-400"
-            : "border-black bg-black text-white hover:bg-white hover:text-black"
+            : "border-black bg-black text-white hover:bg-background hover:text-black"
         } flex h-10 w-full items-center justify-center rounded-md border text-sm transition-all focus:outline-none`}
       >
         {saving ? "loading" : <p className="text-sm">Confirm upload</p>}

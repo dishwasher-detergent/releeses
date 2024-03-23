@@ -29,12 +29,14 @@ export default function OrgCard({ data }: { data: Organization }) {
           blurDataURL={data.imageBlurhash ?? placeholderBlurhash}
         />
         <CardHeader>
-          <CardTitle>{data.name}</CardTitle>
-          <CardDescription>{data.description}</CardDescription>
+          <CardTitle className="truncate">{data.name}</CardTitle>
+          <CardDescription className="line-clamp-4">
+            {data.description}
+          </CardDescription>
         </CardHeader>
       </CardContent>
       <CardFooter>
-        <Badge className="z-10 px-2 py-1" variant="secondary">
+        <Badge className="z-10 max-w-full px-2 py-1" variant="secondary">
           <a
             href={
               process.env.NEXT_PUBLIC_VERCEL_ENV
@@ -43,10 +45,10 @@ export default function OrgCard({ data }: { data: Organization }) {
             }
             target="_blank"
             rel="noreferrer"
-            className="flex flex-row items-center gap-2"
+            className="flex w-full flex-row items-center gap-2 overflow-hidden"
           >
-            {url}
-            <LucideExternalLink className="size-4" />
+            <span className="flex-1 truncate">{url}</span>
+            <LucideExternalLink className="size-4 flex-none" />
           </a>
         </Badge>
       </CardFooter>

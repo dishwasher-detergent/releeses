@@ -15,7 +15,6 @@ export default function Editor({ post }: { post: Release }) {
   let [isPendingSaving, startTransitionSaving] = useTransition();
   let [isPendingPublishing, startTransitionPublishing] = useTransition();
   const [data, setData] = useState<Release>(post);
-  const [hydrated, setHydrated] = useState(false);
 
   const url = process.env.NEXT_PUBLIC_VERCEL_ENV
     ? `https://${data.organization?.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}/${data.slug}`
@@ -26,6 +25,7 @@ export default function Editor({ post }: { post: Release }) {
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.metaKey && e.key === "s") {
         e.preventDefault();
+
         startTransitionSaving(async () => {
           await updateRelease(data);
         });

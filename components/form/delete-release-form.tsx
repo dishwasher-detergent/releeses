@@ -30,7 +30,7 @@ export default function DeleteReleaseForm({ postName }: { postName: string }) {
     >
       <div className="relative flex flex-col space-y-4">
         <h2 className="text-xl font-bold text-destructive">Delete Post</h2>
-        <p className="text-sm text-slate-500 dark:text-slate-400">
+        <p className="text-sm">
           Deletes your post permanently. Type in the name of your post{" "}
           <b>{postName}</b> to confirm.
         </p>
@@ -46,7 +46,7 @@ export default function DeleteReleaseForm({ postName }: { postName: string }) {
       </div>
 
       <div className="flex flex-row items-center justify-between pt-4">
-        <p className="text-sm text-slate-500 dark:text-slate-400">
+        <p className="text-sm">
           This action is irreversible. Please proceed with caution.
         </p>
         <FormButton />

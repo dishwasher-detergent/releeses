@@ -67,10 +67,8 @@ export default function Form({
       }}
     >
       <div className="relative flex flex-col space-y-4">
-        <h2 className="text-xl font-bold dark:text-white">{title}</h2>
-        <p className="text-sm text-slate-500 dark:text-slate-400">
-          {description}
-        </p>
+        <h2 className="text-xl font-bold">{title}</h2>
+        <p className="text-sm ">{description}</p>
         {inputAttrs.name === "image" || inputAttrs.name === "logo" ? (
           <Uploader
             defaultValue={inputAttrs.defaultValue}

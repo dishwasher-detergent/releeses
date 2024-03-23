@@ -39,7 +39,7 @@ export default function RootLayout({
       <body
         className={`${cn(inter.variable, nunito.variable)} ${
           nunito.className
-        } h-screen w-screen`}
+        } h-screen w-screen overflow-x-hidden bg-background`}
       >
         <Providers>
           {children}

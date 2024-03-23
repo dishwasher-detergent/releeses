@@ -3,7 +3,7 @@ import { Organization } from "@/interfaces/organization";
 import { db } from "@/lib/appwrite";
 import { getSession } from "@/lib/auth";
 import { ORGANIZATION_COLLECTION_ID } from "@/lib/constants";
-import Image from "next/image";
+import { LucideGhost } from "lucide-react";
 import { redirect } from "next/navigation";
 import { Query } from "node-appwrite";
 
@@ -25,17 +25,9 @@ export default async function Organizations({ limit }: { limit?: number }) {
       ))}
     </div>
   ) : (
-    <div className="mt-20 flex flex-col items-center space-x-4">
-      <h1 className="text-4xl">No Organizations Yet</h1>
-      <Image
-        alt="missing site"
-        src="https://illustrations.popsy.co/gray/web-design.svg"
-        width={400}
-        height={400}
-      />
-      <p className="text-lg text-slate-500">
-        You do not have any organizations yet. Create one to get started.
-      </p>
+    <div className="flex h-1/2 w-full flex-row items-center justify-center gap-4 bg-secondary">
+      <LucideGhost className="h-10 w-10 flex-none rounded-xl bg-primary-foreground p-2 text-primary dark:bg-primary dark:text-primary-foreground" />
+      <p>Looks like you've not got any organizations, yet!</p>
     </div>
   );
 }

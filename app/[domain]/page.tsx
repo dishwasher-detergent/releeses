@@ -1,10 +1,15 @@
 import BlurImage from "@/components/ui/blur-image";
-import ReleaseCard from "@/components/ui/release-card";
-import { Release } from "@/interfaces/release";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 import { getSiteData } from "@/lib/fetchers";
-import { placeholderBlurhash, toDateString } from "@/lib/utils";
-import Image from "next/image";
-import Link from "next/link";
+import { placeholderBlurhash } from "@/lib/utils";
+import { LucideArrowRight, LucideCalendar } from "lucide-react";
 import { notFound } from "next/navigation";
 
 // export async function generateStaticParams() {
@@ -45,98 +50,86 @@ export default async function SiteHomePage({
     notFound();
   }
 
-  const releases = data.documents[0].release;
+  const organization = data.documents[0];
+  const releases = organization.release;
 
   return (
     <>
-      <div className="mb-20 w-full">
-        {releases.length > 0 ? (
-          <div className="mx-auto w-full max-w-screen-xl md:mb-28 lg:w-5/6">
-            <Link href={`/${releases[0].slug}`}>
-              <div className="sm:h-150 group relative mx-auto h-80 w-full overflow-hidden lg:rounded-xl">
-                <BlurImage
-                  alt={releases[0].title ?? ""}
-                  blurDataURL={releases[0].imageBlurhash ?? placeholderBlurhash}
-                  className="h-full w-full object-cover group-hover:scale-105 group-hover:duration-300"
-                  width={1300}
-                  height={630}
-                  placeholder="blur"
-                  src={releases[0].image ?? "/placeholder.png"}
-                />
-              </div>
-              <div className="mx-auto mt-10 w-5/6 lg:w-full">
-                <h2 className="font-title my-10 text-4xl dark:text-white md:text-6xl">
-                  {releases[0].title}
-                </h2>
-                <p className="w-full text-base dark:text-white md:text-lg lg:w-2/3">
-                  {releases[0].description}
-                </p>
-                <div className="flex w-full items-center justify-start space-x-4">
-                  <div className="relative h-8 w-8 flex-none overflow-hidden rounded-full">
-                    {data.documents[0].user?.image ? (
-                      <BlurImage
-                        alt={data.documents[0].user?.name ?? "User Avatar"}
-                        width={100}
-                        height={100}
-                        className="h-full w-full object-cover"
-                        src={data.documents[0].user?.image}
-                      />
-                    ) : (
-                      <div className="absolute flex h-full w-full select-none items-center justify-center bg-stone-100 text-4xl text-stone-500">
-                        ?
-                      </div>
-                    )}
-                  </div>
-                  <p className="ml-3 inline-block whitespace-nowrap align-middle text-sm font-semibold dark:text-white md:text-base">
-                    {data.documents[0].user?.name}
-                  </p>
-                  <div className="h-6 border-l border-stone-600 dark:border-stone-400" />
-                  <p className="m-auto my-5 w-10/12 text-sm font-light text-stone-500 dark:text-stone-400 md:text-base">
-                    {toDateString(releases[0].$createdAt)}
-                  </p>
-                </div>
-              </div>
-            </Link>
-          </div>
-        ) : (
-          <div className="flex flex-col items-center justify-center py-20">
-            <Image
-              alt="missing post"
-              src="https://illustrations.popsy.co/gray/success.svg"
-              width={400}
-              height={400}
-              className="dark:hidden"
-            />
-            <Image
-              alt="missing post"
-              src="https://illustrations.popsy.co/white/success.svg"
-              width={400}
-              height={400}
-              className="hidden dark:block"
-            />
-            <p className="font-title text-2xl text-stone-600 dark:text-stone-400">
-              No posts yet.
-            </p>
-          </div>
-        )}
-      </div>
-
-      {releases.length > 1 && (
-        <div className="mx-5 mb-20 max-w-screen-xl lg:mx-24 2xl:mx-auto">
-          <h2 className="font-title mb-10 text-4xl dark:text-white md:text-5xl">
-            More stories
-          </h2>
-          <div className="grid w-full grid-cols-1 gap-x-4 gap-y-8 md:grid-cols-2 xl:grid-cols-3">
-            {releases.slice(1).map((release: Release) => (
-              <ReleaseCard
-                data={release}
-                org={data.documents[0]}
-                key={release.$id}
-              />
-            ))}
-          </div>
+      <section>
+        <div className="relative m-auto h-60 w-full max-w-screen-lg overflow-hidden md:rounded-2xl">
+          <BlurImage
+            alt={data.documents[0].name ?? "Organization Image"}
+            width={1200}
+            height={630}
+            className="h-full w-full object-cover"
+            placeholder="blur"
+            blurDataURL={data.documents[0].imageBlurhash ?? placeholderBlurhash}
+            src={data.documents[0].image ?? "/placeholder.png"}
+          />
         </div>
-      )}
+        <div className="-mt-16 ml-4 pb-8">
+          <div className="mb-4 h-36 w-36 overflow-hidden rounded-full">
+            <BlurImage
+              alt={data.documents[0].logo ?? "Organization Logo"}
+              width={50}
+              height={50}
+              className="h-full w-full object-cover"
+              placeholder="blur"
+              blurDataURL={placeholderBlurhash}
+              src={data.documents[0].logo ?? "/placeholder.png"}
+            />
+          </div>
+          <h1 className="truncate text-2xl font-bold">{organization.name}</h1>
+          <p className="text-sm">{organization.description}</p>
+        </div>
+      </section>
+      <section className="px-4 pb-8">
+        <h1 className="text-2xl font-bold">Changelog</h1>
+      </section>
+      <section className="flex w-full flex-col px-4">
+        {releases.map((release) => {
+          const createdAt = new Date(release.$createdAt).toLocaleDateString(
+            "en-us",
+            {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            },
+          );
+          return (
+            <article>
+              <div className="flex flex-row gap-2">
+                <LucideCalendar className="size-4 flex-none text-foreground/80" />
+                <p className="pb-2 text-sm font-semibold text-foreground/80">
+                  {createdAt}
+                </p>
+              </div>
+              <div className="flex flex-row gap-2">
+                <div className="flex w-4 flex-none items-center justify-center pb-2">
+                  <Separator orientation="vertical" />
+                </div>
+                <Card key={release.$id} className="mb-8 flex-1 shadow-none">
+                  <CardHeader>
+                    <CardTitle className="text-xl">{release.title}</CardTitle>
+                  </CardHeader>
+                  {release.description && (
+                    <CardContent>{release.description}</CardContent>
+                  )}
+                  <CardFooter>
+                    <a
+                      href={release.slug}
+                      className="flex flex-row items-center gap-2 text-sm text-primary"
+                    >
+                      Read More
+                      <LucideArrowRight className="size-4" />
+                    </a>
+                  </CardFooter>
+                </Card>
+              </div>
+            </article>
+          );
+        })}
+      </section>
     </>
   );
 }

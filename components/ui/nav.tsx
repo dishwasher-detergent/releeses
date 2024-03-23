@@ -1,7 +1,7 @@
 "use client";
 
 import { Badge } from "@/components/ui/badge";
-import { buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import {
   Tooltip,
   TooltipContent,
@@ -115,16 +115,20 @@ export default function Nav({ children, isCollapsed }: NavProps) {
           isCollapsed ? (
             <Tooltip key={index} delayDuration={0}>
               <TooltipTrigger asChild>
-                <Link
-                  href={link.href}
+                <Button
+                  asChild
+                  variant="ghost"
+                  size="icon"
                   className={cn(
-                    buttonVariants({ variant: "ghost", size: "icon" }),
-                    link.isActive && "bg-foreground text-white",
+                    "text-foreground",
+                    link.isActive && "bg-foreground text-background",
                   )}
                 >
-                  <link.icon className="h-4 w-4" />
-                  <span className="sr-only">{link.name}</span>
-                </Link>
+                  <Link href={link.href}>
+                    <link.icon className="h-4 w-4" />
+                    <span className="sr-only">{link.name}</span>
+                  </Link>
+                </Button>
               </TooltipTrigger>
               <TooltipContent side="right" className="flex items-center gap-4">
                 {link.name}
@@ -132,19 +136,21 @@ export default function Nav({ children, isCollapsed }: NavProps) {
               </TooltipContent>
             </Tooltip>
           ) : (
-            <Link
-              key={index}
-              href={link.href}
+            <Button
+              asChild
+              variant="ghost"
+              size="sm"
               className={cn(
-                buttonVariants({ variant: "ghost", size: "sm" }),
-                link.isActive && "bg-foreground text-white",
-                "justify-start",
+                "justify-start text-foreground",
+                link.isActive && "bg-foreground text-background",
               )}
             >
-              <link.icon className="mr-2 h-4 w-4" />
-              {link.name}
-              {link.badge && <Badge>{link.badge}</Badge>}
-            </Link>
+              <Link key={index} href={link.href}>
+                <link.icon className="mr-2 h-4 w-4" />
+                {link.name}
+                {link.badge && <Badge>{link.badge}</Badge>}
+              </Link>
+            </Button>
           ),
         )}
         {children}
