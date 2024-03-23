@@ -80,9 +80,9 @@ export default function Form({
               <SelectValue placeholder="Font" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="font-cal">Cal Sans</SelectItem>
-              <SelectItem value="font-lora">Lora</SelectItem>
-              <SelectItem value="font-work">Work Sans</SelectItem>
+              <SelectItem value="font-nunito">Nunito</SelectItem>
+              <SelectItem value="font-inter">Inter</SelectItem>
+              <SelectItem value="font-roboto">Roboto</SelectItem>
             </SelectContent>
           </Select>
         ) : inputAttrs.name === "subdomain" ? (

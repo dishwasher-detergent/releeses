@@ -32,6 +32,9 @@ export default async function SiteLayout({
   return (
     <main
       className={cn(fontMapper[data.documents[0].font], "h-full min-h-screen")}
+      style={{
+        fontFamily: `var(--${data.documents[0].font})`,
+      }}
     >
       <div className="mx-auto flex h-full max-w-3xl flex-col">
         <Nav name={organization.name} logo={organization.logo} />
