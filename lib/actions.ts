@@ -2,6 +2,7 @@
 
 import { Organization } from "@/interfaces/organization";
 import { Release } from "@/interfaces/release";
+import { User } from "@/interfaces/user";
 import { db, storage } from "@/lib/appwrite";
 import { getSession, withPostAuth, withSiteAuth } from "@/lib/auth";
 import {
@@ -11,6 +12,7 @@ import {
   PROJECT_ID,
   RELEASE_BUCKET_ID,
   RELEASE_COLLECTION_ID,
+  USER_COLLECTION_ID,
 } from "@/lib/constants";
 import {
   addDomainToVercel,
@@ -33,6 +35,14 @@ export const createOrganization = async (formData: FormData) => {
   const name = formData.get("name") as string;
   const description = formData.get("description") as string;
   const subdomain = formData.get("subdomain") as string;
+
+  const user = await db.get<User>(USER_COLLECTION_ID, "1");
+
+  if (user.organizationCount >= 3) {
+    return {
+      error: "You've hit the max amount of organizations allowed.",
+    };
+  }
 
   try {
     const response = await db.create(ORGANIZATION_COLLECTION_ID, {

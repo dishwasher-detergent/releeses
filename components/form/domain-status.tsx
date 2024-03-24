@@ -8,7 +8,7 @@ export default function DomainStatus({ domain }: { domain: string }) {
   const { status, loading } = useDomainStatus({ domain });
 
   return loading ? (
-    <Loader className="mr-2 text-white" />
+    <Loader className="mr-2 size-4 text-white" />
   ) : status === "Valid Configuration" ? (
     <CheckCircle2 className="bg-blue-500 text-white dark:text-black" />
   ) : status === "Pending Verification" ? (

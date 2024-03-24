@@ -127,7 +127,7 @@ function FormButton() {
   const { pending } = useFormStatus();
   return (
     <Button disabled={pending} size="sm">
-      {pending && <Loader className="mr-2 text-white" />}
+      {pending && <Loader className="mr-2 size-4 text-white" />}
       Save Changes
     </Button>
   );

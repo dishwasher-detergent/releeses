@@ -26,7 +26,7 @@ export default function CreateRelease() {
       }
       disabled={isPending}
     >
-      {isPending && <Loader className="mr-2 text-white" />}
+      {isPending && <Loader className="mr-2 size-4 text-white" />}
       Create New Release
     </Button>
   );

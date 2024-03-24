@@ -83,7 +83,7 @@ function FormButton() {
     </Button>
   ) : (
     <Button disabled={pending} variant="destructive" size="sm" type="submit">
-      {pending && <Loader className="mr-2 text-white" />}
+      {pending && <Loader className="mr-2 size-4 text-white" />}
       Confirm Delete
     </Button>
   );

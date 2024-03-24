@@ -74,7 +74,7 @@ export default function Editor({ post }: { post: Release }) {
           size="sm"
           disabled={isPendingPublishing}
         >
-          {isPendingPublishing && <Loader className="mr-2 text-white" />}
+          {isPendingPublishing && <Loader className="mr-2 size-4 text-white" />}
           {data.published ? "Unpublish" : "Publish"}
         </Button>
       </div>

@@ -1,5 +1,6 @@
 "use client";
 
+import { Loader } from "@/components/loading/loader";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { deleteOrganization } from "@/lib/actions";
@@ -8,7 +9,6 @@ import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import { useFormStatus } from "react-dom";
 import { toast } from "sonner";
-import { Loader } from "../loading/loader";
 
 export default function DeleteOrgForm({ siteName }: { siteName: string }) {
   const { id } = useParams() as { id: string };
@@ -76,7 +76,7 @@ function FormButton() {
     </Button>
   ) : (
     <Button disabled={pending} variant="destructive" size="sm" type="submit">
-      {pending && <Loader className="mr-2 text-white" />}
+      {pending && <Loader className="mr-2 size-4 text-white" />}
       Confirm Delete
     </Button>
   );
