@@ -30,18 +30,23 @@ export default async function SiteLayout({
   }
 
   return (
-    <main
-      className={cn(fontMapper[data.documents[0].font], "h-full min-h-screen")}
-      style={{
-        fontFamily: `var(--${data.documents[0].font})`,
-      }}
-    >
-      <div className="mx-auto flex h-full max-w-3xl flex-col">
-        <Nav name={organization.name} logo={organization.logo} />
-        <div className="flex w-full flex-1 flex-col pb-8 md:pt-8">
-          {children}
+    organization && (
+      <main
+        className={cn(
+          fontMapper[data.documents[0]?.font],
+          "h-full min-h-screen",
+        )}
+        style={{
+          fontFamily: `var(--${data.documents[0]?.font})`,
+        }}
+      >
+        <div className="mx-auto flex h-full max-w-3xl flex-col">
+          <Nav name={organization.name} logo={organization.logo} />
+          <div className="flex w-full flex-1 flex-col pb-8 md:pt-8">
+            {children}
+          </div>
         </div>
-      </div>
-    </main>
+      </main>
+    )
   );
 }
