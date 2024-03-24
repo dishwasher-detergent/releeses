@@ -24,7 +24,7 @@ export default async function SettingsPage() {
             name: "name",
             type: "text",
             defaultValue: session.user.name!,
-            placeholder: "Brendon Urie",
+            placeholder: "John Doe",
             maxLength: 32,
           }}
           handleSubmit={editUser}
@@ -38,7 +38,7 @@ export default async function SettingsPage() {
             name: "email",
             type: "email",
             defaultValue: session.user.email!,
-            placeholder: "panic@thedis.co",
+            placeholder: "hello@releaser.xyz",
           }}
           handleSubmit={editUser}
         />

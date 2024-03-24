@@ -30,8 +30,6 @@ const nanoid = customAlphabet(
 ); // 7-character random string
 
 export const createOrganization = async (formData: FormData) => {
-  console.log("form", formData);
-
   const name = formData.get("name") as string;
   const description = formData.get("description") as string;
   const subdomain = formData.get("subdomain") as string;
@@ -50,8 +48,6 @@ export const createOrganization = async (formData: FormData) => {
     );
     return response as Organization;
   } catch (error: any) {
-    console.log(error);
-
     if (error.code === "P2002") {
       return {
         error: `This subdomain is already taken`,
@@ -176,8 +172,6 @@ export const updateOrganization = withSiteAuth(
 
       return response;
     } catch (error: any) {
-      console.log(error);
-
       if (error.code === "P2002") {
         return {
           error: `This ${key} is already taken`,
@@ -231,34 +225,30 @@ export const createRelease = withSiteAuth(
       };
     }
 
-    try {
-      const response = await db.create(RELEASE_COLLECTION_ID, {
-        organization: organization.$id,
-        organizationId: organization.$id,
-        subdomain: organization.subdomain,
-        customDomain: organization.customDomain,
-        user: "1",
-        userId: "1",
-      });
+    const response = await db.create(RELEASE_COLLECTION_ID, {
+      organization: organization.$id,
+      organizationId: organization.$id,
+      subdomain: organization.subdomain,
+      customDomain: organization.customDomain,
+      user: "1",
+      userId: "1",
+    });
 
-      await db.update(
-        RELEASE_COLLECTION_ID,
-        {
-          slug: response.$id,
-        },
-        response.$id,
-      );
+    await db.update(
+      RELEASE_COLLECTION_ID,
+      {
+        slug: response.$id,
+      },
+      response.$id,
+    );
 
-      await revalidateTag(
-        `${organization.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-releases`,
-      );
-      organization?.customDomain &&
-        (await revalidateTag(`${organization.customDomain}-releases`));
+    await revalidateTag(
+      `${organization.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-releases`,
+    );
+    organization?.customDomain &&
+      (await revalidateTag(`${organization.customDomain}-releases`));
 
-      return response as Release;
-    } catch (error: any) {
-      console.log(error);
-    }
+    return response as Release;
   },
 );
 

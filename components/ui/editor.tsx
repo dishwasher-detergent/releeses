@@ -98,8 +98,9 @@ export default function Editor({ post }: { post: Release }) {
       </div>
       <Separator />
       <NovelEditor
+        disableLocalStorage
         className="h-full overflow-y-auto"
-        defaultValue={post?.content || undefined}
+        defaultValue={post?.content ?? null}
         onUpdate={(editor) => {
           setData((prev) => ({
             ...prev,

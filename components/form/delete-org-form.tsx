@@ -5,8 +5,10 @@ import { Input } from "@/components/ui/input";
 import { deleteOrganization } from "@/lib/actions";
 import va from "@vercel/analytics";
 import { useParams, useRouter } from "next/navigation";
+import { useState } from "react";
 import { useFormStatus } from "react-dom";
 import { toast } from "sonner";
+import { Loader } from "../loading/loader";
 
 export default function DeleteOrgForm({ siteName }: { siteName: string }) {
   const { id } = useParams() as { id: string };
@@ -14,7 +16,6 @@ export default function DeleteOrgForm({ siteName }: { siteName: string }) {
   return (
     <form
       action={async (data: FormData) =>
-        window.confirm("Are you sure you want to delete your organization?") &&
         deleteOrganization(data, id, "delete")
           .then(async (res) => {
             if (res.error) {
@@ -58,9 +59,25 @@ export default function DeleteOrgForm({ siteName }: { siteName: string }) {
 
 function FormButton() {
   const { pending } = useFormStatus();
-  return (
-    <Button disabled={pending} variant="destructive" size="sm">
-      {pending ? "Loading" : <p>Confirm Delete</p>}
+  const [confirm, setConfirm] = useState(false);
+
+  return !confirm ? (
+    <Button
+      disabled={pending}
+      variant="destructive"
+      size="sm"
+      type="button"
+      onClick={(e) => {
+        e.preventDefault();
+        setConfirm(!confirm);
+      }}
+    >
+      Delete Org
+    </Button>
+  ) : (
+    <Button disabled={pending} variant="destructive" size="sm" type="submit">
+      {pending && <Loader className="mr-2 text-white" />}
+      Confirm Delete
     </Button>
   );
 }

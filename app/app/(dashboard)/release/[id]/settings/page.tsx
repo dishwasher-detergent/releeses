@@ -55,7 +55,7 @@ export default async function PostSettings({
         handleSubmit={updateReleaseMetadata}
       />
       <Separator />
-      <DeleteReleaseForm postName={data?.title!} />
+      <DeleteReleaseForm orgId={data.organizationId} postName={data?.title!} />
     </>
   );
 }

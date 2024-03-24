@@ -44,8 +44,6 @@ export async function getPostData(domain: string, slug: string) {
       : Query.equal("customDomain", domain),
   ];
 
-  console.log(slug);
-
   return await unstable_cache(
     async () => {
       const data = await db.list<Release>(RELEASE_COLLECTION_ID, [
@@ -55,8 +53,6 @@ export async function getPostData(domain: string, slug: string) {
       ]);
 
       if (data.documents.length === 0) return null;
-
-      console.log(data);
 
       const [mdxSource, adjacentPosts] = await Promise.all([
         getMdxSource(data.documents[0].content!),
