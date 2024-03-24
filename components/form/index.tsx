@@ -1,5 +1,6 @@
 "use client";
 
+import { Loader } from "@/components/loading/loader";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -126,7 +127,8 @@ function FormButton() {
   const { pending } = useFormStatus();
   return (
     <Button disabled={pending} size="sm">
-      {pending ? "Loading" : <p>Save Changes</p>}
+      {pending && <Loader className="mr-2 text-white" />}
+      Save Changes
     </Button>
   );
 }

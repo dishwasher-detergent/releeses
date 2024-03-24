@@ -1,5 +1,6 @@
 "use client";
 
+import { Loader } from "@/components/loading/loader";
 import { Button } from "@/components/ui/button";
 import { Release } from "@/interfaces/release";
 import { createRelease } from "@/lib/actions";
@@ -25,7 +26,8 @@ export default function CreateRelease() {
       }
       disabled={isPending}
     >
-      {isPending ? "Loading" : <p>Create New Release</p>}
+      {isPending && <Loader className="mr-2 text-white" />}
+      Create New Release
     </Button>
   );
 }

@@ -1,5 +1,9 @@
 "use client";
 
+import { Loader } from "@/components/loading/loader";
+import { Badge } from "@/components/ui/badge";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import { Release } from "@/interfaces/release";
 import { updateRelease, updateReleaseMetadata } from "@/lib/actions";
 import { ExternalLink } from "lucide-react";
@@ -7,9 +11,6 @@ import { Editor as NovelEditor } from "novel";
 import { useEffect, useState, useTransition } from "react";
 import TextareaAutosize from "react-textarea-autosize";
 import { toast } from "sonner";
-import { Badge } from "./badge";
-import { Button, buttonVariants } from "./button";
-import { Separator } from "./separator";
 
 export default function Editor({ post }: { post: Release }) {
   let [isPendingSaving, startTransitionSaving] = useTransition();
@@ -73,11 +74,8 @@ export default function Editor({ post }: { post: Release }) {
           size="sm"
           disabled={isPendingPublishing}
         >
-          {isPendingPublishing ? (
-            "loading"
-          ) : (
-            <p>{data.published ? "Unpublish" : "Publish"}</p>
-          )}
+          {isPendingPublishing && <Loader className="mr-2 text-white" />}
+          {data.published ? "Unpublish" : "Publish"}
         </Button>
       </div>
       <div className="flex flex-col space-y-3 p-4">
