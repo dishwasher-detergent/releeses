@@ -31,8 +31,8 @@ export default async function SitePosts({
   const url = `${data.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`;
 
   return (
-    <>
-      <div className="flex h-[52px] items-center justify-between px-4 py-2">
+    <section className="relative h-full overflow-y-auto">
+      <div className="sticky top-0 z-10 flex h-[52px] items-center justify-between bg-background/90 px-4 py-2 backdrop-blur-sm">
         <h1 className="text-xl font-bold">
           All Releases
           <Badge className="z-10 ml-6 px-2 py-1" variant="secondary">
@@ -65,6 +65,6 @@ export default async function SitePosts({
       >
         <Releases siteId={params.id} />
       </Suspense>
-    </>
+    </section>
   );
 }

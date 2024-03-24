@@ -63,7 +63,7 @@ export default function DashboardLayoutComponent({
         <Separator />
         <Nav isCollapsed={isCollapsed} />
       </ResizablePanel>
-      <ResizableHandle withHandle />
+      <ResizableHandle className="z-50" withHandle />
       <ResizablePanel
         defaultSize={80}
         className="flex flex-col overflow-hidden"

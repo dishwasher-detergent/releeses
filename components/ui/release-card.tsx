@@ -29,7 +29,12 @@ export default function ReleaseCard({
 
   return (
     <Card className="relative flex flex-col overflow-hidden rounded-none border-l-0 border-t-0 shadow-none">
-      <CardContent className="flex-1 p-0">
+      <CardContent className="relative flex-1 p-0">
+        {blog && (
+          <Badge variant="secondary" className="absolute right-2 top-2 z-10">
+            {data.published ? "Published" : "Draft"}
+          </Badge>
+        )}
         <BlurImage
           alt={data.title ?? "Card thumbnail"}
           width={500}
@@ -40,9 +45,11 @@ export default function ReleaseCard({
           blurDataURL={data.imageBlurhash ?? placeholderBlurhash}
         />
         <CardHeader>
-          <CardTitle className="truncate">{data.title}</CardTitle>
-          <CardDescription className="line-clamp-4">
-            {data.description}
+          <CardTitle className="h-4 truncate">
+            {data.title ?? "No Title"}
+          </CardTitle>
+          <CardDescription className="line-clamp-4 h-20">
+            {data.description ?? "No Description"}
           </CardDescription>
         </CardHeader>
       </CardContent>

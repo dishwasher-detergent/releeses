@@ -29,9 +29,11 @@ export default function OrgCard({ data }: { data: Organization }) {
           blurDataURL={data.imageBlurhash ?? placeholderBlurhash}
         />
         <CardHeader>
-          <CardTitle className="truncate">{data.name}</CardTitle>
-          <CardDescription className="line-clamp-4">
-            {data.description}
+          <CardTitle className="h-4 truncate">
+            {data.name ?? "No Name"}
+          </CardTitle>
+          <CardDescription className="line-clamp-4 h-20">
+            {data.description ?? "No Description"}
           </CardDescription>
         </CardHeader>
       </CardContent>

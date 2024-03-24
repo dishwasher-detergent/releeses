@@ -14,11 +14,11 @@ export default function LoadingCard() {
       <CardContent className="flex-1 p-0">
         <Skeleton className="h-44 rounded-none" />
         <CardHeader>
-          <CardTitle>
+          <CardTitle className="h-4 truncate">
             <Skeleton className="h-4 w-1/2" />
           </CardTitle>
-          <CardDescription>
-            <Skeleton className="h-4 w-full" />
+          <CardDescription className="h-20">
+            <Skeleton className="h-full w-full" />
           </CardDescription>
         </CardHeader>
       </CardContent>

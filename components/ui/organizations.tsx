@@ -27,7 +27,7 @@ export default async function Organizations({ limit }: { limit?: number }) {
   ) : (
     <div className="flex h-1/2 w-full flex-row items-center justify-center gap-4 bg-secondary">
       <LucideGhost className="h-10 w-10 flex-none rounded-xl bg-primary-foreground p-2 text-primary dark:bg-primary dark:text-primary-foreground" />
-      <p>Looks like you've not got any organizations, yet!</p>
+      <p>Looks like you&apos;ve not got any organizations, yet!</p>
     </div>
   );
 }
