@@ -53,7 +53,7 @@ export default function ReleaseCard({
           </CardDescription>
         </CardHeader>
       </CardContent>
-      {!blog && (
+      {!blog && data.published && (
         <CardFooter>
           <Badge className="z-10 max-w-full px-2 py-1" variant="secondary">
             <a
