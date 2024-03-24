@@ -32,11 +32,13 @@ const nanoid = customAlphabet(
 ); // 7-character random string
 
 export const createOrganization = async (formData: FormData) => {
+  const session = await getSession();
+
   const name = formData.get("name") as string;
   const description = formData.get("description") as string;
   const subdomain = formData.get("subdomain") as string;
 
-  const user = await db.get<User>(USER_COLLECTION_ID, "1");
+  const user = await db.get<User>(USER_COLLECTION_ID, session.user.id);
 
   if (user.organizationCount >= 3) {
     return {
@@ -49,9 +51,17 @@ export const createOrganization = async (formData: FormData) => {
       name: name,
       description: description,
       subdomain: subdomain,
-      user: "1",
-      userId: "1",
+      user: session.user.id,
+      userId: session.user.id,
     });
+
+    await db.update(
+      USER_COLLECTION_ID,
+      {
+        organizationCount: (user.organizationCount ?? 0) + 1,
+      },
+      session.user.id,
+    );
 
     await revalidateTag(
       `${subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-metadata`,
@@ -197,10 +207,25 @@ export const updateOrganization = withSiteAuth(
 
 export const deleteOrganization = withSiteAuth(
   async (_: FormData, organization: Organization) => {
+    const session = await getSession();
+
+    const user = await db.get<User>(USER_COLLECTION_ID, session.user.id);
+
     try {
       const response = await db.delete(
         ORGANIZATION_COLLECTION_ID,
         organization.$id,
+      );
+
+      const count =
+        (user.organizationCount ?? 0) == 0 ? 0 : user.organizationCount - 1;
+
+      await db.update(
+        USER_COLLECTION_ID,
+        {
+          organizationCount: count,
+        },
+        session.user.id,
       );
 
       await revalidateTag(

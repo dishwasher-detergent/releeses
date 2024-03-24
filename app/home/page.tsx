@@ -1,13 +1,10 @@
-import { InlineSnippet } from "@/components/form/domain-configuration";
+import { Badge } from "@/components/ui/badge";
 
 export default function HomePage() {
   return (
     <div className="flex h-screen flex-col items-center justify-center space-y-10 bg-black">
       <h1 className="text-white">
-        Edit this page on{" "}
-        <InlineSnippet className="ml-2 bg-blue-900 text-blue-100">
-          app/home/page.tsx
-        </InlineSnippet>
+        Edit this page on <Badge className="ml-2">app/home/page.tsx</Badge>
       </h1>
     </div>
   );
