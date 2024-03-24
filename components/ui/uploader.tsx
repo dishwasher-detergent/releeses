@@ -170,7 +170,7 @@ export default function Uploader() {
         </div>
       </div>
 
-      <Button disabled={saveDisabled} size="sm">
+      <Button disabled={saveDisabled}>
         {saving && <Loader className="mr-2 size-4 text-white" />}
         Confirm upload
       </Button>

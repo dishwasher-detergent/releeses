@@ -35,9 +35,8 @@ export default function DeleteReleaseForm({
           }
         })
       }
-      className="p-4"
     >
-      <div className="relative flex flex-col space-y-4">
+      <div className="relative flex flex-col space-y-4 p-4">
         <h2 className="text-xl font-bold text-destructive">Delete Post</h2>
         <p className="text-sm">
           Deletes your post permanently. Type in the name of your post{" "}
@@ -54,8 +53,8 @@ export default function DeleteReleaseForm({
         />
       </div>
 
-      <div className="flex flex-row items-center justify-between pt-4">
-        <p className="text-sm">
+      <div className="flex flex-row items-center justify-between border-t bg-destructive/10 px-4 py-2">
+        <p className="text-sm text-destructive">
           This action is irreversible. Please proceed with caution.
         </p>
         <FormButton />
@@ -82,7 +81,7 @@ function FormButton() {
       Delete Release
     </Button>
   ) : (
-    <Button disabled={pending} variant="destructive" size="sm" type="submit">
+    <Button disabled={pending} variant="destructive" type="submit" size="sm">
       {pending && <Loader className="mr-2 size-4 text-white" />}
       Confirm Delete
     </Button>

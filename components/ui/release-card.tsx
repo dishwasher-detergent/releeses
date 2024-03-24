@@ -30,8 +30,8 @@ export default function ReleaseCard({
   return (
     <Card className="relative flex flex-col overflow-hidden rounded-none border-l-0 border-t-0 shadow-none">
       <CardContent className="relative flex-1 p-0">
-        {blog && (
-          <Badge variant="secondary" className="absolute right-2 top-2 z-10">
+        {!blog && (
+          <Badge className="absolute right-2 top-2 z-10">
             {data.published ? "Published" : "Draft"}
           </Badge>
         )}

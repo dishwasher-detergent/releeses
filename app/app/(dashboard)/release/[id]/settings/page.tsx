@@ -26,10 +26,6 @@ export default async function PostSettings({
   }
   return (
     <>
-      <div className="flex h-[52px] items-center justify-between px-4 py-2">
-        <h1 className="text-xl font-bold">Release Settings</h1>
-      </div>
-      <Separator />
       <Form
         title="Post Slug"
         description="The slug is the URL-friendly version of the name. It is usually all lowercase and contains only letters, numbers, and hyphens."

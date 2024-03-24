@@ -42,7 +42,6 @@ export default function Form({
   const router = useRouter();
   return (
     <form
-      className="p-4"
       action={async (data: FormData) => {
         if (
           inputAttrs.name === "customDomain" &&
@@ -67,7 +66,7 @@ export default function Form({
         });
       }}
     >
-      <div className="relative flex flex-col space-y-4">
+      <div className="relative flex flex-col space-y-4 p-4">
         <h2 className="text-xl font-bold">{title}</h2>
         <p className="text-sm ">{description}</p>
         {inputAttrs.name === "image" || inputAttrs.name === "logo" ? (
@@ -115,7 +114,7 @@ export default function Form({
       {inputAttrs.name === "customDomain" && inputAttrs.defaultValue && (
         <DomainConfiguration domain={inputAttrs.defaultValue} />
       )}
-      <div className="flex flex-row items-center justify-between pt-4">
+      <div className="flex flex-row items-center justify-between border-t bg-muted px-4 py-2">
         <p className="text-sm text-slate-500 dark:text-slate-400">{helpText}</p>
         <FormButton />
       </div>

@@ -2,11 +2,6 @@
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { Nav } from "@/interfaces/nav";
 import { getOrganizationFromReleaseId } from "@/lib/actions";
 import { cn } from "@/lib/utils";
@@ -24,10 +19,9 @@ import { ReactNode, useEffect, useMemo, useState } from "react";
 
 interface NavProps {
   children?: ReactNode;
-  isCollapsed: boolean;
 }
 
-export default function Nav({ children, isCollapsed }: NavProps) {
+export default function Nav({ children }: NavProps) {
   const segments = useSelectedLayoutSegments();
   const { id } = useParams() as { id?: string };
 
@@ -106,54 +100,25 @@ export default function Nav({ children, isCollapsed }: NavProps) {
   }, [segments, id, siteId]);
 
   return (
-    <div
-      data-collapsed={isCollapsed}
-      className="group flex flex-col gap-4 py-2 data-[collapsed=true]:py-2"
-    >
+    <div className="group flex flex-col gap-4 py-2 data-[collapsed=true]:py-2">
       <nav className="grid gap-1 px-2 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2">
-        {tabs.map((link, index) =>
-          isCollapsed ? (
-            <Tooltip key={index} delayDuration={0}>
-              <TooltipTrigger asChild>
-                <Button
-                  asChild
-                  variant="ghost"
-                  size="icon"
-                  className={cn(
-                    "text-foreground",
-                    link.isActive && "bg-foreground text-background",
-                  )}
-                >
-                  <Link href={link.href}>
-                    <link.icon className="h-4 w-4" />
-                    <span className="sr-only">{link.name}</span>
-                  </Link>
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent side="right" className="flex items-center gap-4">
-                {link.name}
-                {link.badge && <Badge>{link.badge}</Badge>}
-              </TooltipContent>
-            </Tooltip>
-          ) : (
-            <Button
-              key={index}
-              asChild
-              variant="ghost"
-              size="sm"
-              className={cn(
-                "justify-start text-foreground",
-                link.isActive && "bg-foreground text-background",
-              )}
-            >
-              <Link key={index} href={link.href}>
-                <link.icon className="mr-2 h-4 w-4" />
-                {link.name}
-                {link.badge && <Badge>{link.badge}</Badge>}
-              </Link>
-            </Button>
-          ),
-        )}
+        {tabs.map((link, index) => (
+          <Button
+            key={index}
+            asChild
+            variant="ghost"
+            className={cn(
+              "justify-start text-foreground",
+              link.isActive && "bg-foreground text-background",
+            )}
+          >
+            <Link key={index} href={link.href}>
+              <link.icon className="mr-2 h-4 w-4" />
+              {link.name}
+              {link.badge && <Badge>{link.badge}</Badge>}
+            </Link>
+          </Button>
+        ))}
         {children}
       </nav>
     </div>

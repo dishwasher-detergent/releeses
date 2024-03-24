@@ -29,9 +29,8 @@ export default function DeleteOrgForm({ siteName }: { siteName: string }) {
           })
           .catch((err: Error) => toast.error(err.message))
       }
-      className="p-4"
     >
-      <div className="relative flex flex-col space-y-4">
+      <div className="relative flex flex-col space-y-4 p-4">
         <h2 className="text-xl font-bold text-destructive">Delete Site</h2>
         <p className="text-sm">
           Deletes your site and all posts associated with it. Type in the name
@@ -47,8 +46,8 @@ export default function DeleteOrgForm({ siteName }: { siteName: string }) {
           className="max-w-sm"
         />
       </div>
-      <div className="flex flex-row items-center justify-between pt-4">
-        <p className="text-sm">
+      <div className="flex flex-row items-center justify-between border-t bg-destructive/10 px-4 py-2">
+        <p className="text-sm text-destructive">
           This action is irreversible. Please proceed with caution.
         </p>
         <FormButton />
@@ -75,7 +74,7 @@ function FormButton() {
       Delete Org
     </Button>
   ) : (
-    <Button disabled={pending} variant="destructive" size="sm" type="submit">
+    <Button disabled={pending} variant="destructive" type="submit" size="sm">
       {pending && <Loader className="mr-2 size-4 text-white" />}
       Confirm Delete
     </Button>

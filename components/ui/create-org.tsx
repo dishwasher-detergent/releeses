@@ -95,7 +95,7 @@ export default function CreateOrg() {
                 required
                 className="flex-1 rounded-r-none"
               />
-              <div className="bg-foreground text-background flex flex-none items-center rounded-r-md border border-none px-3 text-sm font-semibold ">
+              <div className="flex flex-none items-center rounded-r-md border border-none bg-foreground px-3 text-sm font-semibold text-background ">
                 .{process.env.NEXT_PUBLIC_ROOT_DOMAIN}
               </div>
             </div>

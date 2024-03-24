@@ -11,10 +11,6 @@ export default async function SettingsPage() {
   }
   return (
     <>
-      <div className="flex h-[52px] items-center justify-between px-4 py-2">
-        <h1 className="text-xl font-bold">Settings</h1>
-      </div>
-      <Separator />
       <div className="flex flex-1 flex-col overflow-y-auto">
         <Form
           title="Name"

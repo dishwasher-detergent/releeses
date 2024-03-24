@@ -1,75 +1,99 @@
 "use client";
 
 import Nav from "@/components/ui/nav";
-import {
-  ResizableHandle,
-  ResizablePanel,
-  ResizablePanelGroup,
-} from "@/components/ui/resizable";
-import { Separator } from "@/components/ui/separator";
-import { cn } from "@/lib/utils";
+import { LucideBoxes, LucideMenu } from "lucide-react";
 import Link from "next/link";
-import { ReactNode, useState } from "react";
+import { useParams, useSelectedLayoutSegments } from "next/navigation";
+import { ReactNode, useMemo } from "react";
+import { Button } from "../ui/button";
+import CreateOrg from "../ui/create-org";
+import CreateRelease from "../ui/create-release";
+import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 
 export default function DashboardLayoutComponent({
   children,
 }: {
   children: ReactNode;
 }) {
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const segments = useSelectedLayoutSegments();
+  const { id } = useParams() as { id?: string };
+
+  const title = useMemo<React.ReactNode>(() => {
+    if (segments.length === 0) {
+      return <p className="text-xl font-bold">Overview</p>;
+    }
+
+    if (segments[0] === "settings") {
+      return <p className="text-xl font-bold">Settings</p>;
+    }
+
+    if (segments[0] === "organizations") {
+      return (
+        <div className="flex flex-1 flex-row items-center justify-between">
+          <p className="text-xl font-bold">Organizations</p>
+          <CreateOrg />
+        </div>
+      );
+    }
+
+    if (segments[0] === "release" && id) {
+      if (segments.includes("settings"))
+        return <p className="text-xl font-bold">Release Settings</p>;
+
+      return <p className="text-xl font-bold">Release</p>;
+    }
+
+    if (segments[0] === "organization" && id) {
+      if (segments.includes("settings"))
+        return <p className="text-xl font-bold">Organization Settings</p>;
+
+      return (
+        <div className="flex flex-1 flex-row items-center justify-between">
+          <p className="text-xl font-bold">Organization</p>
+          <CreateRelease />
+        </div>
+      );
+    }
+
+    return "";
+  }, [segments, id]);
 
   return (
-    <ResizablePanelGroup
-      direction="horizontal"
-      onLayout={(sizes: number[]) => {
-        document.cookie = `react-resizable-panels:layout=${JSON.stringify(
-          sizes,
-        )}`;
-      }}
-      className="h-full items-stretch"
-    >
-      <ResizablePanel
-        defaultSize={20}
-        collapsedSize={4}
-        collapsible={true}
-        minSize={15}
-        maxSize={20}
-        onCollapse={() => {
-          setIsCollapsed(true);
-          document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(
-            isCollapsed,
-          )}`;
-        }}
-        onExpand={() => {
-          setIsCollapsed(false);
-          document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(
-            isCollapsed,
-          )}`;
-        }}
-        className={cn(
-          isCollapsed && "min-w-[50px] transition-all duration-300 ease-in-out",
-        )}
-      >
-        <div
-          className={cn(
-            "flex h-[52px] items-center justify-center",
-            isCollapsed ? "h-[52px]" : "px-2",
-          )}
-        >
-          <Link href="/" className="font-bold">
-            Releaser.xyz
-          </Link>
+    <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
+      <div className="hidden border-r md:block">
+        <div className="flex h-full max-h-screen flex-col">
+          <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
+            <Link href="/" className="flex items-center gap-2 font-semibold">
+              <LucideBoxes className="h-6 w-6" />
+              <span className="">Releaser</span>
+            </Link>
+          </div>
+          <div className="flex-1">
+            <Nav />
+          </div>
         </div>
-        <Separator />
-        <Nav isCollapsed={isCollapsed} />
-      </ResizablePanel>
-      <ResizableHandle className="z-50" withHandle />
-      <ResizablePanel
-        defaultSize={80}
-        className="flex flex-col overflow-hidden"
-      >
-        {children}
-      </ResizablePanel>
-    </ResizablePanelGroup>
+      </div>
+      <div className="flex flex-col">
+        <header className="flex h-14 items-center gap-4 border-b px-4 lg:h-[60px] lg:px-6">
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button
+                variant="outline"
+                size="icon"
+                className="shrink-0 md:hidden"
+              >
+                <LucideMenu className="h-5 w-5" />
+                <span className="sr-only">Toggle navigation menu</span>
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="left" className="flex flex-col">
+              <Nav />
+            </SheetContent>
+          </Sheet>
+          {title}
+        </header>
+        <main className="relative flex flex-1 flex-col">{children}</main>
+      </div>
+    </div>
   );
 }

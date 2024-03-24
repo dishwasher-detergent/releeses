@@ -55,6 +55,7 @@ export default function Editor({ post }: { post: Release }) {
           {isPendingSaving ? "Saving..." : "Saved"}
         </Badge>
         <Button
+          size="sm"
           onClick={() => {
             const formData = new FormData();
             formData.append("published", String(!data.published));
@@ -71,7 +72,6 @@ export default function Editor({ post }: { post: Release }) {
               );
             });
           }}
-          size="sm"
           disabled={isPendingPublishing}
         >
           {isPendingPublishing && <Loader className="mr-2 size-4 text-white" />}
