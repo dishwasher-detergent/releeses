@@ -1,29 +1,11 @@
 "use client";
 
+import { useDomainStatus } from "@/components/form/use-domain-status";
+import { Badge } from "@/components/ui/badge";
 import { getSubdomain } from "@/lib/domains";
-import { cn } from "@/lib/utils";
 import { AlertCircle, XCircle } from "lucide-react";
 import { useState } from "react";
-import { useDomainStatus } from "./use-domain-status";
 
-export const InlineSnippet = ({
-  className,
-  children,
-}: {
-  className?: string;
-  children: string;
-}) => {
-  return (
-    <span
-      className={cn(
-        "inline-block rounded-md bg-blue-100 px-1 py-0.5 font-mono text-blue-900 dark:bg-blue-900 dark:text-blue-100",
-        className,
-      )}
-    >
-      {children}
-    </span>
-  );
-};
 export default function DomainConfiguration({ domain }: { domain: string }) {
   const [recordType, setRecordType] = useState<"A" | "CNAME">("A");
 
@@ -39,31 +21,23 @@ export default function DomainConfiguration({ domain }: { domain: string }) {
     null;
 
   return (
-    <div className="border-t border-slate-200 px-10 pb-5 pt-7 dark:border-slate-700">
-      <div className="mb-4 flex items-center space-x-2">
+    <>
+      <div className="my-4 flex items-center space-x-2">
         {status === "Pending Verification" ? (
-          <AlertCircle
-            fill="#FBBF24"
-            stroke="currentColor"
-            className="text-white dark:text-black"
-          />
+          <AlertCircle className="text-amber-500" />
         ) : (
-          <XCircle
-            fill="#DC2626"
-            stroke="currentColor"
-            className="text-white dark:text-black"
-          />
+          <XCircle className="text-red-500" />
         )}
-        <p className="text-lg font-semibold dark:text-white">{status}</p>
+        <p className="text-lg font-semibold">{status}</p>
       </div>
       {txtVerification ? (
         <>
-          <p className="text-sm dark:text-white">
+          <p className="text-sm">
             Please set the following TXT record on{" "}
-            <InlineSnippet>{domainJson.apexName}</InlineSnippet> to prove
-            ownership of <InlineSnippet>{domainJson.name}</InlineSnippet>:
+            <Badge variant="secondary">{domainJson.apexName}</Badge> to prove
+            ownership of <Badge variant="secondary">{domainJson.name}</Badge>:
           </p>
-          <div className="my-5 flex items-start justify-start space-x-10 rounded-md bg-slate-50 p-2 dark:bg-slate-800 dark:text-white">
+          <div className="my-5 flex items-start justify-start space-x-10 rounded-md bg-slate-50 p-2 dark:bg-slate-900">
             <div>
               <p className="text-sm font-bold">Type</p>
               <p className="mt-2 font-mono text-sm">{txtVerification.type}</p>
@@ -93,9 +67,7 @@ export default function DomainConfiguration({ domain }: { domain: string }) {
           </p>
         </>
       ) : status === "Unknown Error" ? (
-        <p className="mb-5 text-sm dark:text-white">
-          {domainJson.error.message}
-        </p>
+        <p className="mb-5 text-sm">{domainJson.error.message}</p>
       ) : (
         <>
           <div className="flex justify-start space-x-4">
@@ -104,7 +76,7 @@ export default function DomainConfiguration({ domain }: { domain: string }) {
               onClick={() => setRecordType("A")}
               className={`${
                 recordType == "A"
-                  ? "border-black text-black dark:border-white dark:text-white"
+                  ? "border-black text-black dark:border-white"
                   : "border-white text-slate-400 dark:border-black dark:text-slate-600"
               } ease border-b-2 pb-1 text-sm transition-all duration-150`}
             >
@@ -115,7 +87,7 @@ export default function DomainConfiguration({ domain }: { domain: string }) {
               onClick={() => setRecordType("CNAME")}
               className={`${
                 recordType == "CNAME"
-                  ? "border-black text-black dark:border-white dark:text-white"
+                  ? "border-black text-black dark:border-white"
                   : "border-white text-slate-400 dark:border-black dark:text-slate-600"
               } ease border-b-2 pb-1 text-sm transition-all duration-150`}
             >
@@ -123,16 +95,16 @@ export default function DomainConfiguration({ domain }: { domain: string }) {
             </button>
           </div>
           <div className="my-3 text-left">
-            <p className="my-5 text-sm dark:text-white">
+            <p className="my-5 text-sm">
               To configure your{" "}
               {recordType === "A" ? "apex domain" : "subdomain"} (
-              <InlineSnippet>
+              <Badge variant="secondary">
                 {recordType === "A" ? domainJson.apexName : domainJson.name}
-              </InlineSnippet>
+              </Badge>
               ), set the following {recordType} record on your DNS provider to
               continue:
             </p>
-            <div className="flex items-center justify-start space-x-10 rounded-md bg-slate-50 p-2 dark:bg-slate-800 dark:text-white">
+            <div className="flex items-center justify-start space-x-10 rounded-md bg-slate-50 p-2 dark:bg-slate-800">
               <div>
                 <p className="text-sm font-bold">Type</p>
                 <p className="mt-2 font-mono text-sm">{recordType}</p>
@@ -156,14 +128,14 @@ export default function DomainConfiguration({ domain }: { domain: string }) {
                 <p className="mt-2 font-mono text-sm">86400</p>
               </div>
             </div>
-            <p className="mt-5 text-sm dark:text-white">
-              Note: for TTL, if <InlineSnippet>86400</InlineSnippet> is not
+            <p className="mt-5 text-sm">
+              Note: for TTL, if <Badge variant="secondary">86400</Badge> is not
               available, set the highest value possible. Also, domain
               propagation can take up to an hour.
             </p>
           </div>
         </>
       )}
-    </div>
+    </>
   );
 }

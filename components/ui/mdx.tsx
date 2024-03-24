@@ -5,7 +5,6 @@ import { Release } from "@/interfaces/release";
 import { replaceLinks } from "@/lib/remark-plugins";
 import { MDXRemote, MDXRemoteProps } from "next-mdx-remote";
 import { Tweet } from "react-tweet";
-import styles from "./mdx.module.css";
 
 export default function MDX({ source }: { source: MDXRemoteProps }) {
   const components = {
@@ -17,7 +16,7 @@ export default function MDX({ source }: { source: MDXRemoteProps }) {
 
   return (
     <article
-      className={`prose prose-slate dark:prose-invert ${styles.root}`}
+      className={`prose prose-slate dark:prose-invert`}
       suppressHydrationWarning={true}
     >
       {/* @ts-ignore */}

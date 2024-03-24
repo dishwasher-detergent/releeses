@@ -1,10 +1,10 @@
 "use client";
 
 import { Loader } from "@/components/loading/loader";
+import { Button } from "@/components/ui/button";
 import { LucideUploadCloud } from "lucide-react";
 import { ChangeEvent, useCallback, useMemo, useState } from "react";
 import { toast } from "sonner";
-import { Button } from "./button";
 
 export default function Uploader() {
   const [data, setData] = useState<{

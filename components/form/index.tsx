@@ -1,5 +1,8 @@
 "use client";
 
+import DomainConfiguration from "@/components/form/domain-configuration";
+import DomainStatus from "@/components/form/domain-status";
+import Uploader from "@/components/form/uploader";
 import { Loader } from "@/components/loading/loader";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,9 +18,6 @@ import va from "@vercel/analytics";
 import { useParams, useRouter } from "next/navigation";
 import { useFormStatus } from "react-dom";
 import { toast } from "sonner";
-import DomainConfiguration from "./domain-configuration";
-import DomainStatus from "./domain-status";
-import Uploader from "./uploader";
 export default function Form({
   title,
   description,
