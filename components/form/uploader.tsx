@@ -46,7 +46,7 @@ export default function Uploader({
       <label
         htmlFor={`${name}-upload`}
         className={cn(
-          "group relative mt-2 flex cursor-pointer flex-col items-center justify-center rounded-md border border-slate-300 bg-background shadow-sm transition-all hover:bg-slate-50",
+          "group relative mt-2 flex cursor-pointer flex-col items-center justify-center rounded-md border border-border bg-background shadow-sm transition-all",
           aspectRatio,
           {
             "max-w-screen-md": aspectRatio === "aspect-video",
@@ -83,7 +83,7 @@ export default function Uploader({
         />
         <div
           className={`${
-            dragActive ? "border-2 border-black" : ""
+            dragActive ? "border-2 border-border" : ""
           } absolute z-[3] flex h-full w-full flex-col items-center justify-center rounded-md px-10 transition-all ${
             data[name]
               ? "bg-background/80 opacity-0 hover:opacity-100 hover:backdrop-blur-md"
@@ -91,10 +91,10 @@ export default function Uploader({
           }`}
         >
           <LucideUploadCloud className="size-6" />
-          <p className="mt-2 text-center text-sm text-slate-500">
+          <p className="mt-2 text-center text-sm text-foreground">
             Drag and drop or click to upload.
           </p>
-          <p className="mt-2 text-center text-sm text-slate-500">
+          <p className="mt-2 text-center text-sm text-foreground">
             Max file size: 50MB
           </p>
           <span className="sr-only">Photo upload</span>

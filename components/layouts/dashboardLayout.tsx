@@ -90,7 +90,7 @@ export default function DashboardLayoutComponent({
           </Sheet>
           {title}
         </header>
-        <main className="relative flex flex-1 flex-col overflow-hidden">
+        <main className="relative flex flex-1 flex-col overflow-hidden bg-muted">
           {children}
         </main>
       </div>

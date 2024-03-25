@@ -28,7 +28,9 @@ export default async function OrgSettingsLayout({
   return (
     <>
       <OrgSettingsNav />
-      <div className="flex flex-1 flex-col overflow-y-auto">{children}</div>
+      <div className="flex flex-1 flex-col overflow-y-auto bg-background">
+        {children}
+      </div>
     </>
   );
 }

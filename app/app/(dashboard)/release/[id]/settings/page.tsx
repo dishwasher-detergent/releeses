@@ -25,7 +25,7 @@ export default async function ReleaseSettings({
     notFound();
   }
   return (
-    <>
+    <div className="flex flex-1 flex-col overflow-y-auto bg-background">
       <Form
         title="Release Slug"
         description="The slug is the URL-friendly version of the name. It is usually all lowercase and contains only letters, numbers, and hyphens."
@@ -55,6 +55,6 @@ export default async function ReleaseSettings({
         orgId={data.organizationId}
         releaseName={data?.title!}
       />
-    </>
+    </div>
   );
 }

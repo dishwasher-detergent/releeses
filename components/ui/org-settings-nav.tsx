@@ -30,7 +30,7 @@ export default function OrgSettingsNav() {
 
   return (
     <>
-      <div className="flex p-2">
+      <div className="flex bg-background p-2">
         {items.map((item) => (
           <Link
             key={item.name}

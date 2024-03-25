@@ -115,7 +115,7 @@ export default function Form({
         <DomainConfiguration domain={inputAttrs.defaultValue} />
       )}
       <div className="flex flex-row items-center justify-between border-t bg-muted px-4 py-2">
-        <p className="text-sm text-slate-500 dark:text-slate-400">{helpText}</p>
+        <p className="text-sm text-foreground">{helpText}</p>
         <FormButton />
       </div>
     </form>

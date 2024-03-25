@@ -80,7 +80,7 @@ export default function Editor({ release }: { release: Release }) {
           {data.published ? "Unpublish" : "Publish"}
         </Button>
       </div>
-      <div className="flex flex-col space-y-3 p-4">
+      <div className="flex flex-col space-y-3 bg-background p-4">
         <input
           type="text"
           placeholder="Title"
@@ -99,7 +99,7 @@ export default function Editor({ release }: { release: Release }) {
       <Separator />
       <NovelEditor
         disableLocalStorage
-        className="flex-1 overflow-y-auto"
+        className="flex-1 overflow-y-auto bg-background"
         defaultValue={release?.content ?? null}
         onUpdate={(editor) => {
           setData((prev) => ({
