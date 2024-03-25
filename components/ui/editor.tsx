@@ -11,11 +11,12 @@ import { Editor as NovelEditor } from "novel";
 import { useEffect, useState, useTransition } from "react";
 import TextareaAutosize from "react-textarea-autosize";
 import { toast } from "sonner";
+import { Input } from "./input";
 
-export default function Editor({ post }: { post: Release }) {
+export default function Editor({ release }: { release: Release }) {
   let [isPendingSaving, startTransitionSaving] = useTransition();
   let [isPendingPublishing, startTransitionPublishing] = useTransition();
-  const [data, setData] = useState<Release>(post);
+  const [data, setData] = useState<Release>(release);
 
   const url = process.env.NEXT_PUBLIC_VERCEL_ENV
     ? `https://${data.organization?.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}/${data.slug}`
@@ -60,16 +61,18 @@ export default function Editor({ post }: { post: Release }) {
             const formData = new FormData();
             formData.append("published", String(!data.published));
             startTransitionPublishing(async () => {
-              await updateReleaseMetadata(formData, post.$id, "published").then(
-                () => {
-                  toast.success(
-                    `Successfully ${
-                      data.published ? "unpublished" : "published"
-                    } your post.`,
-                  );
-                  setData((prev) => ({ ...prev, published: !prev.published }));
-                },
-              );
+              await updateReleaseMetadata(
+                formData,
+                release.$id,
+                "published",
+              ).then(() => {
+                toast.success(
+                  `Successfully ${
+                    data.published ? "unpublished" : "published"
+                  } your release.`,
+                );
+                setData((prev) => ({ ...prev, published: !prev.published }));
+              });
             });
           }}
           disabled={isPendingPublishing}
@@ -79,26 +82,26 @@ export default function Editor({ post }: { post: Release }) {
         </Button>
       </div>
       <div className="flex flex-col space-y-3 p-4">
-        <input
+        <Input
           type="text"
           placeholder="Title"
-          defaultValue={post?.title || ""}
+          defaultValue={release?.title || ""}
           autoFocus
           onChange={(e) => setData({ ...data, title: e.target.value })}
-          className="dark:placeholder-text-600 font-cal border-none px-0 text-3xl placeholder:text-stone-400 focus:outline-none focus:ring-0 dark:bg-black dark:text-white"
+          className="border-none bg-background px-0 text-3xl placeholder:text-muted focus:outline-none focus:ring-0 dark:text-foreground"
         />
         <TextareaAutosize
           placeholder="Description"
-          defaultValue={post?.description || ""}
+          defaultValue={release?.description || ""}
           onChange={(e) => setData({ ...data, description: e.target.value })}
-          className="dark:placeholder-text-600 w-full resize-none border-none px-0 placeholder:text-stone-400 focus:outline-none focus:ring-0 dark:bg-black dark:text-white"
+          className="border-none bg-background px-0 text-3xl placeholder:text-muted focus:outline-none focus:ring-0 dark:text-foreground"
         />
       </div>
       <Separator />
       <NovelEditor
         disableLocalStorage
         className="h-full overflow-y-auto"
-        defaultValue={post?.content ?? null}
+        defaultValue={release?.content ?? null}
         onUpdate={(editor) => {
           setData((prev) => ({
             ...prev,
@@ -107,9 +110,9 @@ export default function Editor({ post }: { post: Release }) {
         }}
         onDebouncedUpdate={() => {
           if (
-            data.title === post.title &&
-            data.description === post.description &&
-            data.content === post.content
+            data.title === release.title &&
+            data.description === release.description &&
+            data.content === release.content
           ) {
             return;
           }

@@ -7,7 +7,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { getSiteData } from "@/lib/fetchers";
+import { getOrgData } from "@/lib/fetchers";
 import { placeholderBlurhash } from "@/lib/utils";
 import { LucideArrowRight, LucideCalendar } from "lucide-react";
 import { notFound } from "next/navigation";
@@ -38,13 +38,13 @@ import { notFound } from "next/navigation";
 //   return allPaths;
 // }
 
-export default async function SiteHomePage({
+export default async function OrgHomePage({
   params,
 }: {
   params: { domain: string };
 }) {
   const domain = decodeURIComponent(params.domain);
-  const data = await getSiteData(domain);
+  const data = await getOrgData(domain);
 
   if (!data) {
     notFound();

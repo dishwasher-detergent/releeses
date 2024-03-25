@@ -10,7 +10,11 @@ import { useState } from "react";
 import { useFormStatus } from "react-dom";
 import { toast } from "sonner";
 
-export default function DeleteOrgForm({ siteName }: { siteName: string }) {
+export default function DeleteOrgForm({
+  organizationName,
+}: {
+  organizationName: string;
+}) {
   const { id } = useParams() as { id: string };
   const router = useRouter();
   return (
@@ -24,25 +28,27 @@ export default function DeleteOrgForm({ siteName }: { siteName: string }) {
               va.track("Deleted Organization");
               router.refresh();
               router.push("/organizations");
-              toast.success(`Successfully deleted site!`);
+              toast.success(`Successfully deleted organization!`);
             }
           })
           .catch((err: Error) => toast.error(err.message))
       }
     >
       <div className="relative flex flex-col space-y-4 p-4">
-        <h2 className="text-xl font-bold text-destructive">Delete Site</h2>
+        <h2 className="text-xl font-bold text-destructive">
+          Delete Organization
+        </h2>
         <p className="text-sm">
-          Deletes your site and all posts associated with it. Type in the name
-          of your site <b>{siteName}</b> to confirm.
+          Deletes your organization and all releases associated with it. Type in
+          the name of your organization <b>{organizationName}</b> to confirm.
         </p>
 
         <Input
           name="confirm"
           type="text"
           required
-          pattern={siteName}
-          placeholder={siteName}
+          pattern={organizationName}
+          placeholder={organizationName}
           className="max-w-sm"
         />
       </div>

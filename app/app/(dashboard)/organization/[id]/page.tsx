@@ -7,7 +7,7 @@ import { ORGANIZATION_COLLECTION_ID } from "@/lib/constants";
 import { notFound, redirect } from "next/navigation";
 import { Suspense } from "react";
 
-export default async function SitePosts({
+export default async function OrgReleases({
   params,
 }: {
   params: { id: string };
@@ -37,7 +37,7 @@ export default async function SitePosts({
           </div>
         }
       >
-        <Releases siteId={params.id} />
+        <Releases orgId={params.id} />
       </Suspense>
     </section>
   );

@@ -1,4 +1,4 @@
-import { getSiteData } from "@/lib/fetchers";
+import { getOrgData } from "@/lib/fetchers";
 import { headers } from "next/headers";
 
 export default async function Sitemap() {
@@ -9,14 +9,14 @@ export default async function Sitemap() {
       ?.replace(".localhost:3000", `.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`) ??
     "vercel.pub";
 
-  const posts = await getSiteData(domain);
+  const org = await getOrgData(domain);
 
   return [
     {
       url: `https://${domain}`,
       lastModified: new Date(),
     },
-    ...posts.documents[0].release.map((release) => ({
+    ...org.documents[0].release.map((release) => ({
       url: `https://${domain}/${release.slug}`,
       lastModified: new Date(),
     })),

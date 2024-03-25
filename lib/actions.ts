@@ -4,7 +4,7 @@ import { Organization } from "@/interfaces/organization";
 import { Release } from "@/interfaces/release";
 import { User } from "@/interfaces/user";
 import { db, storage } from "@/lib/appwrite";
-import { getSession, withPostAuth, withSiteAuth } from "@/lib/auth";
+import { getSession, withOrgAuth, withReleaseAuth } from "@/lib/auth";
 import {
   ENDPOINT,
   ORGANIZATION_BUCKET_ID,
@@ -80,7 +80,7 @@ export const createOrganization = async (formData: FormData) => {
   }
 };
 
-export const updateOrganization = withSiteAuth(
+export const updateOrganization = withOrgAuth(
   async (formData: FormData, organization: Organization, key: string) => {
     const value = formData.get(key) as string;
 
@@ -205,7 +205,7 @@ export const updateOrganization = withSiteAuth(
   },
 );
 
-export const deleteOrganization = withSiteAuth(
+export const deleteOrganization = withOrgAuth(
   async (_: FormData, organization: Organization) => {
     const session = await getSession();
 
@@ -247,7 +247,7 @@ export const getOrganizationFromReleaseId = async (releaseId: string) => {
   return release.organizationId;
 };
 
-export const createRelease = withSiteAuth(
+export const createRelease = withOrgAuth(
   async (_: FormData, organization: Organization) => {
     const session = {
       user: {
@@ -335,7 +335,7 @@ export const updateRelease = async (data: Release) => {
   }
 };
 
-export const updateReleaseMetadata = withPostAuth(
+export const updateReleaseMetadata = withReleaseAuth(
   async (formData: FormData, release: Release, key: string) => {
     const value = formData.get(key) as string;
 
@@ -397,7 +397,7 @@ export const updateReleaseMetadata = withPostAuth(
   },
 );
 
-export const deleteRelease = withPostAuth(
+export const deleteRelease = withReleaseAuth(
   async (_: FormData, release: Release) => {
     try {
       const response = await db.delete(RELEASE_COLLECTION_ID, release.$id);

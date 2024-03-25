@@ -1,4 +1,4 @@
-import { getSiteData } from "@/lib/fetchers";
+import { getOrgData } from "@/lib/fetchers";
 import { headers } from "next/headers";
 
 export default async function NotFound() {
@@ -6,7 +6,7 @@ export default async function NotFound() {
   const domain = headersList
     .get("host")
     ?.replace(".localhost:3000", `.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`);
-  const data = await getSiteData(domain as string);
+  const data = await getOrgData(domain as string);
 
   return (
     <div className="flex flex-col items-center justify-center">

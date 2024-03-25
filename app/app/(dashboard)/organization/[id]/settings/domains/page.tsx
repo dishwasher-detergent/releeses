@@ -5,7 +5,7 @@ import { updateOrganization } from "@/lib/actions";
 import { db } from "@/lib/appwrite";
 import { ORGANIZATION_COLLECTION_ID } from "@/lib/constants";
 
-export default async function SiteSettingsDomains({
+export default async function OrgSettingsDomains({
   params,
 }: {
   params: { id: string };
@@ -19,7 +19,7 @@ export default async function SiteSettingsDomains({
     <div className="flex flex-col">
       <Form
         title="Subdomain"
-        description="The subdomain for your site."
+        description="The subdomain for your organization."
         helpText="Please use 32 characters maximum."
         inputAttrs={{
           name: "subdomain",
@@ -33,7 +33,7 @@ export default async function SiteSettingsDomains({
       <Separator />
       <Form
         title="Custom Domain"
-        description="The custom domain for your site."
+        description="The custom domain for your organization."
         helpText="Please enter a valid domain."
         inputAttrs={{
           name: "customDomain",

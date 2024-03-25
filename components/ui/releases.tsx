@@ -8,10 +8,10 @@ import { redirect } from "next/navigation";
 import { Query } from "node-appwrite";
 
 export default async function Releases({
-  siteId,
+  orgId,
   limit,
 }: {
-  siteId?: string;
+  orgId?: string;
   limit?: number;
 }) {
   const session = await getSession();
@@ -19,9 +19,9 @@ export default async function Releases({
     redirect("/login");
   }
 
-  const queries = siteId
+  const queries = orgId
     ? [
-        Query.equal("organizationId", siteId),
+        Query.equal("organizationId", orgId),
         Query.equal("userId", session.user.id),
         Query.orderAsc("$createdAt"),
       ]

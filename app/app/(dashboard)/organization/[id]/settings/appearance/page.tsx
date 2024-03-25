@@ -5,7 +5,7 @@ import { updateOrganization } from "@/lib/actions";
 import { db } from "@/lib/appwrite";
 import { ORGANIZATION_COLLECTION_ID } from "@/lib/constants";
 
-export default async function SiteSettingsAppearance({
+export default async function OrgSettingsAppearance({
   params,
 }: {
   params: { id: string };
@@ -19,7 +19,7 @@ export default async function SiteSettingsAppearance({
     <div className="flex flex-col">
       <Form
         title="Thumbnail image"
-        description="The thumbnail image for your site. Accepted formats: .png, .jpg, .jpeg"
+        description="The thumbnail image for your organization. Accepted formats: .png, .jpg, .jpeg"
         helpText="Max file size 50MB. Recommended size 1200x630."
         inputAttrs={{
           name: "image",
@@ -31,7 +31,7 @@ export default async function SiteSettingsAppearance({
       <Separator />
       <Form
         title="Logo"
-        description="The logo for your site. Accepted formats: .png, .jpg, .jpeg"
+        description="The logo for your organization. Accepted formats: .png, .jpg, .jpeg"
         helpText="Max file size 50MB. Recommended size 400x400."
         inputAttrs={{
           name: "logo",
@@ -43,7 +43,7 @@ export default async function SiteSettingsAppearance({
       <Separator />
       <Form
         title="Font"
-        description="The font for the heading text your site."
+        description="The font for the heading text your organization."
         helpText="Please select a font."
         inputAttrs={{
           name: "font",

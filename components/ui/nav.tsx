@@ -2,6 +2,8 @@
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { Nav } from "@/interfaces/nav";
 import { getOrganizationFromReleaseId } from "@/lib/actions";
 import { cn } from "@/lib/utils";
@@ -25,12 +27,12 @@ export default function Nav({ children }: NavProps) {
   const segments = useSelectedLayoutSegments();
   const { id } = useParams() as { id?: string };
 
-  const [siteId, setSiteId] = useState<string | null>();
+  const [orgId, setOrgId] = useState<string | null>();
 
   useEffect(() => {
     if (segments[0] === "release" && id) {
       getOrganizationFromReleaseId(id).then((id) => {
-        setSiteId(id);
+        setOrgId(id);
       });
     }
   }, [segments, id]);
@@ -59,8 +61,8 @@ export default function Nav({ children }: NavProps) {
     } else if (segments[0] === "release" && id) {
       return [
         {
-          name: "Back to All Posts",
-          href: siteId ? `/organization/${siteId}` : "/organization",
+          name: "Back to All Releases",
+          href: orgId ? `/organization/${orgId}` : "/organization",
           icon: ArrowLeft,
         },
         {
@@ -97,11 +99,11 @@ export default function Nav({ children }: NavProps) {
         icon: Settings,
       },
     ];
-  }, [segments, id, siteId]);
+  }, [segments, id, orgId]);
 
   return (
-    <div className="group flex flex-col gap-4 py-2 data-[collapsed=true]:py-2">
-      <nav className="grid gap-1 px-2 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2">
+    <div className="group flex flex-col gap-4 py-2">
+      <nav className="grid flex-1 gap-1 px-2">
         {tabs.map((link, index) => (
           <Button
             key={index}
@@ -121,6 +123,10 @@ export default function Nav({ children }: NavProps) {
         ))}
         {children}
       </nav>
+      <Separator />
+      <div className="px-2">
+        <ThemeToggle />
+      </div>
     </div>
   );
 }

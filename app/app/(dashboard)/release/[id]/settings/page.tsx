@@ -8,7 +8,7 @@ import { getSession } from "@/lib/auth";
 import { RELEASE_COLLECTION_ID } from "@/lib/constants";
 import { notFound, redirect } from "next/navigation";
 
-export default async function PostSettings({
+export default async function ReleaseSettings({
   params,
 }: {
   params: { id: string };
@@ -27,9 +27,9 @@ export default async function PostSettings({
   return (
     <>
       <Form
-        title="Post Slug"
+        title="Release Slug"
         description="The slug is the URL-friendly version of the name. It is usually all lowercase and contains only letters, numbers, and hyphens."
-        helpText="Please use a slug that is unique to this post."
+        helpText="Please use a slug that is unique to this release."
         inputAttrs={{
           name: "slug",
           type: "text",
@@ -41,7 +41,7 @@ export default async function PostSettings({
       <Separator />
       <Form
         title="Thumbnail image"
-        description="The thumbnail image for your post. Accepted formats: .png, .jpg, .jpeg"
+        description="The thumbnail image for your release. Accepted formats: .png, .jpg, .jpeg"
         helpText="Max file size 50MB. Recommended size 1200x630."
         inputAttrs={{
           name: "image",
@@ -51,7 +51,10 @@ export default async function PostSettings({
         handleSubmit={updateReleaseMetadata}
       />
       <Separator />
-      <DeleteReleaseForm orgId={data.organizationId} postName={data?.title!} />
+      <DeleteReleaseForm
+        orgId={data.organizationId}
+        releaseName={data?.title!}
+      />
     </>
   );
 }

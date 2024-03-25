@@ -10,7 +10,7 @@ import { serialize } from "next-mdx-remote/serialize";
 import { unstable_cache } from "next/cache";
 import { Query } from "node-appwrite";
 
-export async function getSiteData(domain: string) {
+export async function getOrgData(domain: string) {
   const subdomain = domain.endsWith(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`)
     ? domain.replace(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`, "")
     : null;
@@ -33,7 +33,7 @@ export async function getSiteData(domain: string) {
   )();
 }
 
-export async function getPostData(domain: string, slug: string) {
+export async function getReleaseData(domain: string, slug: string) {
   const subdomain = domain.endsWith(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`)
     ? domain.replace(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`, "")
     : null;
@@ -54,7 +54,7 @@ export async function getPostData(domain: string, slug: string) {
 
       if (data.documents.length === 0) return null;
 
-      const [mdxSource, adjacentPosts] = await Promise.all([
+      const [mdxSource, adjacentReleases] = await Promise.all([
         getMdxSource(data.documents[0].content!),
         await db.list<Release>(RELEASE_COLLECTION_ID, [
           ...queries,
@@ -66,7 +66,7 @@ export async function getPostData(domain: string, slug: string) {
       return {
         ...data,
         mdxSource,
-        adjacentPosts,
+        adjacentReleases,
       };
     },
     [`${domain}-${slug}`],
@@ -77,11 +77,11 @@ export async function getPostData(domain: string, slug: string) {
   )();
 }
 
-async function getMdxSource(postContents: string) {
+async function getMdxSource(releaseContent: string) {
   // transforms links like <link> to [link](link) as MDX doesn't support <link> syntax
   // https://mdxjs.com/docs/what-is-mdx/#markdown
   const content =
-    postContents?.replaceAll(/<(https?:\/\/\S+)>/g, "[$1]($1)") ?? "";
+    releaseContent?.replaceAll(/<(https?:\/\/\S+)>/g, "[$1]($1)") ?? "";
   // Serialize the content string into MDX
   const mdxSource = await serialize(content, {
     mdxOptions: {

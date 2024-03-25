@@ -11,12 +11,12 @@ import { useFormStatus } from "react-dom";
 import { toast } from "sonner";
 
 interface DeleteReleaseFormProps {
-  postName: string;
+  releaseName: string;
   orgId: string;
 }
 
 export default function DeleteReleaseForm({
-  postName,
+  releaseName,
   orgId,
 }: DeleteReleaseFormProps) {
   const { id } = useParams() as { id: string };
@@ -28,7 +28,7 @@ export default function DeleteReleaseForm({
           if (res.error) {
             toast.error(res.error);
           } else {
-            va.track("Deleted Post");
+            va.track("Deleted Release");
             router.refresh();
             router.push(`/organization/${orgId}`);
             toast.success(`Successfully deleted release!`);
@@ -37,18 +37,18 @@ export default function DeleteReleaseForm({
       }
     >
       <div className="relative flex flex-col space-y-4 p-4">
-        <h2 className="text-xl font-bold text-destructive">Delete Post</h2>
+        <h2 className="text-xl font-bold text-destructive">Delete Release</h2>
         <p className="text-sm">
-          Deletes your post permanently. Type in the name of your post{" "}
-          <b>{postName}</b> to confirm.
+          Deletes your release permanently. Type in the name of your release{" "}
+          <b>{releaseName}</b> to confirm.
         </p>
 
         <Input
           name="confirm"
           type="text"
           required
-          pattern={postName}
-          placeholder={postName}
+          pattern={releaseName}
+          placeholder={releaseName}
           className="max-w-sm"
         />
       </div>

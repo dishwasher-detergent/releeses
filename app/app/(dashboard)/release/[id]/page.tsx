@@ -5,7 +5,11 @@ import { getSession } from "@/lib/auth";
 import { RELEASE_COLLECTION_ID } from "@/lib/constants";
 import { notFound, redirect } from "next/navigation";
 
-export default async function PostPage({ params }: { params: { id: string } }) {
+export default async function ReleasePage({
+  params,
+}: {
+  params: { id: string };
+}) {
   const session = await getSession();
   if (!session) {
     redirect("/login");
@@ -18,5 +22,5 @@ export default async function PostPage({ params }: { params: { id: string } }) {
     notFound();
   }
 
-  return <Editor post={data} />;
+  return <Editor release={data} />;
 }

@@ -1,11 +1,11 @@
 import { Nav } from "@/components/ui/content/nav";
-import { getSiteData } from "@/lib/fetchers";
+import { getOrgData } from "@/lib/fetchers";
 import { cn } from "@/lib/utils";
 import { fontMapper } from "@/styles/fonts";
 import { notFound, redirect } from "next/navigation";
 import { ReactNode } from "react";
 
-export default async function SiteLayout({
+export default async function OrgLayout({
   params,
   children,
 }: {
@@ -13,7 +13,7 @@ export default async function SiteLayout({
   children: ReactNode;
 }) {
   const domain = decodeURIComponent(params.domain);
-  const data = await getSiteData(domain);
+  const data = await getOrgData(domain);
 
   if (!data) {
     notFound();

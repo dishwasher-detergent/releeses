@@ -54,11 +54,11 @@ export default function CreateOrg() {
               if (res.error) {
                 toast.error(res.error);
               } else {
-                va.track("Created Site");
+                va.track("Created Organization");
                 const { $id } = res;
                 router.refresh();
                 router.push(`/organization/${$id}`);
-                toast.success(`Successfully created site!`);
+                toast.success(`Successfully created organization!`);
               }
             })
           }
@@ -69,7 +69,7 @@ export default function CreateOrg() {
             <Input
               name="name"
               type="text"
-              placeholder="My Awesome Site"
+              placeholder="My Awesome organization"
               autoFocus
               value={data.name}
               onChange={(e) => setData({ ...data, name: e.target.value })}
@@ -105,7 +105,7 @@ export default function CreateOrg() {
             <Label htmlFor="description">Description</Label>
             <Textarea
               name="description"
-              placeholder="Description about why my site is so awesome"
+              placeholder="Description about why my organization is so awesome"
               value={data.description}
               onChange={(e) =>
                 setData({ ...data, description: e.target.value })
@@ -125,7 +125,7 @@ function Submit() {
   const { pending } = useFormStatus();
   return (
     <Button className="w-full" variant="default" disabled={pending}>
-      {pending ? <p>Loading</p> : <p>Create Site</p>}
+      {pending ? <p>Loading</p> : <p>Create Organization</p>}
     </Button>
   );
 }

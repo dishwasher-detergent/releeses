@@ -6,7 +6,7 @@ import { updateOrganization } from "@/lib/actions";
 import { db } from "@/lib/appwrite";
 import { ORGANIZATION_COLLECTION_ID } from "@/lib/constants";
 
-export default async function SiteSettingsIndex({
+export default async function OrgSettingsIndex({
   params,
 }: {
   params: { id: string };
@@ -20,13 +20,13 @@ export default async function SiteSettingsIndex({
     <div className="flex flex-col">
       <Form
         title="Name"
-        description="The name of your site. This will be used as the meta title on Google as well."
+        description="The name of your organization. This will be used as the meta title on Google as well."
         helpText="Please use 32 characters maximum."
         inputAttrs={{
           name: "name",
           type: "text",
           defaultValue: data?.name!,
-          placeholder: "My Awesome Site",
+          placeholder: "My Awesome organization",
           maxLength: 32,
         }}
         handleSubmit={updateOrganization}
@@ -34,7 +34,7 @@ export default async function SiteSettingsIndex({
       <Separator />
       <Form
         title="Description"
-        description="The description of your site. This will be used as the meta description on Google as well."
+        description="The description of your organization. This will be used as the meta description on Google as well."
         helpText="Include SEO-optimized keywords that you want to rank for."
         inputAttrs={{
           name: "description",
@@ -45,7 +45,7 @@ export default async function SiteSettingsIndex({
         handleSubmit={updateOrganization}
       />
       <Separator />
-      <DeleteOrgForm siteName={data?.name!} />
+      <DeleteOrgForm organizationName={data?.name!} />
     </div>
   );
 }

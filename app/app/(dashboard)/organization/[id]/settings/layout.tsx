@@ -6,7 +6,7 @@ import { ORGANIZATION_COLLECTION_ID } from "@/lib/constants";
 import { notFound, redirect } from "next/navigation";
 import { ReactNode } from "react";
 
-export default async function SiteAnalyticsLayout({
+export default async function OrgSettingsLayout({
   params,
   children,
 }: {
@@ -24,8 +24,6 @@ export default async function SiteAnalyticsLayout({
   if (!data || data.userId !== session.user.id) {
     notFound();
   }
-
-  const url = `${data.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`;
 
   return (
     <>

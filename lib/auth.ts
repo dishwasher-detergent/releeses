@@ -19,10 +19,10 @@ export function getSession() {
   };
 }
 
-export function withSiteAuth(action: any) {
+export function withOrgAuth(action: any) {
   return async (
     formData: FormData | null,
-    siteId: string,
+    orgId: string,
     key: string | null,
   ) => {
     const session = await getSession();
@@ -33,22 +33,22 @@ export function withSiteAuth(action: any) {
       };
     }
 
-    const site = await db.get<Organization>(ORGANIZATION_COLLECTION_ID, siteId);
+    const org = await db.get<Organization>(ORGANIZATION_COLLECTION_ID, orgId);
 
-    if (!site || site.user.$id !== session.user.id) {
+    if (!org || org.user.$id !== session.user.id) {
       return {
         error: "Not authorized",
       };
     }
 
-    return action(formData, site, key);
+    return action(formData, org, key);
   };
 }
 
-export function withPostAuth(action: any) {
+export function withReleaseAuth(action: any) {
   return async (
     formData: FormData | null,
-    postId: string,
+    releaseId: string,
     key: string | null,
   ) => {
     const session = await getSession();
@@ -59,22 +59,22 @@ export function withPostAuth(action: any) {
       };
     }
 
-    let post;
+    let release;
 
     try {
-      post = await db.get<Release>(RELEASE_COLLECTION_ID, postId);
+      release = await db.get<Release>(RELEASE_COLLECTION_ID, releaseId);
 
-      if (!post || post.user.$id !== session.user.id) {
+      if (!release || release.user.$id !== session.user.id) {
         return {
-          error: "Post not found",
+          error: "Release not found",
         };
       }
     } catch (error: any) {
       return {
-        error: "Post not found",
+        error: "Release not found",
       };
     }
 
-    return action(formData, post, key);
+    return action(formData, release, key);
   };
 }
