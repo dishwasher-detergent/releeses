@@ -112,7 +112,9 @@ export default function Form({
         )}
       </div>
       {inputAttrs.name === "customDomain" && inputAttrs.defaultValue && (
-        <DomainConfiguration domain={inputAttrs.defaultValue} />
+        <div className="p-4 pt-0">
+          <DomainConfiguration domain={inputAttrs.defaultValue} />
+        </div>
       )}
       <div className="flex flex-row items-center justify-between border-t bg-muted px-4 py-2">
         <p className="text-sm text-foreground">{helpText}</p>
