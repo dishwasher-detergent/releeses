@@ -7,10 +7,14 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { Release } from "@/interfaces/release";
+import { db } from "@/lib/appwrite";
+import { RELEASE_COLLECTION_ID } from "@/lib/constants";
 import { getOrgData } from "@/lib/fetchers";
 import { placeholderBlurhash } from "@/lib/utils";
 import { LucideArrowRight, LucideCalendar } from "lucide-react";
 import { notFound } from "next/navigation";
+import { Query } from "node-appwrite";
 
 // export async function generateStaticParams() {
 //   const allSites = await prisma.site.findMany({
@@ -46,12 +50,26 @@ export default async function OrgHomePage({
   const domain = decodeURIComponent(params.domain);
   const data = await getOrgData(domain);
 
+  const subdomain = domain.endsWith(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`)
+    ? domain.replace(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`, "")
+    : null;
+
+  const queries = [
+    subdomain
+      ? Query.equal("subdomain", subdomain)
+      : Query.equal("customDomain", domain),
+    Query.equal("published", true),
+    Query.orderDesc("$createdAt"),
+  ];
+
+  const releasesData = await db.list<Release>(RELEASE_COLLECTION_ID, queries);
+
   if (!data) {
     notFound();
   }
 
   const organization = data.documents[0];
-  const releases = organization.release;
+  const releases = releasesData.documents;
 
   return (
     <>
