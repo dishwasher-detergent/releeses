@@ -120,10 +120,10 @@ export default async function SiteHomePage({
                   <CardFooter>
                     <a
                       href={release.slug}
-                      className="flex flex-row items-center gap-2 text-sm text-primary"
+                      className="group/link flex flex-row items-center gap-2 text-sm text-primary"
                     >
                       Read More
-                      <LucideArrowRight className="size-4" />
+                      <LucideArrowRight className="size-4 transition-all group-hover/link:translate-x-0.5" />
                     </a>
                   </CardFooter>
                 </Card>
