@@ -5,16 +5,23 @@ import { Organization } from "@/interfaces/organization";
 import { updateOrganization } from "@/lib/actions";
 import { db } from "@/lib/appwrite";
 import { ORGANIZATION_COLLECTION_ID } from "@/lib/constants";
+import { notFound } from "next/navigation";
 
 export default async function OrgSettingsIndex({
   params,
 }: {
   params: { id: string };
 }) {
-  const data = await db.get<Organization>(
-    ORGANIZATION_COLLECTION_ID,
-    decodeURIComponent(params.id),
-  );
+  let data: Organization;
+
+  try {
+    data = await db.get<Organization>(
+      ORGANIZATION_COLLECTION_ID,
+      decodeURIComponent(params.id),
+    );
+  } catch (error: any) {
+    notFound();
+  }
 
   return (
     <div className="flex flex-col">

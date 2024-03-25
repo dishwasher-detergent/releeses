@@ -16,15 +16,17 @@ export default async function OrgReleases({
   if (!session) {
     redirect("/login");
   }
-  const data = await db.get<Organization>(
-    ORGANIZATION_COLLECTION_ID,
-    decodeURIComponent(params.id),
-  );
-  if (!data || data.userId !== session.user.id) {
+
+  let data: Organization;
+
+  try {
+    data = await db.get<Organization>(
+      ORGANIZATION_COLLECTION_ID,
+      decodeURIComponent(params.id),
+    );
+  } catch (error: any) {
     notFound();
   }
-
-  const url = `${data.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`;
 
   return (
     <section className="relative h-full overflow-y-auto">
