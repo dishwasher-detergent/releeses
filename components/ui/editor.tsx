@@ -87,13 +87,13 @@ export default function Editor({ release }: { release: Release }) {
           defaultValue={release?.title || ""}
           autoFocus
           onChange={(e) => setData({ ...data, title: e.target.value })}
-          className="border-none bg-background px-0 text-3xl placeholder:text-muted focus:outline-none focus:ring-0 dark:text-foreground"
+          className="border-none bg-background px-0 text-3xl placeholder:text-muted-foreground focus:outline-none focus:ring-0 dark:text-foreground"
         />
         <TextareaAutosize
           placeholder="Description"
           defaultValue={release?.description || ""}
           onChange={(e) => setData({ ...data, description: e.target.value })}
-          className="border-none bg-background px-0 placeholder:text-muted focus:outline-none focus:ring-0 dark:text-foreground"
+          className="border-none bg-background px-0 placeholder:text-muted-foreground focus:outline-none focus:ring-0 dark:text-foreground"
         />
       </div>
       <Separator />
