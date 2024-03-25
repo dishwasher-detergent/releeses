@@ -8,7 +8,7 @@ export default function Overview() {
   return (
     <>
       <section className="relative h-1/2 overflow-y-auto">
-        <header className="sticky top-0 z-10 flex h-14 items-center justify-between gap-4 border-b bg-background/90 px-4 backdrop-blur-lg lg:h-[60px] lg:px-6">
+        <header className="sticky top-0 z-20 flex h-14 items-center justify-between gap-4 border-b bg-background/90 px-4 backdrop-blur-md lg:h-[60px] lg:px-6">
           <h1 className="text-xl font-bold">New Organizations</h1>
           <OverviewOrgsCTA />
         </header>
@@ -25,7 +25,7 @@ export default function Overview() {
         </Suspense>
       </section>
       <section className="relative h-1/2 overflow-y-auto">
-        <header className="sticky top-0 z-10 flex h-14 items-center gap-4 border-b bg-background/90 px-4 backdrop-blur-lg lg:h-[60px] lg:px-6">
+        <header className="sticky top-0 z-20 flex h-14 items-center gap-4 border-b bg-background/90 px-4 backdrop-blur-md lg:h-[60px] lg:px-6">
           <h1 className="text-xl font-bold">Recent Releases</h1>
         </header>
         <Suspense

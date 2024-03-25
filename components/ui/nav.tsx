@@ -102,8 +102,8 @@ export default function Nav({ children }: NavProps) {
   }, [segments, id, orgId]);
 
   return (
-    <div className="group flex flex-col gap-4 py-2">
-      <nav className="grid flex-1 gap-1 px-2">
+    <div className="flex flex-1 flex-col gap-4 py-2">
+      <nav className="flex flex-1 flex-col gap-1 px-2">
         {tabs.map((link, index) => (
           <Button
             key={index}

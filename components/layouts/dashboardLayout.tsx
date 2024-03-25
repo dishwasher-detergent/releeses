@@ -59,7 +59,7 @@ export default function DashboardLayoutComponent({
   }, [segments, id]);
 
   return (
-    <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
+    <div className="grid h-screen w-full overflow-hidden md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
       <div className="hidden border-r md:block">
         <div className="flex h-full max-h-screen flex-col">
           <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
@@ -68,13 +68,11 @@ export default function DashboardLayoutComponent({
               <span className="">Releaser</span>
             </Link>
           </div>
-          <div className="flex-1">
-            <Nav />
-          </div>
+          <Nav />
         </div>
       </div>
-      <div className="flex flex-col">
-        <header className="flex h-14 items-center gap-4 border-b px-4 lg:h-[60px] lg:px-6">
+      <div className="flex h-full max-h-screen flex-col overflow-hidden">
+        <header className="flex h-14 flex-none items-center gap-4 border-b px-4 lg:h-[60px] lg:px-6">
           <Sheet>
             <SheetTrigger asChild>
               <Button
@@ -92,7 +90,9 @@ export default function DashboardLayoutComponent({
           </Sheet>
           {title}
         </header>
-        <main className="relative flex flex-1 flex-col">{children}</main>
+        <main className="relative flex flex-1 flex-col overflow-hidden">
+          {children}
+        </main>
       </div>
     </div>
   );

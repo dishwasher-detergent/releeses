@@ -11,7 +11,6 @@ import { Editor as NovelEditor } from "novel";
 import { useEffect, useState, useTransition } from "react";
 import TextareaAutosize from "react-textarea-autosize";
 import { toast } from "sonner";
-import { Input } from "./input";
 
 export default function Editor({ release }: { release: Release }) {
   let [isPendingSaving, startTransitionSaving] = useTransition();
@@ -82,7 +81,7 @@ export default function Editor({ release }: { release: Release }) {
         </Button>
       </div>
       <div className="flex flex-col space-y-3 p-4">
-        <Input
+        <input
           type="text"
           placeholder="Title"
           defaultValue={release?.title || ""}
@@ -94,13 +93,13 @@ export default function Editor({ release }: { release: Release }) {
           placeholder="Description"
           defaultValue={release?.description || ""}
           onChange={(e) => setData({ ...data, description: e.target.value })}
-          className="border-none bg-background px-0 text-3xl placeholder:text-muted focus:outline-none focus:ring-0 dark:text-foreground"
+          className="border-none bg-background px-0 placeholder:text-muted focus:outline-none focus:ring-0 dark:text-foreground"
         />
       </div>
       <Separator />
       <NovelEditor
         disableLocalStorage
-        className="h-full overflow-y-auto"
+        className="flex-1 overflow-y-auto"
         defaultValue={release?.content ?? null}
         onUpdate={(editor) => {
           setData((prev) => ({
