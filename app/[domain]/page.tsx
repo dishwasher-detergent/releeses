@@ -68,7 +68,7 @@ export default async function SiteHomePage({
           />
         </div>
         <div className="-mt-16 ml-4 pb-8">
-          <div className="mb-4 h-36 w-36 overflow-hidden rounded-full">
+          <div className="relative z-10 mb-4 h-36 w-36 overflow-hidden rounded-full border-4 border-background">
             <BlurImage
               alt={data.documents[0].logo ?? "Organization Logo"}
               width={50}
@@ -79,11 +79,13 @@ export default async function SiteHomePage({
               src={data.documents[0].logo ?? "/placeholder.png"}
             />
           </div>
-          <h1 className="truncate text-2xl font-bold">{organization.name}</h1>
+          <h1 className="truncate pb-2 text-2xl font-bold">
+            {organization.name}
+          </h1>
           <p className="text-sm">{organization.description}</p>
         </div>
       </section>
-      <section className="px-4 pb-8">
+      <section className="px-4 pb-2">
         <h1 className="text-2xl font-bold">Changelog</h1>
       </section>
       <section className="flex w-full flex-col px-4">
@@ -129,6 +131,11 @@ export default async function SiteHomePage({
             </article>
           );
         })}
+        {releases.length === 0 && (
+          <div className="w-full rounded-xl bg-muted p-8 text-center font-bold">
+            No releases, yet!
+          </div>
+        )}
       </section>
     </>
   );
