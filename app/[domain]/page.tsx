@@ -99,10 +99,10 @@ export default async function SiteHomePage({
             },
           );
           return (
-            <article key={release.$id}>
-              <div className="flex flex-row gap-2">
+            <article key={release.$id} className="group">
+              <div className="flex flex-row items-center gap-2 pb-2">
                 <LucideCalendar className="size-4 flex-none text-foreground/80" />
-                <p className="pb-2 text-sm font-semibold text-foreground/80">
+                <p className="text-sm font-semibold text-foreground/80">
                   {createdAt}
                 </p>
               </div>
@@ -110,7 +110,7 @@ export default async function SiteHomePage({
                 <div className="flex w-4 flex-none items-center justify-center pb-2">
                   <Separator orientation="vertical" />
                 </div>
-                <Card className="mb-8 flex-1 shadow-none">
+                <Card className="mb-8 flex-1 shadow-none group-last:mb-0">
                   <CardHeader>
                     <CardTitle className="text-xl">{release.title}</CardTitle>
                   </CardHeader>
