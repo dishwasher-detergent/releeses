@@ -9,7 +9,7 @@ export default function Overview() {
     <>
       <section className="relative h-1/2 overflow-y-auto">
         <header className="sticky top-0 z-20 flex h-14 items-center justify-between gap-4 border-b bg-background/90 px-4 backdrop-blur-md lg:h-[60px] lg:px-6">
-          <h1 className="text-xl font-bold">New Organizations</h1>
+          <p className="font-bold">New Organizations</p>
           <OverviewOrgsCTA />
         </header>
         <Suspense
@@ -25,8 +25,8 @@ export default function Overview() {
         </Suspense>
       </section>
       <section className="relative h-1/2 overflow-y-auto">
-        <header className="sticky top-0 z-20 flex h-14 items-center gap-4 border-b bg-background/90 px-4 backdrop-blur-md lg:h-[60px] lg:px-6">
-          <h1 className="text-xl font-bold">Recent Releases</h1>
+        <header className="sticky top-0 z-20 flex h-14 items-center gap-4 border-y bg-background/90 px-4 backdrop-blur-md lg:h-[60px] lg:px-6">
+          <p className="font-bold">Recent Releases</p>
         </header>
         <Suspense
           fallback={
