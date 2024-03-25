@@ -37,7 +37,7 @@ export default function OrgSettingsNav() {
             href={item.href}
             className={cn(
               buttonVariants({ variant: "ghost", size: "sm" }),
-              item.isActive && "bg-foreground text-white",
+              item.isActive && "bg-foreground text-background",
             )}
           >
             {item.name}
