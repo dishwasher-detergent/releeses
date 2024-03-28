@@ -3,16 +3,22 @@
 import { Loader } from "@/components/loading/loader";
 import { Badge } from "@/components/ui/badge";
 import { Button, buttonVariants } from "@/components/ui/button";
+import NovelEditor from "@/components/ui/novel";
 import { Separator } from "@/components/ui/separator";
 import { Release } from "@/interfaces/release";
 import { updateRelease, updateReleaseMetadata } from "@/lib/actions";
 import { ExternalLink } from "lucide-react";
-import { Editor as NovelEditor } from "novel";
-import { useEffect, useState, useTransition } from "react";
+import { EditorInstance } from "novel";
+import { useState, useTransition } from "react";
 import TextareaAutosize from "react-textarea-autosize";
 import { toast } from "sonner";
 
-export default function Editor({ release }: { release: Release }) {
+export default function Editor({
+  release,
+}: {
+  release: Release;
+  markdown: any;
+}) {
   let [isPendingSaving, startTransitionSaving] = useTransition();
   let [isPendingPublishing, startTransitionPublishing] = useTransition();
   const [data, setData] = useState<Release>(release);
@@ -22,21 +28,21 @@ export default function Editor({ release }: { release: Release }) {
     : `http://${data.organization?.subdomain}.localhost:3000/${data.slug}`;
 
   // listen to CMD + S and override the default behavior
-  useEffect(() => {
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.metaKey && e.key === "s") {
-        e.preventDefault();
+  // useEffect(() => {
+  //   const onKeyDown = (e: KeyboardEvent) => {
+  //     if (e.metaKey && e.key === "s") {
+  //       e.preventDefault();
 
-        startTransitionSaving(async () => {
-          await updateRelease(data);
-        });
-      }
-    };
-    document.addEventListener("keydown", onKeyDown);
-    return () => {
-      document.removeEventListener("keydown", onKeyDown);
-    };
-  }, [data, startTransitionSaving]);
+  //       startTransitionSaving(async () => {
+  //         await updateRelease(data);
+  //       });
+  //     }
+  //   };
+  //   document.addEventListener("keydown", onKeyDown);
+  //   return () => {
+  //     document.removeEventListener("keydown", onKeyDown);
+  //   };
+  // }, [data, startTransitionSaving]);
 
   return (
     <>
@@ -98,13 +104,12 @@ export default function Editor({ release }: { release: Release }) {
       </div>
       <Separator />
       <NovelEditor
-        disableLocalStorage
-        className="flex-1 overflow-y-auto bg-background"
-        defaultValue={release?.content ?? null}
-        onUpdate={(editor) => {
+        defaultValue={JSON.parse(release.contentJson)}
+        onUpdate={(editor: EditorInstance) => {
           setData((prev) => ({
             ...prev,
             content: editor?.storage.markdown.getMarkdown(),
+            contentJson: JSON.stringify(editor.getJSON()),
           }));
         }}
         onDebouncedUpdate={() => {

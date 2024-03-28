@@ -10,6 +10,7 @@ export interface Release extends Models.Document {
   title: string;
   description: string;
   content: string;
+  contentJson: string;
   image: string;
   imageBlurhash: string;
   published: boolean;

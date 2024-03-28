@@ -309,6 +309,7 @@ export const updateRelease = async (data: Release) => {
         title: data.title,
         description: data.description,
         content: data.content,
+        contentJson: data.contentJson,
       },
       data.$id,
     );
