@@ -13,9 +13,16 @@ export default async function Organizations({ limit }: { limit?: number }) {
     redirect("/login");
   }
 
+  const baseQueries = [
+    Query.equal("userId", session.user.id),
+    Query.orderAsc("$createdAt"),
+  ];
+
+  const limitQuery = limit ? [Query.limit(limit)] : [];
+
   const organizations = await db.list<Organization>(
     ORGANIZATION_COLLECTION_ID,
-    [Query.equal("userId", session.user.id), Query.orderAsc("$createdAt")],
+    [...baseQueries, ...limitQuery],
   );
 
   return organizations.documents.length > 0 ? (

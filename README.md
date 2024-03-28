@@ -1,3 +1,8 @@
+# Releaser.xyz
+Easily manage and publish public changelogs for your applications, keeping your audience informed and engaged with every update.
+
+---
+
 ## Built on open source
 
 This working demo site was built using the Platforms Starter Kit and:

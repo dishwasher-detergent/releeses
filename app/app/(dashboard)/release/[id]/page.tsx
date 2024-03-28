@@ -22,5 +22,5 @@ export default async function ReleasePage({
     notFound();
   }
 
-  return <Editor release={data} />;
+  return <Editor release={data} markdown={data.content} />;
 }

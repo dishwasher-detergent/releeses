@@ -77,7 +77,7 @@ export async function getReleaseData(domain: string, slug: string) {
   )();
 }
 
-async function getMdxSource(releaseContent: string) {
+export async function getMdxSource(releaseContent: string) {
   // transforms links like <link> to [link](link) as MDX doesn't support <link> syntax
   // https://mdxjs.com/docs/what-is-mdx/#markdown
   const content =
