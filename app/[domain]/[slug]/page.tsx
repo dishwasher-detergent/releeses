@@ -120,7 +120,7 @@ export default async function OrgReleasePage({
         />
       </section>
       <section className="mb-8 w-full px-4">
-        <h1 className="text-3xl font-bold">{data.documents[0].title}</h1>
+        <h1 className="text-xl font-bold">{data.documents[0].title}</h1>
         <p className="text-sm font-semibold text-foreground/80">{createdAt}</p>
       </section>
       <section className="mb-8 w-full flex-1 px-4">

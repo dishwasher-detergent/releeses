@@ -1,4 +1,5 @@
 "use client";
+import "@/styles/prose.css";
 import {
   EditorCommand,
   EditorCommandEmpty,
@@ -40,7 +41,7 @@ export default function NovelEditor({
       <EditorContent
         initialContent={initialContent}
         extensions={extensions}
-        className="flex-1 overflow-y-auto bg-background p-4"
+        className="flex-1 overflow-y-auto bg-background"
         editorProps={{
           handleDOMEvents: {
             keydown: (_view, event) => handleCommandNavigation(event),

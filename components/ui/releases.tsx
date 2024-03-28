@@ -19,15 +19,20 @@ export default async function Releases({
     redirect("/login");
   }
 
-  const queries = orgId
+  const baseQueries = orgId
     ? [
         Query.equal("organizationId", orgId),
         Query.equal("userId", session.user.id),
-        Query.orderAsc("$createdAt"),
+        Query.orderDesc("$createdAt"),
       ]
     : [];
 
-  const releases = await db.list<Release>(RELEASE_COLLECTION_ID, queries);
+  const limitQuery = limit ? [Query.limit(limit)] : [];
+
+  const releases = await db.list<Release>(RELEASE_COLLECTION_ID, [
+    ...baseQueries,
+    ...limitQuery,
+  ]);
 
   return releases.documents.length > 0 ? (
     <div className="grid grid-cols-1 overflow-y-auto sm:grid-cols-2 xl:grid-cols-4">
