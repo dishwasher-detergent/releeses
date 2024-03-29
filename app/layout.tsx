@@ -4,8 +4,9 @@ import { inter, nunito } from "@/styles/fonts";
 import "@/styles/globals.css";
 import { Metadata } from "next";
 
-const title = "Releaser.xyz - The easiest place to host your changelogs.";
-const description = "Releaser is a way to host your applications changelog.";
+const title = "Releaser.xyz";
+const description =
+  "Easily manage and publish public changelogs for your applications, keeping your audience informed and engaged with every update.";
 
 export const metadata: Metadata = {
   title,
