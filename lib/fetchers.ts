@@ -1,29 +1,22 @@
-import { Organization } from "@/interfaces/organization";
-import { Release } from "@/interfaces/release";
-import { db } from "@/lib/appwrite";
-import {
-  ORGANIZATION_COLLECTION_ID,
-  RELEASE_COLLECTION_ID,
-} from "@/lib/constants";
 import { replaceTweets } from "@/lib/remark-plugins";
+import { createClient } from "@/lib/supabase/server";
 import { serialize } from "next-mdx-remote/serialize";
 import { unstable_cache } from "next/cache";
-import { Query } from "node-appwrite";
 
 export async function getOrgData(domain: string) {
+  const supabase = createClient();
   const subdomain = domain.endsWith(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`)
     ? domain.replace(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`, "")
     : null;
 
-  const queries = [
-    subdomain
-      ? Query.equal("subdomain", subdomain)
-      : Query.equal("customDomain", domain),
-  ];
-
   return await unstable_cache(
     async () => {
-      return db.list<Organization>(ORGANIZATION_COLLECTION_ID, queries);
+      let query = supabase.from("organization").select();
+      query = subdomain
+        ? query.eq("subdomain", subdomain)
+        : query.eq("customDomain", domain);
+
+      return query.single();
     },
     [`${domain}-metadata`],
     {
@@ -34,37 +27,35 @@ export async function getOrgData(domain: string) {
 }
 
 export async function getReleaseData(domain: string, slug: string) {
+  const supabase = createClient();
   const subdomain = domain.endsWith(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`)
     ? domain.replace(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`, "")
     : null;
 
-  const queries = [
-    subdomain
-      ? Query.equal("subdomain", subdomain)
-      : Query.equal("customDomain", domain),
-  ];
-
   return await unstable_cache(
     async () => {
-      const data = await db.list<Release>(RELEASE_COLLECTION_ID, [
-        ...queries,
-        Query.equal("slug", slug),
-        Query.equal("published", true),
-      ]);
+      let query = supabase
+        .from("release")
+        .select(
+          "*, organization!inner(subdomain, customDomain), organization(*)",
+        );
+      query = subdomain
+        ? query.eq("organization.subdomain", subdomain)
+        : query.eq("organization.customDomain", domain);
 
-      if (data.documents.length === 0) return null;
+      query.eq("slug", slug).eq("published", true);
+
+      const response = await query.single();
+
+      if (response.count === 0) return null;
 
       const [mdxSource, adjacentReleases] = await Promise.all([
-        getMdxSource(data.documents[0].content!),
-        await db.list<Release>(RELEASE_COLLECTION_ID, [
-          ...queries,
-          Query.notEqual("slug", slug),
-          Query.equal("published", true),
-        ]),
+        getMdxSource(response.data?.content ?? ""),
+        await query.neq("id", response.data?.id),
       ]);
 
       return {
-        ...data,
+        ...response.data,
         mdxSource,
         adjacentReleases,
       };

@@ -7,46 +7,18 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Release } from "@/interfaces/release";
-import { db } from "@/lib/appwrite";
-import { RELEASE_COLLECTION_ID } from "@/lib/constants";
 import { getOrgData } from "@/lib/fetchers";
+import { createClient } from "@/lib/supabase/server";
 import { placeholderBlurhash } from "@/lib/utils";
 import { LucideArrowRight, LucideCalendar } from "lucide-react";
 import { notFound } from "next/navigation";
-import { Query } from "node-appwrite";
-
-// export async function generateStaticParams() {
-//   const allSites = await prisma.site.findMany({
-//     select: {
-//       subdomain: true,
-//       customDomain: true,
-//     },
-//     // feel free to remove this filter if you want to generate paths for all sites
-//     where: {
-//       subdomain: "demo",
-//     },
-//   });
-
-//   const allPaths = allSites
-//     .flatMap(({ subdomain, customDomain }) => [
-//       subdomain && {
-//         domain: `${subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`,
-//       },
-//       customDomain && {
-//         domain: customDomain,
-//       },
-//     ])
-//     .filter(Boolean);
-
-//   return allPaths;
-// }
 
 export default async function OrgHomePage({
   params,
 }: {
   params: { domain: string };
 }) {
+  const supabase = createClient();
   const domain = decodeURIComponent(params.domain);
   const data = await getOrgData(domain);
 
@@ -54,61 +26,59 @@ export default async function OrgHomePage({
     ? domain.replace(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`, "")
     : null;
 
-  const queries = [
-    subdomain
-      ? Query.equal("subdomain", subdomain)
-      : Query.equal("customDomain", domain),
-    Query.equal("published", true),
-    Query.orderDesc("$createdAt"),
-  ];
+  let query = supabase.from("organization").select("*, release(*)");
+  query = subdomain
+    ? query.eq("subdomain", subdomain)
+    : query.eq("customDomain", domain);
 
-  const releasesData = await db.list<Release>(RELEASE_COLLECTION_ID, queries);
+  query.eq("release.published", true).order("release.created_at", {
+    ascending: false,
+  });
+
+  const response = await query.single();
 
   if (!data) {
     notFound();
   }
-
-  const organization = data.documents[0];
-  const releases = releasesData.documents;
 
   return (
     <>
       <section>
         <div className="relative m-auto h-60 w-full max-w-screen-lg overflow-hidden md:rounded-2xl">
           <BlurImage
-            alt={data.documents[0].name ?? "Organization Image"}
+            alt={response.data?.name ?? "Organization Image"}
             width={1200}
             height={630}
             className="h-full w-full object-cover"
             placeholder="blur"
-            blurDataURL={data.documents[0].imageBlurhash ?? placeholderBlurhash}
-            src={data.documents[0].image ?? "/placeholder.png"}
+            blurDataURL={response.data?.imageBlurhash ?? placeholderBlurhash}
+            src={response.data?.image ?? "/placeholder.png"}
           />
         </div>
         <div className="-mt-16 ml-4 pb-8">
           <div className="relative z-10 mb-4 h-36 w-36 overflow-hidden rounded-full border-4 border-background">
             <BlurImage
-              alt={data.documents[0].logo ?? "Organization Logo"}
+              alt={response.data?.logo ?? "Organization Logo"}
               width={50}
               height={50}
               className="h-full w-full object-cover"
               placeholder="blur"
               blurDataURL={placeholderBlurhash}
-              src={data.documents[0].logo ?? "/placeholder.png"}
+              src={response.data?.logo ?? "/placeholder.png"}
             />
           </div>
           <h1 className="truncate pb-2 text-2xl font-bold">
-            {organization.name}
+            {response.data?.name}
           </h1>
-          <p className="text-sm">{organization.description}</p>
+          <p className="text-sm">{response.data?.description}</p>
         </div>
       </section>
       <section className="px-4 pb-2">
         <h1 className="text-2xl font-bold">Changelog</h1>
       </section>
       <section className="flex w-full flex-col px-4">
-        {releases.map((release) => {
-          const createdAt = new Date(release.$createdAt).toLocaleDateString(
+        {response.data?.release.map((release) => {
+          const createdAt = new Date(release.created_at).toLocaleDateString(
             "en-us",
             {
               year: "numeric",
@@ -117,7 +87,7 @@ export default async function OrgHomePage({
             },
           );
           return (
-            <article key={release.$id} className="group">
+            <article key={release.id} className="group">
               <div className="flex flex-row items-center gap-2 pb-2">
                 <LucideCalendar className="size-4 flex-none text-foreground/80" />
                 <p className="text-sm font-semibold text-foreground/80">
@@ -137,7 +107,7 @@ export default async function OrgHomePage({
                   )}
                   <CardFooter>
                     <a
-                      href={release.slug}
+                      href={release.slug ?? "/"}
                       className="group/link flex flex-row items-center gap-2 text-sm text-primary"
                     >
                       Read More
@@ -149,7 +119,7 @@ export default async function OrgHomePage({
             </article>
           );
         })}
-        {releases.length === 0 && (
+        {response.data?.release.length === 0 && (
           <div className="w-full rounded-xl bg-muted p-8 text-center font-bold">
             No releases, yet!
           </div>

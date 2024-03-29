@@ -1,18 +1,18 @@
-import { Organization } from "@/interfaces/organization";
-import { User } from "@/interfaces/user";
-import { Models } from "node-appwrite";
+import { Json } from "@/types/supabase";
+import { Organization } from "./organization";
 
-export interface Release extends Models.Document {
-  user: User;
-  userId: string;
+export interface Release {
+  content: string | null;
+  contentJson: Json | null;
+  created_at: string;
+  description: string | null;
+  id: number;
+  image: string | null;
+  imageBlurhash: string | null;
+  organizationId: number | null;
+  published: boolean | null;
+  slug: string | null;
+  title: string | null;
+  user_id: string | null;
   organization: Organization;
-  organizationId: string;
-  title: string;
-  description: string;
-  content: string;
-  contentJson: string;
-  image: string;
-  imageBlurhash: string;
-  published: boolean;
-  slug: string;
 }

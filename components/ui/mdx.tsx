@@ -1,8 +1,8 @@
 "use client";
 
 import BlurImage from "@/components/ui/blur-image";
-import { Release } from "@/interfaces/release";
 import { replaceLinks } from "@/lib/remark-plugins";
+import { Tables } from "@/types/supabase";
 import { MDXRemote, MDXRemoteProps } from "next-mdx-remote";
 import { Tweet } from "react-tweet";
 
@@ -26,7 +26,7 @@ export default function MDX({ source }: { source: MDXRemoteProps }) {
 }
 
 interface ExampleCardProps
-  extends Pick<Release, "description" | "image" | "imageBlurhash"> {
+  extends Pick<Tables<"release">, "description" | "image" | "imageBlurhash"> {
   name: string | null;
   url: string | null;
 }

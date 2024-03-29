@@ -49,19 +49,18 @@ export default function CreateOrg() {
           <DialogTitle>Lets create a new organization!</DialogTitle>
         </DialogHeader>
         <form
-          action={async (data: FormData) =>
-            createOrganization(data).then((res: any) => {
-              if (res.error) {
-                toast.error(res.error);
-              } else {
-                va.track("Created Organization");
-                const { $id } = res;
-                router.refresh();
-                router.push(`/organization/${$id}`);
-                toast.success(`Successfully created organization!`);
-              }
-            })
-          }
+          action={async (data: FormData) => {
+            const { error, data: org } = await createOrganization(data);
+
+            if (error) {
+              toast.error(error);
+            } else {
+              va.track("Created Organization");
+              router.refresh();
+              router.push(`/organization/${org?.id}`);
+              toast.success(`Successfully created organization!`);
+            }
+          }}
           className="space-y-4"
         >
           <div className="flex flex-col space-y-2">

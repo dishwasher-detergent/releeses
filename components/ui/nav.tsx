@@ -25,17 +25,17 @@ interface NavProps {
 
 export default function Nav({ children }: NavProps) {
   const segments = useSelectedLayoutSegments();
-  const { id } = useParams() as { id?: string };
+  const { id } = useParams() as { id?: number };
 
-  const [orgId, setOrgId] = useState<string | null>();
+  const [orgId, setOrgId] = useState<number | null>();
 
   useEffect(() => {
     if (segments[0] === "release" && id) {
-      getOrganizationFromReleaseId(id).then((id) => {
-        setOrgId(id);
+      getOrganizationFromReleaseId(id).then((res) => {
+        setOrgId(res?.organizationId);
       });
     }
-  }, [segments, id]);
+  }, []);
 
   const tabs = useMemo<Nav[]>(() => {
     if (segments[0] === "organization" && id) {
