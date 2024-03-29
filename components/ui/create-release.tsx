@@ -2,8 +2,8 @@
 
 import { Loader } from "@/components/loading/loader";
 import { Button } from "@/components/ui/button";
-import { Release } from "@/interfaces/release";
 import { createRelease } from "@/lib/actions";
+import { Tables } from "@/types/supabase";
 import va from "@vercel/analytics";
 import { useParams, useRouter } from "next/navigation";
 import { useTransition } from "react";
@@ -18,10 +18,14 @@ export default function CreateRelease() {
       size="sm"
       onClick={() =>
         startTransition(async () => {
-          const release: Release = await createRelease(null, id, null);
+          const release: Tables<"release"> = await createRelease(
+            null,
+            id,
+            null,
+          );
           va.track("Created Release");
           router.refresh();
-          router.push(`/release/${release.$id}`);
+          router.push(`/release/${release.id}`);
         })
       }
       disabled={isPending}

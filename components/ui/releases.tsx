@@ -1,46 +1,42 @@
 import ReleaesCard from "@/components/ui/release-card";
-import { Release } from "@/interfaces/release";
-import { db } from "@/lib/appwrite";
-import { getSession } from "@/lib/auth";
-import { RELEASE_COLLECTION_ID } from "@/lib/constants";
+import { createClient } from "@/lib/supabase/server";
 import { LucideGhost } from "lucide-react";
-import { redirect } from "next/navigation";
-import { Query } from "node-appwrite";
+import { notFound } from "next/navigation";
 
 export default async function Releases({
   orgId,
-  limit,
+  limit = 4,
 }: {
   orgId?: string;
   limit?: number;
 }) {
-  const session = await getSession();
-  if (!session?.user) {
-    redirect("/login");
+  const supabase = createClient();
+
+  let query = supabase
+    .from("release")
+    .select("*, organization(*)")
+    .order("created_at", {
+      ascending: false,
+    })
+    .limit(limit);
+
+  if (orgId) {
+    query.eq("organizationId", orgId);
   }
 
-  const baseQueries = orgId
-    ? [
-        Query.equal("organizationId", orgId),
-        Query.equal("userId", session.user.id),
-        Query.orderDesc("$createdAt"),
-      ]
-    : [];
+  const { data, error } = await query;
 
-  const limitQuery = limit ? [Query.limit(limit)] : [];
+  if (error || !data) {
+    notFound();
+  }
 
-  const releases = await db.list<Release>(RELEASE_COLLECTION_ID, [
-    ...baseQueries,
-    ...limitQuery,
-  ]);
-
-  return releases.documents.length > 0 ? (
+  return data.length > 0 ? (
     <div className="grid grid-cols-1 overflow-y-auto sm:grid-cols-2 xl:grid-cols-4">
-      {releases.documents.map((release) => (
+      {data.map((release) => (
         <ReleaesCard
-          key={release.$id}
+          key={release.id}
           data={release}
-          org={release.organization}
+          org={release.organization!}
         />
       ))}
     </div>

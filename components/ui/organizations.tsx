@@ -1,34 +1,27 @@
 import OrgCard from "@/components/ui/org-card";
-import { Organization } from "@/interfaces/organization";
-import { db } from "@/lib/appwrite";
-import { getSession } from "@/lib/auth";
-import { ORGANIZATION_COLLECTION_ID } from "@/lib/constants";
+import { createClient } from "@/lib/supabase/server";
 import { LucideGhost } from "lucide-react";
-import { redirect } from "next/navigation";
-import { Query } from "node-appwrite";
+import { notFound } from "next/navigation";
 
-export default async function Organizations({ limit }: { limit?: number }) {
-  const session = await getSession();
-  if (!session) {
-    redirect("/login");
+export default async function Organizations({ limit = 4 }: { limit?: number }) {
+  const supabase = createClient();
+
+  const { data, error } = await supabase
+    .from("organization")
+    .select()
+    .order("created_at", {
+      ascending: true,
+    })
+    .limit(limit);
+
+  if (error || !data) {
+    notFound();
   }
 
-  const baseQueries = [
-    Query.equal("userId", session.user.id),
-    Query.orderAsc("$createdAt"),
-  ];
-
-  const limitQuery = limit ? [Query.limit(limit)] : [];
-
-  const organizations = await db.list<Organization>(
-    ORGANIZATION_COLLECTION_ID,
-    [...baseQueries, ...limitQuery],
-  );
-
-  return organizations.documents.length > 0 ? (
+  return data.length > 0 ? (
     <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4">
-      {organizations.documents.map((org) => (
-        <OrgCard key={org.$id} data={org} />
+      {data.map((org) => (
+        <OrgCard key={org.id} org={org} />
       ))}
     </div>
   ) : (

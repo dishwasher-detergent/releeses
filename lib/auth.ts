@@ -1,22 +1,10 @@
-import { Organization } from "@/interfaces/organization";
-import { Release } from "@/interfaces/release";
-import { db } from "@/lib/appwrite";
-import {
-  ORGANIZATION_COLLECTION_ID,
-  RELEASE_COLLECTION_ID,
-} from "@/lib/constants";
+import { createClient } from "@/lib/supabase/server";
 
-export function getSession() {
-  return {
-    user: {
-      id: "1",
-      name: "Kenny",
-      username: "KennyBass",
-      email: "test@test.com",
-      image:
-        "https://images.unsplash.com/photo-1704236041747-615d800a8b0a?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    },
-  };
+export async function getSession() {
+  const supabase = createClient();
+  const session = await supabase.auth.getUser();
+
+  return session;
 }
 
 export function withOrgAuth(action: any) {
@@ -25,56 +13,58 @@ export function withOrgAuth(action: any) {
     orgId: string,
     key: string | null,
   ) => {
-    const session = await getSession();
+    const supabase = createClient();
+    const { data: user, error: user_error } = await getSession();
 
-    if (!session) {
+    if (user_error || !user?.user) {
       return {
         error: "Not authenticated",
       };
     }
 
-    const org = await db.get<Organization>(ORGANIZATION_COLLECTION_ID, orgId);
+    const { data, error } = await supabase
+      .from("organization")
+      .select()
+      .eq("id", orgId)
+      .single();
 
-    if (!org || org.user.$id !== session.user.id) {
+    if (!data) {
       return {
         error: "Not authorized",
       };
     }
 
-    return action(formData, org, key);
+    return action(formData, data, key);
   };
 }
 
 export function withReleaseAuth(action: any) {
   return async (
     formData: FormData | null,
-    releaseId: string,
+    releaseId: number,
     key: string | null,
   ) => {
-    const session = await getSession();
+    const supabase = createClient();
+    const { data: user, error: user_error } = await getSession();
 
-    if (!session?.user.id) {
+    if (user_error || !user?.user) {
       return {
         error: "Not authenticated",
       };
     }
 
-    let release;
+    const { data, error } = await supabase
+      .from("release")
+      .select()
+      .eq("id", releaseId)
+      .single();
 
-    try {
-      release = await db.get<Release>(RELEASE_COLLECTION_ID, releaseId);
-
-      if (!release || release.user.$id !== session.user.id) {
-        return {
-          error: "Release not found",
-        };
-      }
-    } catch (error: any) {
+    if (!data) {
       return {
-        error: "Release not found",
+        error: "Not authorized",
       };
     }
 
-    return action(formData, release, key);
+    return action(formData, data, key);
   };
 }

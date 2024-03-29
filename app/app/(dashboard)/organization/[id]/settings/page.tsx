@@ -1,10 +1,8 @@
 import Form from "@/components/form";
 import DeleteOrgForm from "@/components/form/delete-org-form";
 import { Separator } from "@/components/ui/separator";
-import { Organization } from "@/interfaces/organization";
 import { updateOrganization } from "@/lib/actions";
-import { db } from "@/lib/appwrite";
-import { ORGANIZATION_COLLECTION_ID } from "@/lib/constants";
+import { createClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
 
 export default async function OrgSettingsIndex({
@@ -12,14 +10,15 @@ export default async function OrgSettingsIndex({
 }: {
   params: { id: string };
 }) {
-  let data: Organization;
+  const supabase = createClient();
 
-  try {
-    data = await db.get<Organization>(
-      ORGANIZATION_COLLECTION_ID,
-      decodeURIComponent(params.id),
-    );
-  } catch (error: any) {
+  const { data, error } = await supabase
+    .from("organization")
+    .select()
+    .eq("id", decodeURIComponent(params.id))
+    .single();
+
+  if (error || !data) {
     notFound();
   }
 

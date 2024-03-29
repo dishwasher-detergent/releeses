@@ -1,19 +1,27 @@
-import { storage } from "@/lib/appwrite";
-import { ENDPOINT, PROJECT_ID, RELEASE_BUCKET_ID } from "@/lib/constants";
+import { createClient } from "@/lib/supabase/server";
 import { nanoid } from "nanoid";
 import { NextResponse } from "next/server";
-import { InputFile } from "node-appwrite";
 
 export async function POST(req: Request) {
+  const supabase = createClient();
   const contentType = req.headers.get("content-type") || "text/plain";
   const fileBuffer = Buffer.from(await req.arrayBuffer());
 
   const filename = `${nanoid()}.${contentType.split("/")[1]}`;
-  const newfile = await InputFile.fromBuffer(fileBuffer, filename);
 
-  const awFile = await storage.upload(RELEASE_BUCKET_ID, newfile);
+  const { error } = await supabase.storage
+    .from("release")
+    .upload(filename, fileBuffer, {
+      contentType: contentType,
+      cacheControl: "3600",
+      upsert: false,
+    });
 
-  const url = `${ENDPOINT}/storage/buckets/${RELEASE_BUCKET_ID}/files/${awFile.$id}/view?project=${PROJECT_ID}`;
+  if (error) {
+    return NextResponse.error();
+  }
 
-  return NextResponse.json({ url: url });
+  const { data } = supabase.storage.from("release").getPublicUrl(filename);
+
+  return NextResponse.json({ url: data.publicUrl });
 }
