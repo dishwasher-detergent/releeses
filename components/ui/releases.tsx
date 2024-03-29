@@ -31,7 +31,7 @@ export default async function Releases({
   }
 
   return data.length > 0 ? (
-    <div className="grid grid-cols-1 overflow-y-auto sm:grid-cols-2 xl:grid-cols-4">
+    <div className="grid grid-cols-1 overflow-y-auto sm:grid-cols-2 xl:grid-cols-3">
       {data.map((release) => (
         <ReleaesCard
           key={release.id}

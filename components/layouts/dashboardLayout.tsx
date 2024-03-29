@@ -5,7 +5,14 @@ import CreateOrg from "@/components/ui/create-org";
 import CreateRelease from "@/components/ui/create-release";
 import Nav from "@/components/ui/nav";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { LucideBoxes, LucideMenu } from "lucide-react";
+import {
+  LucideGlobe,
+  LucideLayout,
+  LucideMenu,
+  LucideNewspaper,
+  LucideRocket,
+  LucideSettings,
+} from "lucide-react";
 import Link from "next/link";
 import { useParams, useSelectedLayoutSegments } from "next/navigation";
 import { ReactNode, useMemo } from "react";
@@ -20,17 +27,21 @@ export default function DashboardLayoutComponent({
 
   const title = useMemo<React.ReactNode>(() => {
     if (segments.length === 0) {
-      return <p className="text-xl font-bold">Overview</p>;
-    }
-
-    if (segments[0] === "settings") {
-      return <p className="text-xl font-bold">Settings</p>;
+      return (
+        <p className="flex flex-row items-center gap-2 text-xl font-bold">
+          <LucideLayout className="size-5" />
+          Overview
+        </p>
+      );
     }
 
     if (segments[0] === "organizations") {
       return (
         <div className="flex flex-1 flex-row items-center justify-between">
-          <p className="text-xl font-bold">Organizations</p>
+          <p className="flex flex-row items-center gap-2 text-xl font-bold">
+            <LucideGlobe className="size-5" />
+            Organizations
+          </p>
           <CreateOrg />
         </div>
       );
@@ -38,18 +49,36 @@ export default function DashboardLayoutComponent({
 
     if (segments[0] === "release" && id) {
       if (segments.includes("settings"))
-        return <p className="text-xl font-bold">Release Settings</p>;
+        return (
+          <p className="flex flex-row items-center gap-2 text-xl font-bold">
+            <LucideSettings className="size-5" />
+            Release Settings
+          </p>
+        );
 
-      return <p className="text-xl font-bold">Release</p>;
+      return (
+        <p className="flex flex-row items-center gap-2 text-xl font-bold">
+          <LucideNewspaper className="size-5" />
+          Release
+        </p>
+      );
     }
 
     if (segments[0] === "organization" && id) {
       if (segments.includes("settings"))
-        return <p className="text-xl font-bold">Organization Settings</p>;
+        return (
+          <p className="flex flex-row items-center gap-2 text-xl font-bold">
+            <LucideSettings className="size-5" />
+            Organization Settings
+          </p>
+        );
 
       return (
         <div className="flex flex-1 flex-row items-center justify-between">
-          <p className="text-xl font-bold">Organization</p>
+          <p className="flex flex-row items-center gap-2 text-xl font-bold">
+            <LucideGlobe className="size-5" />
+            Organization
+          </p>
           <CreateRelease />
         </div>
       );
@@ -64,8 +93,8 @@ export default function DashboardLayoutComponent({
         <div className="flex h-full max-h-screen flex-col">
           <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
             <Link href="/" className="flex items-center gap-2 font-semibold">
-              <LucideBoxes className="h-6 w-6" />
-              <span className="">Releaser</span>
+              <LucideRocket className="size-8 rounded-lg bg-foreground p-2 text-background" />
+              <span className="text-xl font-black">Releaser</span>
             </Link>
           </div>
           <Nav />

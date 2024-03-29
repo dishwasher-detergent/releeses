@@ -12,7 +12,7 @@ import {
   ArrowLeft,
   Edit3,
   Globe,
-  LayoutDashboard,
+  Layout,
   Newspaper,
   Settings,
 } from "lucide-react";
@@ -42,7 +42,7 @@ export default function Nav({ children }: NavProps) {
         setOrgId(res?.organizationId);
       });
     }
-  }, []);
+  }, [id]);
 
   const tabs = useMemo<Nav[]>(() => {
     if (segments[0] === "organization" && id) {
@@ -91,7 +91,7 @@ export default function Nav({ children }: NavProps) {
         name: "Overview",
         href: "/",
         isActive: segments.length === 0,
-        icon: LayoutDashboard,
+        icon: Layout,
       },
       {
         name: "Organizations",
@@ -103,7 +103,7 @@ export default function Nav({ children }: NavProps) {
   }, [segments, id, orgId]);
 
   return (
-    <div className="flex flex-1 flex-col gap-4 py-2">
+    <div className="flex flex-1 flex-col gap-2 py-2">
       <nav className="flex flex-1 flex-col gap-1 px-2">
         {tabs.map((link, index) => (
           <Button
@@ -125,8 +125,10 @@ export default function Nav({ children }: NavProps) {
         {children}
       </nav>
       <Separator />
-      <div className="px-2">
-        <button
+      <div className="flex flex-row items-center gap-2 px-2">
+        <Button
+          className="flex-1"
+          variant="default"
           onClick={async () => {
             await supabase.auth.signOut();
 
@@ -134,7 +136,7 @@ export default function Nav({ children }: NavProps) {
           }}
         >
           Sign Out
-        </button>
+        </Button>
         <ThemeToggle />
       </div>
     </div>
