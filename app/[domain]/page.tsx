@@ -73,48 +73,54 @@ export default async function OrgHomePage({
         <h1 className="text-2xl font-bold">Changelog</h1>
       </section>
       <section className="flex w-full flex-col px-4">
-        {response.data?.release.map((release) => {
-          const createdAt = new Date(release.created_at).toLocaleDateString(
-            "en-us",
-            {
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            },
-          );
-          return (
-            <article key={release.id} className="group">
-              <div className="flex flex-row items-center gap-2 pb-2">
-                <LucideCalendar className="size-4 flex-none text-foreground/80" />
-                <p className="text-sm font-semibold text-foreground/80">
-                  {createdAt}
-                </p>
-              </div>
-              <div className="flex flex-row gap-2">
-                <div className="flex w-4 flex-none items-center justify-center pb-2">
-                  <Separator orientation="vertical" />
+        {response.data?.release
+          .sort(
+            (a, b) =>
+              new Date(b.created_at).getTime() -
+              new Date(a.created_at).getTime(),
+          )
+          .map((release) => {
+            const createdAt = new Date(release.created_at).toLocaleDateString(
+              "en-us",
+              {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              },
+            );
+            return (
+              <article key={release.id} className="group">
+                <div className="flex flex-row items-center gap-2 pb-2">
+                  <LucideCalendar className="size-4 flex-none text-foreground/80" />
+                  <p className="text-sm font-semibold text-foreground/80">
+                    {createdAt}
+                  </p>
                 </div>
-                <Card className="mb-8 flex-1 shadow-none group-last:mb-0">
-                  <CardHeader>
-                    <CardTitle className="text-xl">{release.title}</CardTitle>
-                  </CardHeader>
-                  {release.description && (
-                    <CardContent>{release.description}</CardContent>
-                  )}
-                  <CardFooter>
-                    <a
-                      href={release.slug ?? "/"}
-                      className="group/link flex flex-row items-center gap-2 text-sm text-primary"
-                    >
-                      Read More
-                      <LucideArrowRight className="size-4 transition-all group-hover/link:translate-x-0.5" />
-                    </a>
-                  </CardFooter>
-                </Card>
-              </div>
-            </article>
-          );
-        })}
+                <div className="flex flex-row gap-2">
+                  <div className="flex w-4 flex-none items-center justify-center pb-2">
+                    <Separator orientation="vertical" />
+                  </div>
+                  <Card className="mb-8 flex-1 shadow-none group-last:mb-0">
+                    <CardHeader>
+                      <CardTitle className="text-xl">{release.title}</CardTitle>
+                    </CardHeader>
+                    {release.description && (
+                      <CardContent>{release.description}</CardContent>
+                    )}
+                    <CardFooter>
+                      <a
+                        href={release.slug ?? "/"}
+                        className="group/link flex flex-row items-center gap-2 text-sm text-primary"
+                      >
+                        Read More
+                        <LucideArrowRight className="size-4 transition-all group-hover/link:translate-x-0.5" />
+                      </a>
+                    </CardFooter>
+                  </Card>
+                </div>
+              </article>
+            );
+          })}
         {response.data?.release.length === 0 && (
           <div className="w-full rounded-xl bg-muted p-8 text-center font-bold">
             No releases, yet!

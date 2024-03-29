@@ -99,12 +99,6 @@ export default function Nav({ children }: NavProps) {
         isActive: segments[0] === "organizations",
         icon: Globe,
       },
-      {
-        name: "Settings",
-        href: "/settings",
-        isActive: segments[0] === "settings",
-        icon: Settings,
-      },
     ];
   }, [segments, id, orgId]);
 
@@ -136,7 +130,7 @@ export default function Nav({ children }: NavProps) {
           onClick={async () => {
             await supabase.auth.signOut();
 
-            router.push("/login");
+            router.push("/signin");
           }}
         >
           Sign Out
