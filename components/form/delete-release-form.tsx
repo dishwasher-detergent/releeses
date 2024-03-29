@@ -12,19 +12,19 @@ import { toast } from "sonner";
 
 interface DeleteReleaseFormProps {
   releaseName: string;
-  orgId: string;
+  orgId: number | null;
 }
 
 export default function DeleteReleaseForm({
   releaseName,
   orgId,
 }: DeleteReleaseFormProps) {
-  const { id } = useParams() as { id: string };
+  const { id } = useParams() as { id?: number };
   const router = useRouter();
   return (
     <form
       action={async (data: FormData) =>
-        deleteRelease(data, id, "delete").then((res) => {
+        deleteRelease(data, id!, "delete").then((res) => {
           if (res.error) {
             toast.error(res.error);
           } else {

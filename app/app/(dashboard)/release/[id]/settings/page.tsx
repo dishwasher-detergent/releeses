@@ -1,29 +1,27 @@
 import Form from "@/components/form";
 import DeleteReleaseForm from "@/components/form/delete-release-form";
 import { Separator } from "@/components/ui/separator";
-import { Release } from "@/interfaces/release";
 import { updateReleaseMetadata } from "@/lib/actions";
-import { db } from "@/lib/appwrite";
-import { getSession } from "@/lib/auth";
-import { RELEASE_COLLECTION_ID } from "@/lib/constants";
-import { notFound, redirect } from "next/navigation";
+import { createClient } from "@/lib/supabase/server";
+import { notFound } from "next/navigation";
 
 export default async function ReleaseSettings({
   params,
 }: {
   params: { id: string };
 }) {
-  const session = await getSession();
-  if (!session) {
-    redirect("/login");
-  }
-  const data = await db.get<Release>(
-    RELEASE_COLLECTION_ID,
-    decodeURIComponent(params.id),
-  );
-  if (!data || data.userId !== session.user.id) {
+  const supabase = createClient();
+
+  const { data, error } = await supabase
+    .from("release")
+    .select()
+    .eq("id", decodeURIComponent(params.id))
+    .single();
+
+  if (error || !data) {
     notFound();
   }
+
   return (
     <div className="flex flex-1 flex-col overflow-y-auto bg-background">
       <Form

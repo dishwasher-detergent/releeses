@@ -6,6 +6,7 @@ import { Separator } from "@/components/ui/separator";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { Nav } from "@/interfaces/nav";
 import { getOrganizationFromReleaseId } from "@/lib/actions";
+import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
 import {
   ArrowLeft,
@@ -16,7 +17,11 @@ import {
   Settings,
 } from "lucide-react";
 import Link from "next/link";
-import { useParams, useSelectedLayoutSegments } from "next/navigation";
+import {
+  useParams,
+  useRouter,
+  useSelectedLayoutSegments,
+} from "next/navigation";
 import { ReactNode, useEffect, useMemo, useState } from "react";
 
 interface NavProps {
@@ -24,18 +29,20 @@ interface NavProps {
 }
 
 export default function Nav({ children }: NavProps) {
+  const router = useRouter();
+  const supabase = createClient();
   const segments = useSelectedLayoutSegments();
-  const { id } = useParams() as { id?: string };
+  const { id } = useParams() as { id?: number };
 
-  const [orgId, setOrgId] = useState<string | null>();
+  const [orgId, setOrgId] = useState<number | null>();
 
   useEffect(() => {
     if (segments[0] === "release" && id) {
-      getOrganizationFromReleaseId(id).then((id) => {
-        setOrgId(id);
+      getOrganizationFromReleaseId(id).then((res) => {
+        setOrgId(res?.organizationId);
       });
     }
-  }, [segments, id]);
+  }, []);
 
   const tabs = useMemo<Nav[]>(() => {
     if (segments[0] === "organization" && id) {
@@ -62,7 +69,7 @@ export default function Nav({ children }: NavProps) {
       return [
         {
           name: "Back to All Releases",
-          href: orgId ? `/organization/${orgId}` : "/organization",
+          href: orgId ? `/organization/${orgId}` : "/organizations",
           icon: ArrowLeft,
         },
         {
@@ -92,12 +99,6 @@ export default function Nav({ children }: NavProps) {
         isActive: segments[0] === "organizations",
         icon: Globe,
       },
-      {
-        name: "Settings",
-        href: "/settings",
-        isActive: segments[0] === "settings",
-        icon: Settings,
-      },
     ];
   }, [segments, id, orgId]);
 
@@ -125,6 +126,15 @@ export default function Nav({ children }: NavProps) {
       </nav>
       <Separator />
       <div className="px-2">
+        <button
+          onClick={async () => {
+            await supabase.auth.signOut();
+
+            router.push("/signin");
+          }}
+        >
+          Sign Out
+        </button>
         <ThemeToggle />
       </div>
     </div>

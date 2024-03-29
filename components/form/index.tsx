@@ -51,19 +51,19 @@ export default function Form({
         ) {
           return;
         }
-        handleSubmit(data, id, inputAttrs.name).then(async (res: any) => {
-          if (res.error) {
-            toast.error(res.error);
+        try {
+          await handleSubmit(data, id, inputAttrs.name);
+
+          va.track(`Updated ${inputAttrs.name}`, id ? { id } : {});
+          if (id) {
+            router.refresh();
           } else {
-            va.track(`Updated ${inputAttrs.name}`, id ? { id } : {});
-            if (id) {
-              router.refresh();
-            } else {
-              router.refresh();
-            }
-            toast.success(`Successfully updated ${inputAttrs.name}!`);
+            router.refresh();
           }
-        });
+          toast.success(`Successfully updated ${inputAttrs.name}!`);
+        } catch (error: any) {
+          toast.error("There was an error uploading this image.");
+        }
       }}
     >
       <div className="relative flex flex-col space-y-4 p-4">

@@ -8,11 +8,9 @@ import {
   EditorContent,
   EditorInstance,
   EditorRoot,
-  type JSONContent,
 } from "novel";
 import { ImageResizer, handleCommandNavigation } from "novel/extensions";
 import { handleImageDrop, handleImagePaste } from "novel/plugins";
-import { useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import { defaultExtensions } from "./extensions";
 import { uploadFn } from "./image-upload";
@@ -25,10 +23,6 @@ export default function NovelEditor({
   onDebouncedUpdate,
   defaultValue,
 }: any) {
-  const [initialContent, setInitialContent] = useState<undefined | JSONContent>(
-    defaultValue,
-  );
-
   const debouncedUpdates = useDebouncedCallback(
     async (editor: EditorInstance) => {
       onDebouncedUpdate();
@@ -39,7 +33,7 @@ export default function NovelEditor({
   return (
     <EditorRoot>
       <EditorContent
-        initialContent={initialContent}
+        initialContent={JSON.parse(defaultValue)}
         extensions={extensions}
         className="flex-1 overflow-y-auto bg-background"
         editorProps={{

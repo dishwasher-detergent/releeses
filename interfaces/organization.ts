@@ -1,18 +1,14 @@
-import { Release } from "@/interfaces/release";
-import { User } from "@/interfaces/user";
-import { Models } from "node-appwrite";
-
-export interface Organization extends Models.Document {
-  name: string;
-  description: string;
-  subdomain: string;
-  customDomain: string;
+export interface Organization {
+  created_at: string;
+  customDomain: string | null;
+  description: string | null;
   font: string;
-  logo: string;
-  image: string;
-  imageBlurhash: string;
-  message404: string;
-  user: User;
-  userId: string;
-  release: Release[];
+  id: number;
+  image: string | null;
+  imageBlurhash: string | null;
+  logo: string | null;
+  message404: string | null;
+  name: string;
+  subdomain: string;
+  user_id: string | null;
 }

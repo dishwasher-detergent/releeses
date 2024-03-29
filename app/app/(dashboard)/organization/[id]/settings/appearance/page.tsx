@@ -1,19 +1,25 @@
 import Form from "@/components/form";
 import { Separator } from "@/components/ui/separator";
-import { Organization } from "@/interfaces/organization";
 import { updateOrganization } from "@/lib/actions";
-import { db } from "@/lib/appwrite";
-import { ORGANIZATION_COLLECTION_ID } from "@/lib/constants";
+import { createClient } from "@/lib/supabase/server";
+import { notFound } from "next/navigation";
 
 export default async function OrgSettingsAppearance({
   params,
 }: {
   params: { id: string };
 }) {
-  const data = await db.get<Organization>(
-    ORGANIZATION_COLLECTION_ID,
-    decodeURIComponent(params.id),
-  );
+  const supabase = createClient();
+
+  const { data, error } = await supabase
+    .from("organization")
+    .select()
+    .eq("id", decodeURIComponent(params.id))
+    .single();
+
+  if (error || !data) {
+    notFound();
+  }
 
   return (
     <div className="flex flex-col">

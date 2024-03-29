@@ -8,32 +8,32 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Organization } from "@/interfaces/organization";
 import { placeholderBlurhash } from "@/lib/utils";
+import { Tables } from "@/types/supabase";
 import { LucideExternalLink } from "lucide-react";
 import Link from "next/link";
 
-export default function OrgCard({ data }: { data: Organization }) {
-  const url = `${data.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`;
+export default function OrgCard({ org }: { org: Tables<"organization"> }) {
+  const url = `${org.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`;
 
   return (
     <Card className="relative flex flex-col overflow-hidden rounded-none border-l-0 border-t-0 shadow-none">
       <CardContent className="flex-1 p-0">
         <BlurImage
-          alt={data.name ?? "Card thumbnail"}
+          alt={org.name ?? "Card thumbnail"}
           width={500}
           height={400}
           className="h-44 object-cover"
-          src={data.image ?? "/placeholder.png"}
+          src={org.image ?? "/placeholder.png"}
           placeholder="blur"
-          blurDataURL={data.imageBlurhash ?? placeholderBlurhash}
+          blurDataURL={org.imageBlurhash ?? placeholderBlurhash}
         />
         <CardHeader>
           <CardTitle className="h-4 truncate">
-            {data.name ?? "No Name"}
+            {org.name ?? "No Name"}
           </CardTitle>
           <CardDescription className="line-clamp-4 h-20">
-            {data.description ?? "No Description"}
+            {org.description ?? "No Description"}
           </CardDescription>
         </CardHeader>
       </CardContent>
@@ -43,7 +43,7 @@ export default function OrgCard({ data }: { data: Organization }) {
             href={
               process.env.NEXT_PUBLIC_VERCEL_ENV
                 ? `https://${url}`
-                : `http://${data.subdomain}.localhost:3000`
+                : `http://${org.subdomain}.localhost:3000`
             }
             target="_blank"
             rel="noreferrer"
@@ -54,7 +54,7 @@ export default function OrgCard({ data }: { data: Organization }) {
           </a>
         </Badge>
       </CardFooter>
-      <Link href={`/organization/${data.$id}`} className="absolute inset-0" />
+      <Link href={`/organization/${org.id}`} className="absolute inset-0" />
     </Card>
   );
 }

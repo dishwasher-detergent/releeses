@@ -8,15 +8,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Organization } from "@/interfaces/organization";
-import { Release } from "@/interfaces/release";
 import { placeholderBlurhash } from "@/lib/utils";
+import { Tables } from "@/types/supabase";
 import { LucideExternalLink } from "lucide-react";
 import Link from "next/link";
 
 interface ReleaseCardProps {
-  data: Release;
-  org: Organization;
+  data: Tables<"release">;
+  org: Tables<"organization">;
   blog?: boolean;
 }
 
@@ -73,7 +72,7 @@ export default function ReleaseCard({
         </CardFooter>
       )}
       <Link
-        href={blog ? `${data.$id}` : `/release/${data.$id}`}
+        href={blog ? `${data.id}` : `/release/${data.id}`}
         className="absolute inset-0"
       />
     </Card>

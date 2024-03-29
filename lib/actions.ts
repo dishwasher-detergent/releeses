@@ -1,19 +1,6 @@
 "use server";
 
-import { Organization } from "@/interfaces/organization";
-import { Release } from "@/interfaces/release";
-import { User } from "@/interfaces/user";
-import { db, storage } from "@/lib/appwrite";
 import { getSession, withOrgAuth, withReleaseAuth } from "@/lib/auth";
-import {
-  ENDPOINT,
-  ORGANIZATION_BUCKET_ID,
-  ORGANIZATION_COLLECTION_ID,
-  PROJECT_ID,
-  RELEASE_BUCKET_ID,
-  RELEASE_COLLECTION_ID,
-  USER_COLLECTION_ID,
-} from "@/lib/constants";
 import {
   addDomainToVercel,
   // getApexDomain,
@@ -21,10 +8,11 @@ import {
   // removeDomainFromVercelTeam,
   validDomainRegex,
 } from "@/lib/domains";
+import { createClient } from "@/lib/supabase/server";
 import { getBlurDataURL } from "@/lib/utils";
+import { Tables } from "@/types/supabase";
 import { customAlphabet } from "nanoid";
 import { revalidateTag } from "next/cache";
-import { InputFile } from "node-appwrite";
 
 const nanoid = customAlphabet(
   "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
@@ -32,41 +20,34 @@ const nanoid = customAlphabet(
 ); // 7-character random string
 
 export const createOrganization = async (formData: FormData) => {
-  const session = await getSession();
+  const supabase = createClient();
 
   const name = formData.get("name") as string;
   const description = formData.get("description") as string;
   const subdomain = formData.get("subdomain") as string;
 
-  const user = await db.get<User>(USER_COLLECTION_ID, session.user.id);
-
-  if (user.organizationCount >= 3) {
-    return {
-      error: "You've hit the max amount of organizations allowed.",
-    };
-  }
-
   try {
-    const response = await db.create(ORGANIZATION_COLLECTION_ID, {
-      name: name,
-      description: description,
-      subdomain: subdomain,
-      user: session.user.id,
-      userId: session.user.id,
-    });
-
-    await db.update(
-      USER_COLLECTION_ID,
-      {
-        organizationCount: (user.organizationCount ?? 0) + 1,
-      },
-      session.user.id,
-    );
+    const response = await supabase
+      .from("organization")
+      .insert([
+        {
+          name: name,
+          description: description,
+          subdomain: subdomain,
+        },
+      ])
+      .select()
+      .single();
 
     await revalidateTag(
       `${subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-metadata`,
     );
-    return response as Organization;
+
+    return {
+      data: {
+        id: response.data?.id,
+      },
+    };
   } catch (error: any) {
     if (error.code === "P2002") {
       return {
@@ -81,108 +62,76 @@ export const createOrganization = async (formData: FormData) => {
 };
 
 export const updateOrganization = withOrgAuth(
-  async (formData: FormData, organization: Organization, key: string) => {
+  async (
+    formData: FormData,
+    organization: Tables<"organization">,
+    key: string,
+  ) => {
     const value = formData.get(key) as string;
+    const supabase = createClient();
 
     try {
       let response;
 
       if (key === "customDomain") {
-        if (value.includes("vercel.pub")) {
-          return {
-            error: "Cannot use vercel.pub subdomain as your custom domain",
-          };
-
-          // if the custom domain is valid, we need to add it to Vercel
-        } else if (validDomainRegex.test(value)) {
-          response = await db.update(
-            ORGANIZATION_COLLECTION_ID,
-            {
+        if (validDomainRegex.test(value)) {
+          response = await supabase
+            .from("organization")
+            .update({
               customDomain: value,
-            },
-            organization.$id,
-          );
-          await Promise.all([
-            addDomainToVercel(value),
-            // Optional: add www subdomain as well and redirect to apex domain
-            // addDomainToVercel(`www.${value}`),
-          ]);
+            })
+            .eq("id", organization.id)
+            .select();
 
-          // empty value means the user wants to remove the custom domain
+          await Promise.all([addDomainToVercel(value)]);
         } else if (value === "") {
-          response = await db.update(
-            ORGANIZATION_COLLECTION_ID,
-            {
+          response = await supabase
+            .from("organization")
+            .update({
               customDomain: null,
-            },
-            organization.$id,
-          );
+            })
+            .eq("id", organization.id)
+            .select();
         }
 
-        // if the site had a different customDomain before, we need to remove it from Vercel
         if (organization.customDomain && organization.customDomain !== value) {
           response = await removeDomainFromVercelProject(
             organization.customDomain,
           );
-
-          /* Optional: remove domain from Vercel team 
-
-          // first, we need to check if the apex domain is being used by other sites
-          const apexDomain = getApexDomain(`https://${site.customDomain}`);
-          const domainCount = await prisma.site.count({
-            where: {
-              OR: [
-                {
-                  customDomain: apexDomain,
-                },
-                {
-                  customDomain: {
-                    endsWith: `.${apexDomain}`,
-                  },
-                },
-              ],
-            },
-          });
-
-          // if the apex domain is being used by other sites
-          // we should only remove it from our Vercel project
-          if (domainCount >= 1) {
-            await removeDomainFromVercelProject(site.customDomain);
-          } else {
-            // this is the only site using this apex domain
-            // so we can remove it entirely from our Vercel team
-            await removeDomainFromVercelTeam(
-              site.customDomain
-            );
-          }
-          
-          */
         }
       } else if (key === "image" || key === "logo") {
         const file = formData.get(key) as File;
         const filename = `${nanoid()}.${file.type.split("/")[1]}`;
-        const newfile = await InputFile.fromBlob(file, filename);
 
-        const awFile = await storage.upload(ORGANIZATION_BUCKET_ID, newfile);
-        const url = `${ENDPOINT}/storage/buckets/${ORGANIZATION_BUCKET_ID}/files/${awFile.$id}/view?project=${PROJECT_ID}`;
-        const blurhash = key === "image" ? await getBlurDataURL(url) : null;
+        const { error } = await supabase.storage
+          .from("organization")
+          .upload(filename, file, {
+            cacheControl: "3600",
+            upsert: false,
+          });
 
-        response = await db.update(
-          ORGANIZATION_COLLECTION_ID,
-          {
-            [key]: url,
+        const { data } = supabase.storage
+          .from("organization")
+          .getPublicUrl(filename);
+        const blurhash =
+          key === "image" ? await getBlurDataURL(data.publicUrl) : null;
+
+        response = await supabase
+          .from("organization")
+          .update({
+            [key]: data.publicUrl,
             ...(blurhash && { imageBlurhash: blurhash }),
-          },
-          organization.$id,
-        );
+          })
+          .eq("id", organization.id)
+          .select();
       } else {
-        response = await db.update(
-          ORGANIZATION_COLLECTION_ID,
-          {
+        response = await supabase
+          .from("organization")
+          .update({
             [key]: value,
-          },
-          organization.$id,
-        );
+          })
+          .eq("id", organization.id)
+          .select();
       }
       await revalidateTag(
         `${organization.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-metadata`,
@@ -206,27 +155,14 @@ export const updateOrganization = withOrgAuth(
 );
 
 export const deleteOrganization = withOrgAuth(
-  async (_: FormData, organization: Organization) => {
-    const session = await getSession();
-
-    const user = await db.get<User>(USER_COLLECTION_ID, session.user.id);
+  async (_: FormData, organization: Tables<"organization">) => {
+    const supabase = createClient();
 
     try {
-      const response = await db.delete(
-        ORGANIZATION_COLLECTION_ID,
-        organization.$id,
-      );
-
-      const count =
-        (user.organizationCount ?? 0) == 0 ? 0 : user.organizationCount - 1;
-
-      await db.update(
-        USER_COLLECTION_ID,
-        {
-          organizationCount: count,
-        },
-        session.user.id,
-      );
+      const response = await supabase
+        .from("organization")
+        .delete()
+        .eq("id", organization.id);
 
       await revalidateTag(
         `${organization.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-metadata`,
@@ -242,40 +178,35 @@ export const deleteOrganization = withOrgAuth(
   },
 );
 
-export const getOrganizationFromReleaseId = async (releaseId: string) => {
-  const release = await db.get<Release>(RELEASE_COLLECTION_ID, releaseId);
-  return release.organizationId;
+export const getOrganizationFromReleaseId = async (releaseId: number) => {
+  const supabase = createClient();
+  let { data: organizationId, error } = await supabase
+    .from("release")
+    .select("organizationId")
+    .eq("id", releaseId)
+    .single();
+
+  return organizationId;
 };
 
 export const createRelease = withOrgAuth(
-  async (_: FormData, organization: Organization) => {
-    const session = {
-      user: {
-        id: 1,
-      },
-    };
-    if (!session?.user.id) {
+  async (_: FormData, organization: Tables<"organization">) => {
+    const { data: user, error: user_error } = await getSession();
+    const supabase = createClient();
+
+    if (user_error || !user.user?.id) {
       return {
         error: "Not authenticated",
       };
     }
 
-    const response = await db.create(RELEASE_COLLECTION_ID, {
-      organization: organization.$id,
-      organizationId: organization.$id,
-      subdomain: organization.subdomain,
-      customDomain: organization.customDomain,
-      user: "1",
-      userId: "1",
-    });
-
-    await db.update(
-      RELEASE_COLLECTION_ID,
-      {
-        slug: response.$id,
-      },
-      response.$id,
-    );
+    const { data, error } = await supabase
+      .from("release")
+      .insert({
+        organizationId: organization.id,
+      })
+      .select()
+      .single();
 
     await revalidateTag(
       `${organization.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-releases`,
@@ -283,36 +214,46 @@ export const createRelease = withOrgAuth(
     organization?.customDomain &&
       (await revalidateTag(`${organization.customDomain}-releases`));
 
-    return response as Release;
+    return data;
   },
 );
 
 // creating a separate function for this because we're not using FormData
-export const updateRelease = async (data: Release) => {
-  const session = await getSession();
-  if (!session?.user.id) {
+export const updateRelease = async (data: Tables<"release">) => {
+  const { data: user, error: user_error } = await getSession();
+  const supabase = createClient();
+
+  if (user_error || !user.user?.id) {
     return {
       error: "Not authenticated",
     };
   }
 
-  const release = await db.get<Release>(RELEASE_COLLECTION_ID, data.$id);
-  if (!release || release.user.$id !== session.user.id) {
+  // const release = await db.get<Release>(RELEASE_COLLECTION_ID, data.$id);
+
+  const { data: release } = await supabase
+    .from("release")
+    .select("*, organization (subdomain, customDomain)")
+    .eq("id", data.id)
+    .single();
+
+  if (!release) {
     return {
       error: "Release not found",
     };
   }
+
   try {
-    const response = await db.update(
-      RELEASE_COLLECTION_ID,
-      {
+    const { data: response } = await supabase
+      .from("release")
+      .update({
         title: data.title,
         description: data.description,
         content: data.content,
         contentJson: data.contentJson,
-      },
-      data.$id,
-    );
+      })
+      .eq("id", data.id)
+      .select();
 
     await revalidateTag(
       `${release.organization?.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-releases`,
@@ -337,53 +278,71 @@ export const updateRelease = async (data: Release) => {
 };
 
 export const updateReleaseMetadata = withReleaseAuth(
-  async (formData: FormData, release: Release, key: string) => {
+  async (formData: FormData, release: Tables<"release">, key: string) => {
+    const supabase = createClient();
     const value = formData.get(key) as string;
+    let customDomain;
+    let subdomain;
 
     try {
-      let response;
       if (key === "image") {
         const file = formData.get(key) as File;
         const filename = `${nanoid()}.${file.type.split("/")[1]}`;
-        const newfile = await InputFile.fromBlob(file, filename);
 
-        const awFile = await storage.upload(RELEASE_BUCKET_ID, newfile);
-        const url = `${ENDPOINT}/storage/buckets/${RELEASE_BUCKET_ID}/files/${awFile.$id}/view?project=${PROJECT_ID}`;
-        const blurhash = await getBlurDataURL(url);
+        console.log(filename);
 
-        response = await db.update(
-          RELEASE_COLLECTION_ID,
-          {
-            image: url,
+        const { error } = await supabase.storage
+          .from("release")
+          .upload(filename, file, {
+            cacheControl: "3600",
+            upsert: false,
+          });
+
+        const { data } = supabase.storage
+          .from("release")
+          .getPublicUrl(filename);
+        const blurhash =
+          key === "image" ? await getBlurDataURL(data.publicUrl) : null;
+
+        let response = await supabase
+          .from("release")
+          .update({
+            image: data.publicUrl,
             imageBlurhash: blurhash,
-          },
-          release.$id,
-        );
+          })
+          .eq("id", release.id)
+          .select("*, organization(subdomain, customDomain)")
+          .single();
+
+        customDomain = response.data?.organization?.customDomain;
+        subdomain = response.data?.organization?.subdomain;
       } else {
-        response = await db.update(
-          RELEASE_COLLECTION_ID,
-          {
+        let response = await supabase
+          .from("release")
+          .update({
             [key]: key === "published" ? value === "true" : value,
-          },
-          release.$id,
-        );
+          })
+          .eq("id", release.id)
+          .select("*, organization(subdomain, customDomain)")
+          .single();
+
+        customDomain = response.data?.organization?.customDomain;
+        subdomain = response.data?.organization?.subdomain;
       }
 
       await revalidateTag(
-        `${release.organization?.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-releases`,
+        `${subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-releases`,
       );
       await revalidateTag(
-        `${release.organization?.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-${release.slug}`,
+        `${subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-${release.slug}`,
       );
 
       // if the site has a custom domain, we need to revalidate those tags too
-      release.organization?.customDomain &&
-        (await revalidateTag(`${release.organization?.customDomain}-releases`),
-        await revalidateTag(
-          `${release.organization?.customDomain}-${release.slug}`,
-        ));
+      customDomain &&
+        (await revalidateTag(`${customDomain}-releases`),
+        await revalidateTag(`${customDomain}-${release.slug}`));
 
-      return response;
+      return;
     } catch (error: any) {
       if (error.code === "P2002") {
         return {
@@ -399,9 +358,14 @@ export const updateReleaseMetadata = withReleaseAuth(
 );
 
 export const deleteRelease = withReleaseAuth(
-  async (_: FormData, release: Release) => {
+  async (_: FormData, release: Tables<"release">) => {
+    const supabase = createClient();
+
     try {
-      const response = await db.delete(RELEASE_COLLECTION_ID, release.$id);
+      const response = await supabase
+        .from("release")
+        .delete()
+        .eq("id", release.id);
       return response;
     } catch (error: any) {
       return {
@@ -416,33 +380,35 @@ export const editUser = async (
   _id: unknown,
   key: string,
 ) => {
-  const session = await getSession();
-  if (!session?.user.id) {
-    return {
-      error: "Not authenticated",
-    };
-  }
-
-  const value = formData.get(key) as string;
-
-  try {
-    const response = await db.update(
-      RELEASE_COLLECTION_ID,
-      {
-        [key]: value,
-      },
-      session.user.id,
-    );
-    return response;
-  } catch (error: any) {
-    if (error.code === "P2002") {
-      return {
-        error: `This ${key} is already in use`,
-      };
-    } else {
-      return {
-        error: error.message,
-      };
-    }
-  }
+  // const supabase = createClient();
+  // const session = await getSession();
+  // if (!session.user?.id) {
+  //   return {
+  //     error: "Not authenticated",
+  //   };
+  // }
+  // const value = formData.get(key) as string;
+  // try {
+  //   const response = await db.update(
+  //     RELEASE_COLLECTION_ID,
+  //     {
+  //       [key]: value,
+  //     },
+  //     session.user?.id,
+  //   );
+  //   const response = await supabase.from("release").update({
+  //     [key]: value,
+  //   }).eq("id")
+  //   return response;
+  // } catch (error: any) {
+  //   if (error.code === "P2002") {
+  //     return {
+  //       error: `This ${key} is already in use`,
+  //     };
+  //   } else {
+  //     return {
+  //       error: error.message,
+  //     };
+  //   }
+  // }
 };

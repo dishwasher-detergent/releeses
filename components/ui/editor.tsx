@@ -5,44 +5,40 @@ import { Badge } from "@/components/ui/badge";
 import { Button, buttonVariants } from "@/components/ui/button";
 import NovelEditor from "@/components/ui/novel";
 import { Separator } from "@/components/ui/separator";
-import { Release } from "@/interfaces/release";
 import { updateRelease, updateReleaseMetadata } from "@/lib/actions";
+import { Tables } from "@/types/supabase";
 import { ExternalLink } from "lucide-react";
 import { EditorInstance } from "novel";
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import TextareaAutosize from "react-textarea-autosize";
 import { toast } from "sonner";
 
-export default function Editor({
-  release,
-}: {
-  release: Release;
-  markdown: any;
-}) {
+export default function Editor({ release }: { release: Tables<"release"> }) {
   let [isPendingSaving, startTransitionSaving] = useTransition();
   let [isPendingPublishing, startTransitionPublishing] = useTransition();
-  const [data, setData] = useState<Release>(release);
+  const [data, setData] = useState(release);
 
   const url = process.env.NEXT_PUBLIC_VERCEL_ENV
-    ? `https://${data.organization?.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}/${data.slug}`
-    : `http://${data.organization?.subdomain}.localhost:3000/${data.slug}`;
+    ? //@ts-ignore
+      `https://${data.organization?.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}/${data.slug}`
+    : //@ts-ignore
+      `http://${data.organization?.subdomain}.localhost:3000/${data.slug}`;
 
-  // listen to CMD + S and override the default behavior
-  // useEffect(() => {
-  //   const onKeyDown = (e: KeyboardEvent) => {
-  //     if (e.metaKey && e.key === "s") {
-  //       e.preventDefault();
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.ctrlKey && e.key === "s") {
+        e.preventDefault();
 
-  //       startTransitionSaving(async () => {
-  //         await updateRelease(data);
-  //       });
-  //     }
-  //   };
-  //   document.addEventListener("keydown", onKeyDown);
-  //   return () => {
-  //     document.removeEventListener("keydown", onKeyDown);
-  //   };
-  // }, [data, startTransitionSaving]);
+        startTransitionSaving(async () => {
+          await updateRelease(data);
+        });
+      }
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [data, startTransitionSaving]);
 
   return (
     <>
@@ -68,7 +64,7 @@ export default function Editor({
             startTransitionPublishing(async () => {
               await updateReleaseMetadata(
                 formData,
-                release.$id,
+                release.id,
                 "published",
               ).then(() => {
                 toast.success(
@@ -104,7 +100,7 @@ export default function Editor({
       </div>
       <Separator />
       <NovelEditor
-        defaultValue={JSON.parse(release.contentJson)}
+        defaultValue={release.contentJson}
         onUpdate={(editor: EditorInstance) => {
           setData((prev) => ({
             ...prev,
