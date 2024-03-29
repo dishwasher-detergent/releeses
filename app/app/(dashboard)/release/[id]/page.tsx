@@ -11,7 +11,7 @@ export default async function ReleasePage({
 
   const { data, error } = await supabase
     .from("release")
-    .select()
+    .select("*, organization(subdomain, customDomain)")
     .eq("id", decodeURIComponent(params.id))
     .single();
 
@@ -19,5 +19,5 @@ export default async function ReleasePage({
     notFound();
   }
 
-  return <Editor release={data} markdown={data.content} />;
+  return <Editor release={data} />;
 }
