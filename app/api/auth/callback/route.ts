@@ -11,5 +11,11 @@ export async function GET(request: Request) {
   }
 
   // URL to redirect to after sign up process completes
-  return NextResponse.redirect(`${requestUrl.protocol}//${requestUrl.host}/`);
+  return NextResponse.redirect(
+    `${
+      process.env.NEXT_PUBLIC_ROOT_DOMAIN?.includes("localhost")
+        ? "http"
+        : "https"
+    }://app.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`,
+  );
 }

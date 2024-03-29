@@ -18,7 +18,13 @@ export default function SignInPage() {
             supabase.auth.signInWithOAuth({
               provider: "github",
               options: {
-                redirectTo: `https://app.releaser.xyz/api/auth/callback`,
+                redirectTo: `${
+                  process.env.NEXT_PUBLIC_ROOT_DOMAIN?.includes("localhost")
+                    ? "http"
+                    : "https"
+                }://app.${
+                  process.env.NEXT_PUBLIC_ROOT_DOMAIN
+                }/api/auth/callback`,
               },
             });
           }}
