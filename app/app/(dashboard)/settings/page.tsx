@@ -2,13 +2,10 @@ import Form from "@/components/form";
 import { Separator } from "@/components/ui/separator";
 import { editUser } from "@/lib/actions";
 import { getSession } from "@/lib/auth";
-import { redirect } from "next/navigation";
 
 export default async function SettingsPage() {
-  const session = await getSession();
-  if (!session) {
-    redirect("/login");
-  }
+  const { data: user } = await getSession();
+
   return (
     <>
       <div className="flex flex-1 flex-col overflow-y-auto">
@@ -19,7 +16,7 @@ export default async function SettingsPage() {
           inputAttrs={{
             name: "name",
             type: "text",
-            defaultValue: session.user?.id!,
+            defaultValue: user.user?.id!,
             placeholder: "John Doe",
             maxLength: 32,
           }}
@@ -33,7 +30,7 @@ export default async function SettingsPage() {
           inputAttrs={{
             name: "email",
             type: "email",
-            defaultValue: session.user?.email!,
+            defaultValue: user.user?.email!,
             placeholder: "hello@releaser.xyz",
           }}
           handleSubmit={editUser}

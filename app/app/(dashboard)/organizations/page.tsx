@@ -1,15 +1,8 @@
 import LoadingCard from "@/components/loading/card";
 import Organizations from "@/components/ui/organizations";
-import { getSession } from "@/lib/auth";
-import { redirect } from "next/navigation";
 import { Suspense } from "react";
 
 export default async function AllOrganizations() {
-  const session = await getSession();
-  if (!session) {
-    redirect("/login");
-  }
-
   return (
     <section className="relative h-full overflow-y-auto">
       <Suspense

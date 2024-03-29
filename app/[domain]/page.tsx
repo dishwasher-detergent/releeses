@@ -20,7 +20,11 @@ export default async function OrgHomePage({
 }) {
   const supabase = createClient();
   const domain = decodeURIComponent(params.domain);
-  const data = await getOrgData(domain);
+  const org = await getOrgData(domain);
+
+  if (!org) {
+    notFound();
+  }
 
   const subdomain = domain.endsWith(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`)
     ? domain.replace(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`, "")
@@ -31,15 +35,7 @@ export default async function OrgHomePage({
     ? query.eq("subdomain", subdomain)
     : query.eq("customDomain", domain);
 
-  query.eq("release.published", true).order("release.created_at", {
-    ascending: false,
-  });
-
-  const response = await query.single();
-
-  if (!data) {
-    notFound();
-  }
+  const response = await query.eq("release.published", true).single();
 
   return (
     <>

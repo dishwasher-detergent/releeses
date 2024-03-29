@@ -12,6 +12,7 @@ export async function getOrgData(domain: string) {
   return await unstable_cache(
     async () => {
       let query = supabase.from("organization").select();
+
       query = subdomain
         ? query.eq("subdomain", subdomain)
         : query.eq("customDomain", domain);
@@ -34,11 +35,7 @@ export async function getReleaseData(domain: string, slug: string) {
 
   return await unstable_cache(
     async () => {
-      let query = supabase
-        .from("release")
-        .select(
-          "*, organization!inner(subdomain, customDomain), organization(*)",
-        );
+      let query = supabase.from("release").select("*, organization(*)");
       query = subdomain
         ? query.eq("organization.subdomain", subdomain)
         : query.eq("organization.customDomain", domain);

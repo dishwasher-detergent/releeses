@@ -1,5 +1,4 @@
 import ReleaesCard from "@/components/ui/release-card";
-import { getSession } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { LucideGhost } from "lucide-react";
 import { notFound } from "next/navigation";
@@ -11,13 +10,11 @@ export default async function Releases({
   orgId?: string;
   limit?: number;
 }) {
-  const session = await getSession();
   const supabase = createClient();
 
   let query = supabase
     .from("release")
     .select("*, organization(*)")
-    .eq("user_id", session.user!.id)
     .order("created_at", {
       ascending: false,
     })

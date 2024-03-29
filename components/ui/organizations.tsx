@@ -1,17 +1,14 @@
 import OrgCard from "@/components/ui/org-card";
-import { getSession } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { LucideGhost } from "lucide-react";
 import { notFound } from "next/navigation";
 
 export default async function Organizations({ limit = 4 }: { limit?: number }) {
-  const session = await getSession();
   const supabase = createClient();
 
   const { data, error } = await supabase
     .from("organization")
     .select()
-    .eq("user_id", session.user!.id)
     .order("created_at", {
       ascending: true,
     })

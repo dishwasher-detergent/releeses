@@ -9,10 +9,10 @@ import {
   validDomainRegex,
 } from "@/lib/domains";
 import { createClient } from "@/lib/supabase/server";
+import { getBlurDataURL } from "@/lib/utils";
 import { Tables } from "@/types/supabase";
 import { customAlphabet } from "nanoid";
 import { revalidateTag } from "next/cache";
-import { InputFile } from "node-appwrite";
 
 const nanoid = customAlphabet(
   "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
@@ -102,17 +102,24 @@ export const updateOrganization = withOrgAuth(
       } else if (key === "image" || key === "logo") {
         const file = formData.get(key) as File;
         const filename = `${nanoid()}.${file.type.split("/")[1]}`;
-        const newfile = await InputFile.fromBlob(file, filename);
 
-        // const awFile = await storage.upload(ORGANIZATION_BUCKET_ID, newfile);
-        // const url = `${ENDPOINT}/storage/buckets/${ORGANIZATION_BUCKET_ID}/files/${awFile.$id}/view?project=${PROJECT_ID}`;
-        const blurhash = key === "image" ? "test" : null;
-        const url = "test";
+        const { error } = await supabase.storage
+          .from("organization")
+          .upload(filename, file, {
+            cacheControl: "3600",
+            upsert: false,
+          });
+
+        const { data } = supabase.storage
+          .from("organization")
+          .getPublicUrl(filename);
+        const blurhash =
+          key === "image" ? await getBlurDataURL(data.publicUrl) : null;
 
         response = await supabase
           .from("organization")
           .update({
-            [key]: url,
+            [key]: data.publicUrl,
             ...(blurhash && { imageBlurhash: blurhash }),
           })
           .eq("id", organization.id)
@@ -149,7 +156,6 @@ export const updateOrganization = withOrgAuth(
 
 export const deleteOrganization = withOrgAuth(
   async (_: FormData, organization: Tables<"organization">) => {
-    const session = await getSession();
     const supabase = createClient();
 
     try {
@@ -157,17 +163,6 @@ export const deleteOrganization = withOrgAuth(
         .from("organization")
         .delete()
         .eq("id", organization.id);
-
-      // const count =
-      //   (user.organizationCount ?? 0) == 0 ? 0 : user.organizationCount - 1;
-
-      // await db.update(
-      //   USER_COLLECTION_ID,
-      //   {
-      //     organizationCount: count,
-      //   },
-      //   session.user?.id,
-      // );
 
       await revalidateTag(
         `${organization.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-metadata`,
@@ -196,10 +191,10 @@ export const getOrganizationFromReleaseId = async (releaseId: number) => {
 
 export const createRelease = withOrgAuth(
   async (_: FormData, organization: Tables<"organization">) => {
-    const session = await getSession();
+    const { data: user, error: user_error } = await getSession();
     const supabase = createClient();
 
-    if (!session.user?.id) {
+    if (user_error || !user.user?.id) {
       return {
         error: "Not authenticated",
       };
@@ -225,10 +220,10 @@ export const createRelease = withOrgAuth(
 
 // creating a separate function for this because we're not using FormData
 export const updateRelease = async (data: Tables<"release">) => {
-  const session = await getSession();
+  const { data: user, error: user_error } = await getSession();
   const supabase = createClient();
 
-  if (!session.user?.id) {
+  if (user_error || !user.user?.id) {
     return {
       error: "Not authenticated",
     };
@@ -242,11 +237,12 @@ export const updateRelease = async (data: Tables<"release">) => {
     .eq("id", data.id)
     .single();
 
-  if (!release || release?.user_id !== session.user?.id) {
+  if (!release) {
     return {
       error: "Release not found",
     };
   }
+
   try {
     const { data: response } = await supabase
       .from("release")
@@ -292,19 +288,26 @@ export const updateReleaseMetadata = withReleaseAuth(
       if (key === "image") {
         const file = formData.get(key) as File;
         const filename = `${nanoid()}.${file.type.split("/")[1]}`;
-        const newfile = await InputFile.fromBlob(file, filename);
 
-        // const awFile = await storage.upload(RELEASE_BUCKET_ID, newfile);
-        // const url = `${ENDPOINT}/storage/buckets/${RELEASE_BUCKET_ID}/files/${awFile.$id}/view?project=${PROJECT_ID}`;
-        // const blurhash = await getBlurDataURL(url);
+        console.log(filename);
 
-        const blurhash = key === "image" ? "test" : null;
-        const url = "test";
+        const { error } = await supabase.storage
+          .from("release")
+          .upload(filename, file, {
+            cacheControl: "3600",
+            upsert: false,
+          });
+
+        const { data } = supabase.storage
+          .from("release")
+          .getPublicUrl(filename);
+        const blurhash =
+          key === "image" ? await getBlurDataURL(data.publicUrl) : null;
 
         let response = await supabase
           .from("release")
           .update({
-            image: url,
+            image: data.publicUrl,
             imageBlurhash: blurhash,
           })
           .eq("id", release.id)

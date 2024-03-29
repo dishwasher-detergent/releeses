@@ -2,9 +2,9 @@ import { createClient } from "@/lib/supabase/server";
 
 export async function getSession() {
   const supabase = createClient();
-  const { data, error } = await supabase.auth.getUser();
+  const session = await supabase.auth.getUser();
 
-  return data;
+  return session;
 }
 
 export function withOrgAuth(action: any) {
@@ -13,10 +13,10 @@ export function withOrgAuth(action: any) {
     orgId: string,
     key: string | null,
   ) => {
-    const session = await getSession();
     const supabase = createClient();
+    const { data: user, error: user_error } = await getSession();
 
-    if (!session) {
+    if (user_error || !user?.user) {
       return {
         error: "Not authenticated",
       };
@@ -28,7 +28,7 @@ export function withOrgAuth(action: any) {
       .eq("id", orgId)
       .single();
 
-    if (!data || data.user_id !== session.user?.id) {
+    if (!data) {
       return {
         error: "Not authorized",
       };
@@ -44,10 +44,10 @@ export function withReleaseAuth(action: any) {
     releaseId: number,
     key: string | null,
   ) => {
-    const session = await getSession();
     const supabase = createClient();
+    const { data: user, error: user_error } = await getSession();
 
-    if (!session.user?.id) {
+    if (user_error || !user?.user) {
       return {
         error: "Not authenticated",
       };
@@ -59,7 +59,7 @@ export function withReleaseAuth(action: any) {
       .eq("id", releaseId)
       .single();
 
-    if (!data || data.user_id !== session.user?.id) {
+    if (!data) {
       return {
         error: "Not authorized",
       };
