@@ -18,6 +18,13 @@ export default function OrgCard({ org }: { org: Tables<"organization"> }) {
 
   return (
     <Card className="relative flex flex-col overflow-hidden rounded-none border-l-0 border-t-0 shadow-none">
+      {/* @ts-ignore */}
+      {org.release && (
+        <Badge className="absolute right-2 top-2 z-10">
+          {/* @ts-ignore */}
+          {org.release.length} Release{org.release.length > 1 ? "s" : ""}
+        </Badge>
+      )}
       <CardContent className="flex-1 p-0">
         <BlurImage
           alt={org.name ?? "Card thumbnail"}
@@ -29,7 +36,7 @@ export default function OrgCard({ org }: { org: Tables<"organization"> }) {
           blurDataURL={org.imageBlurhash ?? placeholderBlurhash}
         />
         <CardHeader>
-          <CardTitle className="h-4 truncate">
+          <CardTitle className="truncate text-lg">
             {org.name ?? "No Name"}
           </CardTitle>
           <CardDescription className="line-clamp-4 h-20">

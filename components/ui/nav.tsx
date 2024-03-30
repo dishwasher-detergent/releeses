@@ -7,12 +7,12 @@ import { Nav } from "@/interfaces/nav";
 import { getOrganizationFromReleaseId } from "@/lib/actions";
 import { cn } from "@/lib/utils";
 import {
-  ArrowLeft,
-  Edit3,
-  Globe,
-  Layout,
-  Newspaper,
-  Settings,
+  LucideArrowLeft,
+  LucideEdit3,
+  LucideGlobe,
+  LucideLayout,
+  LucideNewspaper,
+  LucideSettings,
 } from "lucide-react";
 import Link from "next/link";
 import { useParams, useSelectedLayoutSegments } from "next/navigation";
@@ -43,19 +43,19 @@ export default function Nav({ children }: NavProps) {
         {
           name: "Back to All Orgs",
           href: "/organizations",
-          icon: ArrowLeft,
+          icon: LucideArrowLeft,
         },
         {
           name: "Releases",
           href: `/organization/${id}`,
           isActive: segments.length === 2,
-          icon: Newspaper,
+          icon: LucideNewspaper,
         },
         {
           name: "Settings",
           href: `/organization/${id}/settings`,
           isActive: segments.includes("settings"),
-          icon: Settings,
+          icon: LucideSettings,
         },
       ];
     } else if (segments[0] === "release" && id) {
@@ -63,19 +63,19 @@ export default function Nav({ children }: NavProps) {
         {
           name: "Back to All Releases",
           href: orgId ? `/organization/${orgId}` : "/organizations",
-          icon: ArrowLeft,
+          icon: LucideArrowLeft,
         },
         {
           name: "Editor",
           href: `/release/${id}`,
           isActive: segments.length === 2,
-          icon: Edit3,
+          icon: LucideEdit3,
         },
         {
           name: "Settings",
           href: `/release/${id}/settings`,
           isActive: segments.includes("settings"),
-          icon: Settings,
+          icon: LucideSettings,
         },
       ];
     }
@@ -84,13 +84,13 @@ export default function Nav({ children }: NavProps) {
         name: "Overview",
         href: "/",
         isActive: segments.length === 0,
-        icon: Layout,
+        icon: LucideLayout,
       },
       {
         name: "Organizations",
         href: "/organizations",
         isActive: segments[0] === "organizations",
-        icon: Globe,
+        icon: LucideGlobe,
       },
     ];
   }, [segments, id, orgId]);

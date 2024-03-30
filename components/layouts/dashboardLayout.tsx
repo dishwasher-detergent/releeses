@@ -28,8 +28,8 @@ export default function DashboardLayoutComponent({
   const title = useMemo<React.ReactNode>(() => {
     if (segments.length === 0) {
       return (
-        <p className="flex flex-row items-center gap-2 text-xl font-bold">
-          <LucideLayout className="size-5" />
+        <p className="flex flex-row items-center gap-2 font-bold">
+          <LucideLayout className="size-4" />
           Overview
         </p>
       );
@@ -38,8 +38,8 @@ export default function DashboardLayoutComponent({
     if (segments[0] === "organizations") {
       return (
         <div className="flex flex-1 flex-row items-center justify-between">
-          <p className="flex flex-row items-center gap-2 text-xl font-bold">
-            <LucideGlobe className="size-5" />
+          <p className="flex flex-row items-center gap-2 font-bold">
+            <LucideGlobe className="size-4" />
             Organizations
           </p>
           <CreateOrg />
@@ -50,15 +50,15 @@ export default function DashboardLayoutComponent({
     if (segments[0] === "release" && id) {
       if (segments.includes("settings"))
         return (
-          <p className="flex flex-row items-center gap-2 text-xl font-bold">
-            <LucideSettings className="size-5" />
+          <p className="flex flex-row items-center gap-2 font-bold">
+            <LucideSettings className="size-4" />
             Release Settings
           </p>
         );
 
       return (
-        <p className="flex flex-row items-center gap-2 text-xl font-bold">
-          <LucideNewspaper className="size-5" />
+        <p className="flex flex-row items-center gap-2 font-bold">
+          <LucideNewspaper className="size-4" />
           Release
         </p>
       );
@@ -67,17 +67,17 @@ export default function DashboardLayoutComponent({
     if (segments[0] === "organization" && id) {
       if (segments.includes("settings"))
         return (
-          <p className="flex flex-row items-center gap-2 text-xl font-bold">
-            <LucideSettings className="size-5" />
+          <p className="flex flex-row items-center gap-2 font-bold">
+            <LucideSettings className="size-4" />
             Organization Settings
           </p>
         );
 
       return (
         <div className="flex flex-1 flex-row items-center justify-between">
-          <p className="flex flex-row items-center gap-2 text-xl font-bold">
-            <LucideGlobe className="size-5" />
-            Organization
+          <p className="flex flex-row items-center gap-2 font-bold">
+            <LucideNewspaper className="size-4" />
+            Releases
           </p>
           <CreateRelease />
         </div>

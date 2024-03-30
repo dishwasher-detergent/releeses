@@ -14,7 +14,7 @@ export default async function Organizations({ limit = 4 }: { limit?: number }) {
 
   const { data, error } = await supabase
     .from("organization")
-    .select()
+    .select("*, release(id)")
     .eq("user_id", session?.data?.user?.id)
     .order("created_at", {
       ascending: true,

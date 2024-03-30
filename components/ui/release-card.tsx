@@ -44,7 +44,7 @@ export default function ReleaseCard({
           blurDataURL={data.imageBlurhash ?? placeholderBlurhash}
         />
         <CardHeader>
-          <CardTitle className="h-4 truncate">
+          <CardTitle className="truncate text-lg">
             {data.title ?? "No Title"}
           </CardTitle>
           <CardDescription className="line-clamp-4 h-20">
