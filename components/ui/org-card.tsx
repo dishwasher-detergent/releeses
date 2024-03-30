@@ -29,8 +29,8 @@ export default function OrgCard({ org }: { org: Tables<"organization"> }) {
         <div className="aspect-video w-full overflow-hidden">
           <BlurImage
             alt={org.image ? org.name : "Upload your own image at /settings"}
-            width={500}
-            height={400}
+            width={600}
+            height={300}
             className="h-44 object-cover"
             src={org.image}
             placeholder="blur"
