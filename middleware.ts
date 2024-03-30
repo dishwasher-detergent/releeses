@@ -38,12 +38,6 @@ export default async function middleware(req: NextRequest) {
 
   // rewrites for app pages
   if (hostname == `app.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`) {
-    const session = true;
-    if (!session && path !== "/signin") {
-      return NextResponse.redirect(new URL("/signin", req.url));
-    } else if (session && path == "/signin") {
-      // return NextResponse.redirect(new URL("/", req.url));
-    }
     return NextResponse.rewrite(
       new URL(`/app${path === "/" ? "" : path}`, req.url),
     );
