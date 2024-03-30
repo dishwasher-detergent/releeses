@@ -1,4 +1,9 @@
-import { remarkGithub, replaceTweets } from "@/lib/remark-plugins";
+import {
+  remarkBitbucket,
+  remarkGithub,
+  remarkGitlab,
+  replaceTweets,
+} from "@/lib/remark-plugins";
 import { createClient } from "@/lib/supabase/server";
 import { serialize } from "next-mdx-remote/serialize";
 import { unstable_cache } from "next/cache";
@@ -78,7 +83,13 @@ export async function getMdxSource(releaseContent: string) {
   // Serialize the content string into MDX
   const mdxSource = await serialize(content, {
     mdxOptions: {
-      remarkPlugins: [replaceTweets, remarkGithub, remarkGfm],
+      remarkPlugins: [
+        replaceTweets,
+        remarkGithub,
+        remarkGfm,
+        remarkGitlab,
+        remarkBitbucket,
+      ],
     },
   });
 

@@ -1,3 +1,4 @@
+import { LucideExternalLink } from "lucide-react";
 import { findAndReplace } from "mdast-util-find-and-replace";
 import Link from "next/link";
 import { ReactNode } from "react";
@@ -18,8 +19,14 @@ export function replaceLinks({
       {children}
     </Link>
   ) : (
-    <a href={href} target="_blank" rel="noopener noreferrer">
-      {children} ↗
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="flex flex-row items-center gap-2"
+    >
+      {children}
+      <LucideExternalLink className="size-4" />
     </a>
   );
 }
@@ -70,13 +77,13 @@ export function replaceTweets() {
 
 export function remarkGithub() {
   // Regular expression to match pulls, commits, compares, and user profiles
-  const githubRegex =
+  const regex =
     /(https:\/\/github\.com\/(?:[^/]+\/[^/]+\/(?:pull\/\d+|commit\/[a-f0-9]+|compare\/[\w.-]+)|(?:[^/]+)))/gi;
 
   // @ts-ignore
   return (tree, _file) => {
     // @ts-ignore
-    findAndReplace(tree, [[githubRegex, replaceMention]]);
+    findAndReplace(tree, [[regex, replaceMention]]);
   };
 
   function replaceMention(value: string) {
@@ -91,6 +98,69 @@ export function remarkGithub() {
       message = `${id}`;
     } else {
       message = `@${id}`;
+    }
+
+    return [
+      {
+        type: "text",
+        value: message,
+      },
+    ];
+  }
+}
+
+export function remarkGitlab() {
+  // Regular expression to match pulls, commits, compares, and user profiles
+  const regex =
+    /https:\/\/gitlab\.com\/(?:[^\/]+\/[^\/]+\/(?:-\/merge_requests\/\d+|-\/commit\/[a-f0-9]+)|[^\/]+(?:\/[^\/]+)?)/gi;
+  // @ts-ignore
+  return (tree, _file) => {
+    // @ts-ignore
+    findAndReplace(tree, [[regex, replaceMention]]);
+  };
+
+  function replaceMention(value: string) {
+    console.log(value);
+    const id = getVal(value);
+
+    let message = "";
+    if (value.includes("/merge_requests/")) {
+      message = `${id}`;
+    } else if (value.includes("/commit/")) {
+      message = `${id.slice(0, 7)}`;
+    } else if (value.includes("/compare/")) {
+      message = `${id}`;
+    } else {
+      message = `@${id}`;
+    }
+
+    return [
+      {
+        type: "text",
+        value: message,
+      },
+    ];
+  }
+}
+
+export function remarkBitbucket() {
+  // Regular expression to match pulls, commits, compares, and user profiles
+  const regex =
+    /(https:\/\/bitbucket\.org\/(?:[^/]+\/[^/]+\/(?:pull-requests\/\d+|commits\/[a-f0-9]+)|(?:[^/]+)))/gi;
+  // @ts-ignore
+  return (tree, _file) => {
+    // @ts-ignore
+    findAndReplace(tree, [[regex, replaceMention]]);
+  };
+
+  function replaceMention(value: string) {
+    const id = getVal(value);
+
+    let message = "";
+    if (value.includes("/pull-requests/")) {
+      message = `${id}`;
+    } else if (value.includes("/commits/")) {
+      message = `${id.slice(0, 7)}`;
     }
 
     return [
