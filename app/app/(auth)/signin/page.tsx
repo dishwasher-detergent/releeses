@@ -54,11 +54,11 @@ export default function SignInPage() {
         </Button>
         <Button disabled className="w-full">
           <LucideGitBranch className="mr-2 size-4" />
-          BitBucket
+          BitBucket (Coming Soon!)
         </Button>
         <Button disabled className="w-full">
           <LucideGitlab className="mr-2 size-4" />
-          GitLab
+          GitLab (Coming Soon!)
         </Button>
       </CardContent>
     </Card>
