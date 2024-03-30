@@ -3,10 +3,8 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { Nav } from "@/interfaces/nav";
 import { getOrganizationFromReleaseId } from "@/lib/actions";
-import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
 import {
   ArrowLeft,
@@ -17,20 +15,15 @@ import {
   Settings,
 } from "lucide-react";
 import Link from "next/link";
-import {
-  useParams,
-  useRouter,
-  useSelectedLayoutSegments,
-} from "next/navigation";
+import { useParams, useSelectedLayoutSegments } from "next/navigation";
 import { ReactNode, useEffect, useMemo, useState } from "react";
+import Profile from "./profile";
 
 interface NavProps {
   children?: ReactNode;
 }
 
 export default function Nav({ children }: NavProps) {
-  const router = useRouter();
-  const supabase = createClient();
   const segments = useSelectedLayoutSegments();
   const { id } = useParams() as { id?: number };
 
@@ -126,18 +119,7 @@ export default function Nav({ children }: NavProps) {
       </nav>
       <Separator />
       <div className="flex flex-row items-center gap-2 px-2">
-        <Button
-          className="flex-1"
-          variant="default"
-          onClick={async () => {
-            await supabase.auth.signOut();
-
-            router.push("/signin");
-          }}
-        >
-          Sign Out
-        </Button>
-        <ThemeToggle />
+        <Profile />
       </div>
     </div>
   );
