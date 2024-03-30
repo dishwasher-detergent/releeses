@@ -6,12 +6,17 @@ import { useState } from "react";
 
 import type { ComponentProps } from "react";
 
-export default function BlurImage(props: ComponentProps<typeof Image>) {
+type ImageWithoutSrcProps = Omit<ComponentProps<typeof Image>, "src"> & {
+  src?: string | null;
+};
+
+export default function BlurImage(props: ImageWithoutSrcProps) {
   const [isLoading, setLoading] = useState(true);
 
-  return (
+  return props.src ? (
     <Image
       {...props}
+      src={props.src}
       alt={props.alt}
       className={cn(
         props.className,
@@ -20,5 +25,9 @@ export default function BlurImage(props: ComponentProps<typeof Image>) {
       )}
       onLoad={() => setLoading(false)}
     />
+  ) : (
+    <div className="flex h-full w-full items-center justify-center bg-muted p-4">
+      <p className="truncate font-black text-foreground/40">{props.alt}</p>
+    </div>
   );
 }

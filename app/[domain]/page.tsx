@@ -48,10 +48,10 @@ export default async function OrgHomePage({
             className="h-full w-full object-cover"
             placeholder="blur"
             blurDataURL={response.data?.imageBlurhash ?? placeholderBlurhash}
-            src={response.data?.image ?? "/placeholder.png"}
+            src={response.data?.image}
           />
         </div>
-        <div className="-mt-16 ml-4 pb-8">
+        <div className="-mt-24 ml-4 pb-8">
           <div className="relative z-10 mb-4 h-36 w-36 overflow-hidden rounded-full border-4 border-background">
             <BlurImage
               alt={response.data?.logo ?? "Organization Logo"}
@@ -60,7 +60,7 @@ export default async function OrgHomePage({
               className="h-full w-full object-cover"
               placeholder="blur"
               blurDataURL={placeholderBlurhash}
-              src={response.data?.logo ?? "/placeholder.png"}
+              src={response.data?.logo}
             />
           </div>
           <h1 className="truncate pb-2 text-2xl font-bold">

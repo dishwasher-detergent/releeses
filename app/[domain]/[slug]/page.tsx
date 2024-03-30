@@ -75,7 +75,7 @@ export default async function OrgReleasePage({
           className="h-full w-full object-cover"
           placeholder="blur"
           blurDataURL={release?.data?.imageBlurhash ?? placeholderBlurhash}
-          src={release?.data?.image ?? "/placeholder.png"}
+          src={release?.data?.image}
         />
       </section>
       <section className="mb-8 w-full px-4">
@@ -88,10 +88,15 @@ export default async function OrgReleasePage({
 
       {release?.adjacentReleases && (
         <>
-          <div className="flex h-[52px] w-full items-center justify-between px-4 py-2">
-            <p className="text-xl font-bold">Recent Releases</p>
-          </div>
-          <Separator />
+          {release?.adjacentReleases?.data &&
+            release?.adjacentReleases?.data.length > 0 && (
+              <>
+                <div className="flex h-[52px] w-full items-center justify-between px-4 py-2">
+                  <p className="text-xl font-bold">Recent Releases</p>
+                </div>
+                <Separator />
+              </>
+            )}
           <section className="grid w-full grid-cols-2 border-l lg:grid-cols-3">
             {release?.adjacentReleases.data?.map(
               (item: Tables<"release">, index: number) => (
