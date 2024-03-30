@@ -297,6 +297,10 @@ export const updateReleaseMetadata = withReleaseAuth(
             upsert: false,
           });
 
+        if (error) {
+          throw new Error(error.message);
+        }
+
         const { data } = supabase.storage
           .from("release")
           .getPublicUrl(filename);
