@@ -1,7 +1,8 @@
 import ReleaesCard from "@/components/ui/release-card";
+import { getSession } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { LucideGhost } from "lucide-react";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 
 export default async function Releases({
   orgId,
@@ -11,10 +12,16 @@ export default async function Releases({
   limit?: number;
 }) {
   const supabase = createClient();
+  const session = await getSession();
+
+  if (!session.data.user) {
+    redirect("/signin");
+  }
 
   let query = supabase
     .from("release")
     .select("*, organization(*)")
+    .eq("user_id", session?.data?.user?.id)
     .order("created_at", {
       ascending: false,
     })

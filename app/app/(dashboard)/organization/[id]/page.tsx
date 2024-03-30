@@ -1,7 +1,8 @@
 import LoadingCard from "@/components/loading/card";
 import Releases from "@/components/ui/releases";
+import { getSession } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { Suspense } from "react";
 
 export default async function OrgReleases({
@@ -10,11 +11,17 @@ export default async function OrgReleases({
   params: { id: string };
 }) {
   const supabase = createClient();
+  const session = await getSession();
+
+  if (!session.data.user) {
+    redirect("/signin");
+  }
 
   const { data, error } = await supabase
     .from("organization")
     .select()
     .eq("id", decodeURIComponent(params.id))
+    .eq("user_id", session?.data?.user?.id)
     .single();
 
   if (error || !data) {

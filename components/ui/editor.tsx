@@ -28,7 +28,7 @@ export default function Editor({ release }: { release: Tables<"release"> }) {
         e.preventDefault();
 
         startTransitionSaving(async () => {
-          await updateRelease(data);
+          await updateRelease(data, release.id, null);
         });
       }
     };
@@ -56,7 +56,7 @@ export default function Editor({ release }: { release: Tables<"release"> }) {
           size="sm"
           onClick={async () => {
             startTransitionSaving(async () => {
-              await updateRelease(data);
+              await updateRelease(data, release.id, null);
             });
           }}
         >
@@ -125,7 +125,7 @@ export default function Editor({ release }: { release: Tables<"release"> }) {
             return;
           }
           startTransitionSaving(async () => {
-            await updateRelease(data);
+            await updateRelease(data, release.id, null);
           });
         }}
       />

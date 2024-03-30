@@ -19,23 +19,44 @@ const nanoid = customAlphabet(
 
 export const createOrganization = async (formData: FormData) => {
   const supabase = createClient();
+  const { data: user_data, error: user_error } = await getSession();
 
   const name = formData.get("name") as string;
   const description = formData.get("description") as string;
   const subdomain = formData.get("subdomain") as string;
 
   try {
-    const response = await supabase
+    if (!user_data.user || user_error) {
+      throw new Error("Not Authenticated!");
+    }
+
+    const { data: profile, error: profile_error } = await supabase
+      .from("profiles")
+      .select("id, organization(*)")
+      .eq("id", user_data.user.id)
+      .single();
+
+    if (profile_error) {
+      throw new Error(
+        `There was an issue finding your profile, please try again.`,
+      );
+    }
+
+    if (profile?.organization && profile?.organization.length > 3) {
+      throw new Error(`You've already met your limit of 3 organizations.`);
+    }
+
+    const { data, error } = await supabase
       .from("organization")
-      .insert([
-        {
-          name: name,
-          description: description,
-          subdomain: subdomain,
-        },
-      ])
+      .insert({
+        name: name,
+        description: description,
+        subdomain: subdomain,
+      })
       .select()
       .single();
+
+    if (error) throw new Error(error.message);
 
     await revalidateTag(
       `${subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-metadata`,
@@ -43,7 +64,7 @@ export const createOrganization = async (formData: FormData) => {
 
     return {
       data: {
-        id: response.data?.id,
+        id: data?.id,
       },
     };
   } catch (error: any) {
@@ -189,91 +210,73 @@ export const getOrganizationFromReleaseId = async (releaseId: number) => {
 
 export const createRelease = withOrgAuth(
   async (_: FormData, organization: Tables<"organization">) => {
-    const { data: user, error: user_error } = await getSession();
     const supabase = createClient();
 
-    if (user_error || !user.user?.id) {
-      return {
-        error: "Not authenticated",
-      };
-    }
+    try {
+      const { data, error } = await supabase
+        .from("release")
+        .insert({
+          organizationId: organization.id,
+        })
+        .select()
+        .single();
 
-    const { data, error } = await supabase
-      .from("release")
-      .insert({
-        organizationId: organization.id,
-      })
-      .select()
-      .single();
+      await revalidateTag(
+        `${organization.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-releases`,
+      );
+      organization?.customDomain &&
+        (await revalidateTag(`${organization.customDomain}-releases`));
 
-    await revalidateTag(
-      `${organization.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-releases`,
-    );
-    organization?.customDomain &&
-      (await revalidateTag(`${organization.customDomain}-releases`));
-
-    return data;
+      return data;
+    } catch (error: any) {}
   },
 );
 
-// creating a separate function for this because we're not using FormData
-export const updateRelease = async (data: Tables<"release">) => {
-  const { data: user, error: user_error } = await getSession();
-  const supabase = createClient();
+export const updateRelease = withReleaseAuth(
+  async (release: Tables<"release">, old: Tables<"release">, key: string) => {
+    const supabase = createClient();
 
-  if (user_error || !user.user?.id) {
-    return {
-      error: "Not authenticated",
-    };
-  }
+    try {
+      const { data: response } = await supabase
+        .from("release")
+        .update({
+          title: release.title,
+          description: release.description,
+          content: release.content,
+          contentJson: release.contentJson,
+        })
+        .eq("id", release.id)
+        .select();
 
-  // const release = await db.get<Release>(RELEASE_COLLECTION_ID, data.$id);
-
-  const { data: release } = await supabase
-    .from("release")
-    .select("*, organization (subdomain, customDomain)")
-    .eq("id", data.id)
-    .single();
-
-  if (!release) {
-    return {
-      error: "Release not found",
-    };
-  }
-
-  try {
-    const { data: response } = await supabase
-      .from("release")
-      .update({
-        title: data.title,
-        description: data.description,
-        content: data.content,
-        contentJson: data.contentJson,
-      })
-      .eq("id", data.id)
-      .select();
-
-    await revalidateTag(
-      `${release.organization?.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-releases`,
-    );
-    await revalidateTag(
-      `${release.organization?.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-${release.slug}`,
-    );
-
-    // if the site has a custom domain, we need to revalidate those tags too
-    release.organization?.customDomain &&
-      (await revalidateTag(`${release.organization?.customDomain}-releases`),
       await revalidateTag(
-        `${release.organization?.customDomain}-${release.slug}`,
-      ));
+        //@ts-ignore
+        `${release.organization?.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-releases`,
+      );
+      await revalidateTag(
+        //@ts-ignore
+        `${release.organization?.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-${release.slug}`,
+      );
 
-    return response;
-  } catch (error: any) {
-    return {
-      error: error.message,
-    };
-  }
-};
+      // if the site has a custom domain, we need to revalidate those tags too
+      //@ts-ignore
+      release.organization?.customDomain &&
+        (await revalidateTag(
+          //@ts-ignore
+          `${release.organization?.customDomain}-releases`,
+        ),
+        await revalidateTag(
+          //@ts-ignore
+          `${release.organization?.customDomain}-${release.slug}`,
+        ));
+
+      return response;
+    } catch (error: any) {
+      return {
+        error: error.message,
+      };
+    }
+  },
+);
 
 export const updateReleaseMetadata = withReleaseAuth(
   async (formData: FormData, release: Tables<"release">, key: string) => {

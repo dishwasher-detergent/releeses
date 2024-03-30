@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { Tables } from "@/types/supabase";
 
 export async function getSession() {
   const supabase = createClient();
@@ -26,6 +27,7 @@ export function withOrgAuth(action: any) {
       .from("organization")
       .select()
       .eq("id", orgId)
+      .eq("user_id", user.user.id)
       .single();
 
     if (!data) {
@@ -40,7 +42,7 @@ export function withOrgAuth(action: any) {
 
 export function withReleaseAuth(action: any) {
   return async (
-    formData: FormData | null,
+    formData: FormData | Tables<"release"> | null,
     releaseId: number,
     key: string | null,
   ) => {
@@ -57,9 +59,12 @@ export function withReleaseAuth(action: any) {
       .from("release")
       .select()
       .eq("id", releaseId)
+      .eq("user_id", user.user.id)
       .single();
 
-    if (!data) {
+    console.log(data, error);
+
+    if (!data || error) {
       return {
         error: "Not authorized",
       };
