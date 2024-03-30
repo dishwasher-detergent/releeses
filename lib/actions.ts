@@ -42,7 +42,7 @@ export const createOrganization = async (formData: FormData) => {
       );
     }
 
-    if (profile?.organization && profile?.organization.length > 3) {
+    if (profile?.organization && profile?.organization.length >= 3) {
       throw new Error(`You've already met your limit of 3 organizations.`);
     }
 
@@ -50,7 +50,7 @@ export const createOrganization = async (formData: FormData) => {
       .from("organization")
       .insert({
         name: name,
-        description: description,
+        description: description.length == 0 ? null : description,
         subdomain: subdomain,
       })
       .select()
