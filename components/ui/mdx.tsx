@@ -1,16 +1,12 @@
 "use client";
 
 import BlurImage from "@/components/ui/blur-image";
-import { replaceLinks } from "@/lib/remark-plugins";
-import { Tables } from "@/types/supabase";
 import { MDXRemote, MDXRemoteProps } from "next-mdx-remote";
 import { Tweet } from "react-tweet";
 
 export default function MDX({ source }: { source: MDXRemoteProps }) {
   const components = {
-    a: replaceLinks,
     BlurImage,
-    Examples,
     Tweet,
   };
 
@@ -22,70 +18,5 @@ export default function MDX({ source }: { source: MDXRemoteProps }) {
       {/* @ts-ignore */}
       <MDXRemote {...source} components={components} />
     </article>
-  );
-}
-
-interface ExampleCardProps
-  extends Pick<Tables<"release">, "description" | "image" | "imageBlurhash"> {
-  name: string | null;
-  url: string | null;
-}
-
-function Examples({ data }: { data: string }) {
-  if (!data) return null;
-  const parsedData = JSON.parse(data) as Array<ExampleCardProps>;
-  return (
-    <div className="not-prose my-10 grid grid-cols-1 gap-x-4 gap-y-4 lg:-mx-36 lg:mb-20 lg:grid-cols-3 lg:gap-y-8">
-      {parsedData.map((d) => (
-        <ExamplesCard data={d} key={d.name} />
-      ))}
-    </div>
-  );
-}
-
-function ExamplesCard({ data }: { data: ExampleCardProps }) {
-  return (
-    <a href={`https://${data.url}`} target="_blank" rel="noreferrer">
-      <div className="ease hidden rounded-2xl border-2 border-slate-100 bg-background shadow-md transition-all duration-200 hover:-translate-y-1 hover:shadow-xl lg:block">
-        <div className="overflow-hidden rounded-t-2xl">
-          <BlurImage
-            alt={data.name ?? "Card Thumbnail"}
-            width={500}
-            height={400}
-            className="h-64 w-full object-cover"
-            src={data.image ?? "/placeholder.png"}
-            placeholder="blur"
-            blurDataURL={data.imageBlurhash ?? undefined}
-          />
-        </div>
-        <div className="h-36 px-5 py-6">
-          <h3 className="truncate text-2xl tracking-wide">{data.name}</h3>
-          <p className="mt-3 text-base italic leading-snug text-slate-800">
-            {data.description}
-          </p>
-        </div>
-      </div>
-      <div className="ease flex h-36 items-center overflow-hidden rounded-xl border-2 border-slate-100 bg-background transition-all duration-200 focus:border-black active:border-black md:h-48 lg:hidden">
-        <div className="relative h-full w-2/5">
-          <BlurImage
-            alt={data.name ?? "Card thumbnail"}
-            width={500}
-            height={400}
-            className="h-full object-cover"
-            src={`/examples/${data.image}`}
-            placeholder="blur"
-            blurDataURL={data.imageBlurhash ?? undefined}
-          />
-        </div>
-        <div className="w-3/5 px-5 py-6">
-          <h3 className="my-0 truncate text-xl font-bold tracking-wide ">
-            {data.name}
-          </h3>
-          <p className="mt-3 text-sm font-normal italic leading-snug text-slate-800">
-            {data.description}
-          </p>
-        </div>
-      </div>
-    </a>
   );
 }

@@ -1,3 +1,4 @@
+import { findAndReplace } from "mdast-util-find-and-replace";
 import Link from "next/link";
 import { ReactNode } from "react";
 import { visit } from "unist-util-visit";
@@ -65,4 +66,43 @@ export function replaceTweets() {
 
       resolve();
     });
+}
+
+export function remarkGithub() {
+  // Regular expression to match pulls, commits, compares, and user profiles
+  const githubRegex =
+    /(https:\/\/github\.com\/(?:[^/]+\/[^/]+\/(?:pull\/\d+|commit\/[a-f0-9]+|compare\/[\w.-]+)|(?:[^/]+)))/gi;
+
+  // @ts-ignore
+  return (tree, _file) => {
+    // @ts-ignore
+    findAndReplace(tree, [[githubRegex, replaceMention]]);
+  };
+
+  function replaceMention(value: string) {
+    const id = getVal(value);
+
+    let message = "";
+    if (value.includes("/pull/")) {
+      message = `${id}`;
+    } else if (value.includes("/commit/")) {
+      message = `${id.slice(0, 7)}`;
+    } else if (value.includes("/compare/")) {
+      message = `${id}`;
+    } else {
+      message = `@${id}`;
+    }
+
+    return [
+      {
+        type: "text",
+        value: message,
+      },
+    ];
+  }
+}
+
+function getVal(value: string) {
+  const parts = value.split("/");
+  return parts[parts.length - 1];
 }

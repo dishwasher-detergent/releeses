@@ -1,7 +1,8 @@
-import { replaceTweets } from "@/lib/remark-plugins";
+import { remarkGithub, replaceTweets } from "@/lib/remark-plugins";
 import { createClient } from "@/lib/supabase/server";
 import { serialize } from "next-mdx-remote/serialize";
 import { unstable_cache } from "next/cache";
+import remarkGfm from "remark-gfm";
 
 export async function getOrgData(domain: string) {
   const supabase = createClient();
@@ -72,14 +73,12 @@ export async function getReleaseData(domain: string, slug: string) {
 }
 
 export async function getMdxSource(releaseContent: string) {
-  // transforms links like <link> to [link](link) as MDX doesn't support <link> syntax
-  // https://mdxjs.com/docs/what-is-mdx/#markdown
   const content =
     releaseContent?.replaceAll(/<(https?:\/\/\S+)>/g, "[$1]($1)") ?? "";
   // Serialize the content string into MDX
   const mdxSource = await serialize(content, {
     mdxOptions: {
-      remarkPlugins: [replaceTweets],
+      remarkPlugins: [replaceTweets, remarkGithub, remarkGfm],
     },
   });
 
