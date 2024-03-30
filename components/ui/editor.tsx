@@ -40,31 +40,7 @@ export default function Editor({ release }: { release: Tables<"release"> }) {
 
   return (
     <>
-      <header className="flex h-14 flex-none items-center gap-4 border-b bg-background/90 px-4 backdrop-blur-md md:justify-end lg:h-[60px] lg:px-6">
-        {data.published && (
-          <a
-            href={url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={buttonVariants({ variant: "ghost", size: "icon" })}
-          >
-            <ExternalLink className="h-4 w-4" />
-          </a>
-        )}
-        <Button
-          variant="secondary"
-          size="sm"
-          onClick={async () => {
-            startTransitionSaving(async () => {
-              await updateRelease(data, release.id, null);
-            });
-          }}
-        >
-          {isPendingSaving && (
-            <Loader className="mr-2 size-4 text-foreground" />
-          )}
-          {isPendingSaving ? "Saving..." : "Saved"}
-        </Button>
+      <header className="flex h-14 flex-none items-center gap-4 border-b bg-background/90 px-4 backdrop-blur-md lg:h-[60px] lg:px-4">
         <Button
           size="sm"
           onClick={() => {
@@ -90,6 +66,30 @@ export default function Editor({ release }: { release: Tables<"release"> }) {
           {isPendingPublishing && <Loader className="mr-2 size-4 text-white" />}
           {data.published ? "Unpublish" : "Publish"}
         </Button>
+        <Button
+          variant="secondary"
+          size="sm"
+          onClick={async () => {
+            startTransitionSaving(async () => {
+              await updateRelease(data, release.id, null);
+            });
+          }}
+        >
+          {isPendingSaving && (
+            <Loader className="mr-2 size-4 text-foreground" />
+          )}
+          {isPendingSaving ? "Saving..." : "Saved"}
+        </Button>
+        {data.published && (
+          <a
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={buttonVariants({ variant: "ghost", size: "icon" })}
+          >
+            <ExternalLink className="h-4 w-4" />
+          </a>
+        )}
       </header>
       <div className="flex flex-none flex-col space-y-3 border-b bg-background p-4">
         <input

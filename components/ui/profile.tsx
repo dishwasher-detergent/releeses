@@ -23,8 +23,6 @@ export default function Profile() {
       setLoading(true);
       const { data } = await supabase.auth.getUser();
 
-      console.log(data.user);
-
       setUser(data.user?.user_metadata);
       setLoading(false);
     };

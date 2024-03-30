@@ -62,8 +62,6 @@ export function withReleaseAuth(action: any) {
       .eq("user_id", user.user.id)
       .single();
 
-    console.log(data, error);
-
     if (!data || error) {
       return {
         error: "Not authorized",

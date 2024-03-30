@@ -120,7 +120,6 @@ export function remarkGitlab() {
   };
 
   function replaceMention(value: string) {
-    console.log(value);
     const id = getVal(value);
 
     let message = "";
