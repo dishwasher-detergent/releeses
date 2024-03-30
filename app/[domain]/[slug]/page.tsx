@@ -5,9 +5,43 @@ import { Separator } from "@/components/ui/separator";
 import { getReleaseData } from "@/lib/fetchers";
 import { placeholderBlurhash } from "@/lib/utils";
 import { Tables } from "@/types/supabase";
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { domain: string; slug: string };
+}): Promise<Metadata> {
+  const domain = decodeURIComponent(params.domain);
+  const slug = decodeURIComponent(params.slug);
+  const release = await getReleaseData(domain, slug);
+
+  return {
+    metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN as string),
+    title: `${release?.data?.organization?.name} - ${release?.data?.title}`,
+    description: release?.data?.description,
+    openGraph: {
+      title: `${release?.data?.organization?.name} - ${release?.data?.title}`,
+      description: release?.data?.description ?? "",
+      url: new URL(process.env.NEXT_PUBLIC_DOMAIN as string),
+      siteName:
+        release?.data?.organization?.customDomain ??
+        release?.data?.organization?.subdomain,
+      locale: "en_US",
+      type: "website",
+      images: [release?.data?.image ?? ""],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${release?.data?.organization?.name} - ${release?.data?.title}`,
+      description: release?.data?.description ?? "",
+      images: [release?.data?.image ?? ""],
+    },
+  };
+}
 
 export default async function OrgReleasePage({
   params,
