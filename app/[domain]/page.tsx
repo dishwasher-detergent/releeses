@@ -11,7 +11,6 @@ import { getOrgData } from "@/lib/fetchers";
 import { createClient } from "@/lib/supabase/server";
 import { placeholderBlurhash } from "@/lib/utils";
 import { LucideArrowRight, LucideCalendar } from "lucide-react";
-import { notFound } from "next/navigation";
 
 export default async function OrgHomePage({
   params,
@@ -22,8 +21,8 @@ export default async function OrgHomePage({
   const domain = decodeURIComponent(params.domain);
   const org = await getOrgData(domain);
 
-  if (!org) {
-    notFound();
+  if (!org || org.error) {
+    // notFound();
   }
 
   const subdomain = domain.endsWith(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`)

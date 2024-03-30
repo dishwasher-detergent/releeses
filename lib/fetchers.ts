@@ -35,24 +35,30 @@ export async function getReleaseData(domain: string, slug: string) {
 
   return await unstable_cache(
     async () => {
-      let query = supabase.from("release").select("*, organization(*)");
-      query = subdomain
-        ? query.eq("organization.subdomain", subdomain)
-        : query.eq("organization.customDomain", domain);
+      let data = supabase.from("release").select("*, organization!inner(*)");
+      data = subdomain
+        ? data.eq("organization.subdomain", subdomain)
+        : data.eq("organization.customDomain", domain);
 
-      query.eq("slug", slug).eq("published", true);
+      let adj = supabase.from("release").select("*, organization!inner(*)");
+      adj = subdomain
+        ? adj.eq("organization.subdomain", subdomain)
+        : adj.eq("organization.customDomain", domain);
 
-      const response = await query.single();
+      const response = await data
+        .eq("slug", slug)
+        .eq("published", true)
+        .single();
 
       if (response.count === 0) return null;
 
       const [mdxSource, adjacentReleases] = await Promise.all([
         getMdxSource(response.data?.content ?? ""),
-        await query.neq("id", response.data?.id),
+        adj.neq("id", response.data?.id).eq("published", true),
       ]);
 
       return {
-        ...response.data,
+        data: response.data,
         mdxSource,
         adjacentReleases,
       };
