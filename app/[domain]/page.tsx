@@ -11,7 +11,38 @@ import { getOrgData } from "@/lib/fetchers";
 import { createClient } from "@/lib/supabase/server";
 import { placeholderBlurhash } from "@/lib/utils";
 import { LucideArrowRight, LucideCalendar } from "lucide-react";
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { domain: string };
+}): Promise<Metadata> {
+  const domain = decodeURIComponent(params.domain);
+  const org = await getOrgData(domain);
+
+  return {
+    metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN as string),
+    title: `${org?.data?.name}`,
+    description: `${org?.data?.description}`,
+    openGraph: {
+      title: `${org?.data?.name}`,
+      description: `${org?.data?.description}`,
+      url: new URL(process.env.NEXT_PUBLIC_DOMAIN as string),
+      siteName: org?.data?.customDomain ?? org?.data?.subdomain,
+      locale: "en_US",
+      type: "website",
+      images: [org?.data?.image ?? ""],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${org?.data?.name}`,
+      description: `${org?.data?.description}`,
+      images: [org?.data?.image ?? ""],
+    },
+  };
+}
 
 export default async function OrgHomePage({
   params,
