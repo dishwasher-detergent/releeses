@@ -3,9 +3,7 @@
 import { getSession, withOrgAuth, withReleaseAuth } from "@/lib/auth";
 import {
   addDomainToVercel,
-  // getApexDomain,
   removeDomainFromVercelProject,
-  // removeDomainFromVercelTeam,
   validDomainRegex,
 } from "@/lib/domains";
 import { createClient } from "@/lib/supabase/server";
@@ -83,7 +81,7 @@ export const updateOrganization = withOrgAuth(
             .eq("id", organization.id)
             .select();
 
-          await Promise.all([addDomainToVercel(value)]);
+          await addDomainToVercel(value);
         } else if (value === "") {
           response = await supabase
             .from("organization")
