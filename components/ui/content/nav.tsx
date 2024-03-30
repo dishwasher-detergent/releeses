@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { ThemeToggle } from "../theme-toggle";
 
 interface NavProps {
   name: string;
@@ -25,6 +26,7 @@ export function Nav({ name, logo }: NavProps) {
           {name}
         </span>
       </Link>
+      <ThemeToggle />
     </header>
   );
 }
