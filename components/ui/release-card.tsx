@@ -41,8 +41,8 @@ export default function ReleaseCard({
                 ? data.title
                 : "Upload your own image at /settings"
             }
-            width={600}
-            height={300}
+            width={300}
+            height={600}
             className="h-44 object-cover"
             src={data.image}
             placeholder="blur"
