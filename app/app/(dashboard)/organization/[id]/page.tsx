@@ -32,7 +32,7 @@ export default async function OrgReleases({
     <section className="relative h-full overflow-y-auto">
       <Suspense
         fallback={
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3">
             {Array.from({ length: 4 }).map((_, i) => (
               <LoadingCard key={i} />
             ))}

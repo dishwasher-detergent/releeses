@@ -12,7 +12,7 @@ export default function LoadingCard() {
   return (
     <Card className="relative flex flex-col overflow-hidden rounded-none border-l-0 border-t-0 shadow-none">
       <CardContent className="flex-1 p-0">
-        <Skeleton className="h-44 rounded-none" />
+        <Skeleton className="aspect-[2/1] w-full rounded-none" />
         <CardHeader>
           <CardTitle className="h-4 truncate">
             <Skeleton className="h-4 w-1/2" />

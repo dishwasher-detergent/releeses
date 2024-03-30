@@ -128,7 +128,7 @@ export default function DashboardLayoutComponent({
           </Sheet>
           {title}
         </header>
-        <main className="relative flex flex-1 flex-col overflow-y-auto bg-muted md:overflow-hidden">
+        <main className="dotted relative flex flex-1 flex-col overflow-y-auto bg-muted md:overflow-hidden">
           {children}
         </main>
       </div>

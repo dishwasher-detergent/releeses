@@ -34,15 +34,21 @@ export default function ReleaseCard({
             {data.published ? "Published" : "Draft"}
           </Badge>
         )}
-        <BlurImage
-          alt={data.title ?? "Card thumbnail"}
-          width={500}
-          height={400}
-          className="h-44 object-cover"
-          src={data.image ?? "/placeholder.png"}
-          placeholder="blur"
-          blurDataURL={data.imageBlurhash ?? placeholderBlurhash}
-        />
+        <div className="aspect-[2/1] w-full overflow-hidden">
+          <BlurImage
+            alt={
+              data.image && data.title
+                ? data.title
+                : "Upload your own image at /settings"
+            }
+            width={500}
+            height={400}
+            className="h-44 object-cover"
+            src={data.image}
+            placeholder="blur"
+            blurDataURL={data.imageBlurhash ?? placeholderBlurhash}
+          />
+        </div>
         <CardHeader>
           <CardTitle className="truncate text-lg">
             {data.title ?? "No Title"}

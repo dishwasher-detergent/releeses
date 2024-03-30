@@ -24,6 +24,7 @@
     --input: 240 5.9% 90%;
     --ring: 240 5.9% 10%;
     --radius: 0.5rem;
+    --dots: 240 4.8% 75%;
   }
 
   .dark {
@@ -46,6 +47,7 @@
     --border: 240 3.7% 15.9%;
     --input: 240 3.7% 15.9%;
     --ring: 240 4.9% 83.9%;
+    --dots: 240 3.7% 30%;
   }
 }
 
@@ -56,4 +58,13 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.dotted {
+  background-size: 40px 40px;
+  background-image: radial-gradient(
+    circle,
+    hsl(var(--dots)) 1px,
+    transparent 1px
+  );
 }

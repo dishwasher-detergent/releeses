@@ -26,15 +26,17 @@ export default function OrgCard({ org }: { org: Tables<"organization"> }) {
         </Badge>
       )}
       <CardContent className="flex-1 p-0">
-        <BlurImage
-          alt={org.name ?? "Card thumbnail"}
-          width={500}
-          height={400}
-          className="h-44 object-cover"
-          src={org.image ?? "/placeholder.png"}
-          placeholder="blur"
-          blurDataURL={org.imageBlurhash ?? placeholderBlurhash}
-        />
+        <div className="aspect-video w-full overflow-hidden">
+          <BlurImage
+            alt={org.image ? org.name : "Upload your own image at /settings"}
+            width={500}
+            height={400}
+            className="h-44 object-cover"
+            src={org.image}
+            placeholder="blur"
+            blurDataURL={org.imageBlurhash ?? placeholderBlurhash}
+          />
+        </div>
         <CardHeader>
           <CardTitle className="truncate text-lg">
             {org.name ?? "No Name"}

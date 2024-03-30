@@ -105,7 +105,7 @@ export default function Nav({ children }: NavProps) {
             variant="ghost"
             className={cn(
               "justify-start text-foreground",
-              link.isActive && "bg-foreground text-background",
+              link.isActive && "bg-primary text-background",
             )}
           >
             <Link key={index} href={link.href}>
