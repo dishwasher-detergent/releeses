@@ -113,13 +113,22 @@ export default function DashboardLayoutComponent({
                 <span className="sr-only">Toggle navigation menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="left" className="flex flex-col">
+            <SheetContent side="left" className="flex flex-col p-0">
+              <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
+                <Link
+                  href="/"
+                  className="flex items-center gap-2 font-semibold"
+                >
+                  <LucideRocket className="size-8 rounded-lg bg-foreground p-2 text-background" />
+                  <span className="text-xl font-black">Releaser</span>
+                </Link>
+              </div>
               <Nav />
             </SheetContent>
           </Sheet>
           {title}
         </header>
-        <main className="relative flex flex-1 flex-col overflow-hidden bg-muted">
+        <main className="relative flex flex-1 flex-col overflow-y-auto bg-muted md:overflow-hidden">
           {children}
         </main>
       </div>

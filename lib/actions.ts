@@ -289,8 +289,6 @@ export const updateReleaseMetadata = withReleaseAuth(
         const file = formData.get(key) as File;
         const filename = `${nanoid()}.${file.type.split("/")[1]}`;
 
-        console.log(filename);
-
         const { error } = await supabase.storage
           .from("release")
           .upload(filename, file, {

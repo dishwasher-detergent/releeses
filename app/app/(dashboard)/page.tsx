@@ -7,7 +7,7 @@ import { Suspense } from "react";
 export default function Overview() {
   return (
     <>
-      <section className="relative h-1/2 overflow-y-auto">
+      <section className="relative md:h-1/2 md:overflow-y-auto">
         <header className="sticky top-0 z-20 flex h-14 items-center justify-between gap-4 border-b bg-background/90 px-4 backdrop-blur-md lg:h-[60px] lg:px-6">
           <p className="font-bold">New Organizations</p>
           <OverviewOrgsCTA />
@@ -24,7 +24,7 @@ export default function Overview() {
           <Organizations limit={4} />
         </Suspense>
       </section>
-      <section className="relative h-1/2 overflow-y-auto">
+      <section className="relative md:h-1/2 md:overflow-y-auto">
         <header className="sticky top-0 z-20 flex h-14 items-center gap-4 border-y bg-background/90 px-4 backdrop-blur-md lg:h-[60px] lg:px-6">
           <p className="font-bold">Recent Releases</p>
         </header>

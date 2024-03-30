@@ -1,10 +1,8 @@
 "use client";
 
 import { Loader } from "@/components/loading/loader";
-import { Badge } from "@/components/ui/badge";
 import { Button, buttonVariants } from "@/components/ui/button";
 import NovelEditor from "@/components/ui/novel";
-import { Separator } from "@/components/ui/separator";
 import { updateRelease, updateReleaseMetadata } from "@/lib/actions";
 import { Tables } from "@/types/supabase";
 import { ExternalLink } from "lucide-react";
@@ -42,7 +40,7 @@ export default function Editor({ release }: { release: Tables<"release"> }) {
 
   return (
     <>
-      <div className="absolute right-5 top-5 mb-5 flex items-center space-x-3">
+      <header className="flex h-14 flex-none items-center gap-4 border-b bg-background/90 px-4 backdrop-blur-md md:justify-end lg:h-[60px] lg:px-6">
         {data.published && (
           <a
             href={url}
@@ -53,9 +51,20 @@ export default function Editor({ release }: { release: Tables<"release"> }) {
             <ExternalLink className="h-4 w-4" />
           </a>
         )}
-        <Badge variant="secondary" className="px-3 py-2">
+        <Button
+          variant="secondary"
+          size="sm"
+          onClick={async () => {
+            startTransitionSaving(async () => {
+              await updateRelease(data);
+            });
+          }}
+        >
+          {isPendingSaving && (
+            <Loader className="mr-2 size-4 text-foreground" />
+          )}
           {isPendingSaving ? "Saving..." : "Saved"}
-        </Badge>
+        </Button>
         <Button
           size="sm"
           onClick={() => {
@@ -81,8 +90,8 @@ export default function Editor({ release }: { release: Tables<"release"> }) {
           {isPendingPublishing && <Loader className="mr-2 size-4 text-white" />}
           {data.published ? "Unpublish" : "Publish"}
         </Button>
-      </div>
-      <div className="flex flex-col space-y-3 bg-background p-4">
+      </header>
+      <div className="flex flex-none flex-col space-y-3 border-b bg-background p-4">
         <input
           type="text"
           placeholder="Title"
@@ -98,7 +107,6 @@ export default function Editor({ release }: { release: Tables<"release"> }) {
           className="border-none bg-background px-0 placeholder:text-muted-foreground focus:outline-none focus:ring-0 dark:text-foreground"
         />
       </div>
-      <Separator />
       <NovelEditor
         defaultValue={release.contentJson}
         onUpdate={(editor: EditorInstance) => {
