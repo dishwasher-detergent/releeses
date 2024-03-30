@@ -86,8 +86,8 @@ export default async function OrgHomePage({
           <div className="relative z-10 mb-4 h-36 w-36 overflow-hidden rounded-full border-4 border-background">
             <BlurImage
               alt={response.data?.logo ?? "Organization Logo"}
-              width={50}
-              height={50}
+              width={400}
+              height={400}
               className="h-full w-full object-cover"
               placeholder="blur"
               blurDataURL={placeholderBlurhash}
