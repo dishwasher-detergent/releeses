@@ -31,7 +31,7 @@ export default function OrgCard({ org }: { org: Tables<"organization"> }) {
             alt={org.image ? org.name : "Upload your own image at /settings"}
             width={600}
             height={300}
-            className="h-44 object-cover"
+            className="h-full object-cover"
             src={org.image}
             placeholder="blur"
             blurDataURL={org.imageBlurhash ?? placeholderBlurhash}

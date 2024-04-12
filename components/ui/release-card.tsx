@@ -43,7 +43,7 @@ export default function ReleaseCard({
             }
             width={600}
             height={300}
-            className="h-44 object-cover"
+            className="h-full object-cover"
             src={data.image}
             placeholder="blur"
             blurDataURL={data.imageBlurhash ?? placeholderBlurhash}

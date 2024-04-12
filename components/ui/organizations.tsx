@@ -26,7 +26,7 @@ export default async function Organizations({ limit = 4 }: { limit?: number }) {
   }
 
   return data.length > 0 ? (
-    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3">
+    <div className="grid max-w-7xl grid-cols-1 sm:grid-cols-2 xl:grid-cols-3">
       {data.map((org) => (
         <OrgCard key={org.id} org={org} />
       ))}
