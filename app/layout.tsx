@@ -9,6 +9,9 @@ const description =
   "Easily manage and publish public changelogs for your applications, keeping your audience informed and engaged with every update.";
 
 export const metadata: Metadata = {
+  icons: {
+    icon: "/rocket.png",
+  },
   title,
   description,
   openGraph: {

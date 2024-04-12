@@ -23,6 +23,9 @@ export async function generateMetadata({
   const org = await getOrgData(domain);
 
   return {
+    icons: {
+      icon: org.data?.logo ?? "/rocket.png",
+    },
     metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN as string),
     title: `${org?.data?.name}`,
     description: `${org?.data?.description}`,
