@@ -98,9 +98,13 @@ export default async function OrgHomePage({
             />
           </div>
           <h1 className="truncate pb-4 text-2xl font-bold">
-            {response.data?.name}
+            {response.data?.name ?? <span className="italic">No Name</span>}
           </h1>
-          <p className="text-sm">{response.data?.description}</p>
+          <p className="text-sm">
+            {response.data?.description ?? (
+              <span className="italic">No Description</span>
+            )}
+          </p>
         </div>
       </section>
       <section className="px-4 pb-4">
