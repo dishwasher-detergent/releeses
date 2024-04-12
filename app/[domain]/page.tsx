@@ -97,13 +97,13 @@ export default async function OrgHomePage({
               src={response.data?.logo}
             />
           </div>
-          <h1 className="truncate pb-2 text-2xl font-bold">
+          <h1 className="truncate pb-4 text-2xl font-bold">
             {response.data?.name}
           </h1>
           <p className="text-sm">{response.data?.description}</p>
         </div>
       </section>
-      <section className="px-4 pb-2">
+      <section className="px-4 pb-4">
         <h1 className="text-2xl font-bold">Changelog</h1>
       </section>
       <section className="flex w-full flex-col px-4">
@@ -124,7 +124,7 @@ export default async function OrgHomePage({
             );
             return (
               <article key={release.id} className="group">
-                <div className="flex flex-row items-center gap-2 pb-2">
+                <div className="flex flex-row items-center gap-2 pb-4">
                   <LucideCalendar className="size-4 flex-none text-foreground/80" />
                   <p className="text-sm font-semibold text-foreground/80">
                     {createdAt}
@@ -134,7 +134,12 @@ export default async function OrgHomePage({
                   <div className="flex w-4 flex-none items-center justify-center pb-2">
                     <Separator orientation="vertical" />
                   </div>
-                  <Card className="mb-8 flex-1 shadow-none group-last:mb-0">
+                  <Card className="group/link relative mb-8 flex-1 shadow-none group-last:mb-0">
+                    <a
+                      href={release.slug ?? "/"}
+                      target="_blank"
+                      className="absolute inset-0 cursor-pointer rounded-xl ring-slate-100 transition-all hover:bg-slate-50/20 hover:ring-4"
+                    />
                     <CardHeader>
                       <CardTitle className="text-xl">{release.title}</CardTitle>
                     </CardHeader>
@@ -144,7 +149,8 @@ export default async function OrgHomePage({
                     <CardFooter>
                       <a
                         href={release.slug ?? "/"}
-                        className="group/link flex flex-row items-center gap-2 text-sm text-primary"
+                        target="_blank"
+                        className="flex flex-row items-center gap-2 text-sm text-primary"
                       >
                         Read More
                         <LucideArrowRight className="size-4 transition-all group-hover/link:translate-x-0.5" />
