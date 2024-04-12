@@ -1,4 +1,5 @@
-# Releaser.xyz
+# Releeses.com
+
 Easily manage and publish public changelogs for your applications, keeping your audience informed and engaged with every update.
 
 ---
@@ -16,7 +17,7 @@ This working demo site was built using the Platforms Starter Kit and:
 ## Contributing
 
 - [Start a discussion](https://github.com/dishwasher-detergent/releaser.xyz/discussions) with a question, piece of feedback, or idea you want to share with the team.
-- [Open an issue](https://github.com/dishwasher-detergent/releaser.xyz/issues) if you believe you've encountered a bug Releaser.xyz.
+- [Open an issue](https://github.com/dishwasher-detergent/releaser.xyz/issues) if you believe you've encountered a bug Releeses.com.
 
 ## Author
 

@@ -23,7 +23,7 @@ export default function SignInPage() {
       <CardHeader className="mb-4 border-b">
         <Link href="/" className="mb-4 flex items-center gap-2 font-semibold">
           <LucideRocket className="size-8 rounded-lg bg-foreground p-2 text-background" />
-          <span className="text-xl font-black">Releaser</span>
+          <span className="text-xl font-black">Releeses</span>
         </Link>
         <CardTitle className="text-lg">Sign In</CardTitle>
         <CardDescription>

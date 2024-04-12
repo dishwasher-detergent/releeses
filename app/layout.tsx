@@ -4,7 +4,7 @@ import { inter, nunito } from "@/styles/fonts";
 import "@/styles/globals.css";
 import { Metadata } from "next";
 
-const title = "Releaser.xyz";
+const title = "Releeses";
 const description =
   "Easily manage and publish public changelogs for your applications, keeping your audience informed and engaged with every update.";
 

@@ -26,11 +26,11 @@ export default function OrgCard({ org }: { org: Tables<"organization"> }) {
         </Badge>
       )}
       <CardContent className="flex-1 p-0">
-        <div className="aspect-video w-full overflow-hidden">
+        <div className="aspect-[2/1] w-full overflow-hidden">
           <BlurImage
             alt={org.image ? org.name : "Upload your own image at /settings"}
-            width={300}
-            height={600}
+            width={600}
+            height={300}
             className="h-44 object-cover"
             src={org.image}
             placeholder="blur"
@@ -39,10 +39,10 @@ export default function OrgCard({ org }: { org: Tables<"organization"> }) {
         </div>
         <CardHeader>
           <CardTitle className="truncate text-lg">
-            {org.name ?? "No Name"}
+            {org.name ?? <span className="italic">No Title</span>}
           </CardTitle>
           <CardDescription className="line-clamp-4 h-20">
-            {org.description ?? "No Description"}
+            {org.description ?? <span className="italic">No Description</span>}
           </CardDescription>
         </CardHeader>
       </CardContent>

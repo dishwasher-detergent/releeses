@@ -41,8 +41,8 @@ export default function ReleaseCard({
                 ? data.title
                 : "Upload your own image at /settings"
             }
-            width={300}
-            height={600}
+            width={600}
+            height={300}
             className="h-44 object-cover"
             src={data.image}
             placeholder="blur"
@@ -51,10 +51,10 @@ export default function ReleaseCard({
         </div>
         <CardHeader>
           <CardTitle className="truncate text-lg">
-            {data.title ?? "No Title"}
+            {data.title ?? <span className="italic">No Title</span>}
           </CardTitle>
           <CardDescription className="line-clamp-4 h-20">
-            {data.description ?? "No Description"}
+            {data.description ?? <span className="italic">No Description</span>}
           </CardDescription>
         </CardHeader>
       </CardContent>
