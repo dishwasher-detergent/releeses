@@ -52,13 +52,47 @@ export default function SignInPage() {
           <LucideGithub className="mr-2 size-4" />
           GitHub
         </Button>
-        <Button disabled className="w-full">
+        <Button
+          className="w-full"
+          onClick={async () => {
+            const supabase = createClient();
+            supabase.auth.signInWithOAuth({
+              provider: "bitbucket",
+              options: {
+                redirectTo: `${
+                  process.env.NEXT_PUBLIC_ROOT_DOMAIN?.includes("localhost")
+                    ? "http"
+                    : "https"
+                }://app.${
+                  process.env.NEXT_PUBLIC_ROOT_DOMAIN
+                }/api/auth/callback`,
+              },
+            });
+          }}
+        >
           <LucideGitBranch className="mr-2 size-4" />
-          BitBucket (Coming Soon!)
+          BitBucket
         </Button>
-        <Button disabled className="w-full">
+        <Button
+          className="w-full"
+          onClick={async () => {
+            const supabase = createClient();
+            supabase.auth.signInWithOAuth({
+              provider: "gitlab",
+              options: {
+                redirectTo: `${
+                  process.env.NEXT_PUBLIC_ROOT_DOMAIN?.includes("localhost")
+                    ? "http"
+                    : "https"
+                }://app.${
+                  process.env.NEXT_PUBLIC_ROOT_DOMAIN
+                }/api/auth/callback`,
+              },
+            });
+          }}
+        >
           <LucideGitlab className="mr-2 size-4" />
-          GitLab (Coming Soon!)
+          GitLab
         </Button>
       </CardContent>
     </Card>
