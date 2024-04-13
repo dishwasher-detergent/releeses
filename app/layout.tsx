@@ -1,6 +1,5 @@
 import { Providers } from "@/app/providers";
-import { cn } from "@/lib/utils";
-import { inter, nunito } from "@/styles/fonts";
+import { geist } from "@/styles/fonts";
 import "@/styles/globals.css";
 import { Metadata } from "next";
 
@@ -33,14 +32,9 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${cn(inter.variable, nunito.variable)} ${
-          nunito.className
-        } h-screen w-screen overflow-x-hidden bg-background`}
+        className={`${geist.className} h-screen w-screen overflow-x-hidden bg-background`}
       >
-        <Providers>
-          {children}
-          {/* <Analytics /> */}
-        </Providers>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

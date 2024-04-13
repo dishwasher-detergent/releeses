@@ -1,3 +1,4 @@
+import { GeistSans } from "geist/font/sans";
 import { Inter, Nunito, Roboto } from "next/font/google";
 
 export const inter = Inter({
@@ -16,8 +17,11 @@ export const roboto = Roboto({
   subsets: ["latin"],
 });
 
+export const geist = GeistSans;
+
 export const fontMapper = {
   "font-nunito": nunito.variable,
   "font-inter": inter.variable,
   "font-roboto": roboto.variable,
+  "font-geist": GeistSans.variable,
 } as Record<string, string>;

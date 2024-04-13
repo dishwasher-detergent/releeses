@@ -17,23 +17,35 @@ interface ReleaseCardProps {
   data: Tables<"release">;
   org: Tables<"organization">;
   blog?: boolean;
+  marketing?: boolean;
 }
 
 export default function ReleaseCard({
   data,
   org,
   blog = false,
+  marketing = false,
 }: ReleaseCardProps) {
   const url = `${org?.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}/${data.slug}`;
+
+  let link = `/release/${data.id}`;
+
+  if (blog) {
+    link = `${data.id}`;
+  }
+
+  if (marketing) {
+    link = url;
+  }
 
   return (
     <Card className="relative flex flex-col overflow-hidden rounded-none border-l-0 border-t-0 shadow-none">
       <CardContent className="relative flex-1 p-0">
-        {!blog && (
+        {!blog && !marketing ? (
           <Badge className="absolute right-2 top-2 z-10">
             {data.published ? "Published" : "Draft"}
           </Badge>
-        )}
+        ) : null}
         <div className="aspect-[2/1] w-full overflow-hidden">
           <BlurImage
             alt={
@@ -58,7 +70,7 @@ export default function ReleaseCard({
           </CardDescription>
         </CardHeader>
       </CardContent>
-      {!blog && data.published && (
+      {!blog && !marketing && data.published && (
         <CardFooter>
           <Badge className="z-10 max-w-full px-2 py-1" variant="secondary">
             <a
@@ -77,10 +89,7 @@ export default function ReleaseCard({
           </Badge>
         </CardFooter>
       )}
-      <Link
-        href={blog ? `${data.id}` : `/release/${data.id}`}
-        className="absolute inset-0"
-      />
+      <Link href={link} className="absolute inset-0" />
     </Card>
   );
 }

@@ -43,12 +43,10 @@ export default function Profile() {
                 .join("")}
             </AvatarFallback>
           </Avatar>
-          <p className="hidden truncate text-sm font-semibold md:block">
-            {user.name}
-          </p>
+          <p className="truncate text-sm font-semibold">{user.name}</p>
         </>
       </DropdownMenuTrigger>
-      <DropdownMenuContent side="right" align="end">
+      <DropdownMenuContent side="top" align="end">
         <DropdownMenuItem
           className="cursor-pointer"
           onClick={async () => {
