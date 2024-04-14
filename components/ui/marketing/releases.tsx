@@ -33,7 +33,7 @@ export default async function Releases({
   const blankCards = [];
 
   return data.length > 0 ? (
-    <div className="grid grid-cols-3">
+    <div className="grid grid-cols-1 md:grid-cols-3">
       {data.map((release) => (
         <ReleaesCard
           marketing={true}
