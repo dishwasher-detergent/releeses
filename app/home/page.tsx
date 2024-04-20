@@ -53,7 +53,7 @@ export default function HomePage() {
           Features
         </p>
         <h2 className="mx-4 mb-12  text-5xl font-black md:col-span-2 md:row-start-2">
-          Here's what we offer!
+          Here&apos;s what we offer!
         </h2>
         <div className="mx-4 grid grid-cols-1 gap-8 md:col-span-3 md:row-start-3 md:grid-cols-3">
           <div>
