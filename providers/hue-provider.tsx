@@ -46,8 +46,8 @@ const HueProvider = ({ children }: ProviderProps) => {
   const { mousePosition, mouseOut } = useMousePosition();
   const hovered = useMouseHover();
 
-  const windowPosX = window.scrollX;
-  const windowPosY = window.scrollY;
+  const windowPosX = typeof window !== "undefined" ? window.scrollX : 0;
+  const windowPosY = typeof window !== "undefined" ? window.scrollY : 0;
 
   const { x: original_x, y: original_y } = mousePosition;
 
