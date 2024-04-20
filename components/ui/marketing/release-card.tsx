@@ -33,8 +33,8 @@ export default function ReleaseCard({
   }
 
   return (
-    <div className="relative">
-      <div className="mb-2 aspect-square w-full overflow-hidden rounded-xl">
+    <article className="relative">
+      <div className="aspect-square w-full overflow-hidden rounded-xl">
         <BlurImage
           alt={
             data.image && data.title
@@ -42,7 +42,7 @@ export default function ReleaseCard({
               : "Upload your own image at /settings"
           }
           width={600}
-          height={300}
+          height={600}
           className="h-full object-cover"
           src={data.image}
           placeholder="blur"
@@ -51,7 +51,7 @@ export default function ReleaseCard({
       </div>
       <div>
         <h4 className="truncate text-lg font-bold">{data.title}</h4>
-        <p className="relative z-50 truncate hover:text-primary-foreground">
+        <p className="relative z-50 truncate">
           <a
             href={
               process.env.NEXT_PUBLIC_VERCEL_ENV
@@ -76,6 +76,6 @@ export default function ReleaseCard({
         }
         className="absolute inset-0 z-0"
       />
-    </div>
+    </article>
   );
 }

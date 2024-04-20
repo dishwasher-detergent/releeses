@@ -3,7 +3,7 @@
 import useHueLoop from "@/hooks/use-hue-loop";
 import useMouseHover from "@/hooks/use-mouse-hover";
 import useMousePosition from "@/hooks/use-mouse-position";
-import React, { createContext, useState } from "react";
+import React, { createContext, useMemo, useState } from "react";
 import { isMobile } from "react-device-detect";
 
 export interface Position {
@@ -21,19 +21,18 @@ export interface HueContextProps {
   setAnchor: (anchor: Position) => void;
 }
 
+const DEFAULT_POSITION = { x: 0, y: 0 };
+const DEFAULT_SIZE = 256;
+const HOVERED_SIZE = 320;
+const MOBILE_SIZE = 640;
+
 const HueContext = createContext<HueContextProps>({
   rotate: 0,
-  position: {
-    x: 0,
-    y: 0,
-  },
-  width: 256,
-  height: 256,
+  position: DEFAULT_POSITION,
+  width: DEFAULT_SIZE,
+  height: DEFAULT_SIZE,
   hovered: false,
-  anchor: {
-    x: 0,
-    y: 0,
-  },
+  anchor: DEFAULT_POSITION,
   setAnchor: () => null,
 });
 
@@ -42,42 +41,54 @@ interface ProviderProps {
 }
 
 const HueProvider = ({ children }: ProviderProps) => {
-  const [anchor, setAnchor] = useState({
-    x: 0,
-    y: 0,
-  });
-  const { x: DEFAULT_X, y: DEFAULT_Y } = anchor;
+  const [anchor, setAnchor] = useState(DEFAULT_POSITION);
   const rotate = useHueLoop(0, 360, 100);
-  const {
-    mousePosition: { x: original_x, y: original_y },
-    mouseOut,
-  } = useMousePosition();
+  const { mousePosition, mouseOut } = useMousePosition();
   const hovered = useMouseHover();
 
-  const windowPosX = typeof window !== "undefined" ? window.scrollX : 0;
-  const windowPosY = typeof window !== "undefined" ? window.scrollY : 0;
+  const windowPosX = window.scrollX;
+  const windowPosY = window.scrollY;
 
-  const calcHoveredSize = hovered ? 320 : 256;
+  const { x: original_x, y: original_y } = mousePosition;
 
-  let height = mouseOut ? 320 : calcHoveredSize;
-  let width = mouseOut ? 640 : calcHoveredSize;
+  const calcHoveredSize = useMemo(
+    () => (hovered ? HOVERED_SIZE : DEFAULT_SIZE),
+    [hovered],
+  );
 
-  const calcXPos = original_x ? original_x - width / 2 : DEFAULT_X;
-  const calcYPos = original_y ? original_y - height / 2 : DEFAULT_Y;
+  const height = useMemo(
+    () => (mouseOut ? HOVERED_SIZE : calcHoveredSize),
+    [mouseOut, calcHoveredSize],
+  );
+  const width = useMemo(
+    () => (mouseOut ? MOBILE_SIZE : calcHoveredSize),
+    [mouseOut, calcHoveredSize],
+  );
 
-  let x = (mouseOut ? DEFAULT_X : calcXPos) - windowPosX;
-  let y = (mouseOut ? DEFAULT_Y : calcYPos) - windowPosY;
+  const calcXPos = useMemo(
+    () => (original_x ? original_x - width / 2 : anchor.x),
+    [original_x, width, anchor.x],
+  );
+  const calcYPos = useMemo(
+    () => (original_y ? original_y - height / 2 : anchor.y),
+    [original_y, height, anchor.y],
+  );
+
+  let x = useMemo(
+    () => (mouseOut ? anchor.x : calcXPos) - windowPosX,
+    [mouseOut, calcXPos, windowPosX],
+  );
+  let y = useMemo(
+    () => (mouseOut ? anchor.y : calcYPos) - windowPosY,
+    [mouseOut, calcYPos, windowPosY],
+  );
 
   if (isMobile) {
-    x = DEFAULT_X;
-    y = DEFAULT_Y;
-    width = 640;
+    x = anchor.x;
+    y = anchor.y;
   }
 
-  const position = {
-    x: x,
-    y: y,
-  };
+  const position = useMemo(() => ({ x, y }), [x, y]);
 
   return (
     <HueContext.Provider
