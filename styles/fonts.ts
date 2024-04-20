@@ -1,5 +1,5 @@
 import { GeistSans } from "geist/font/sans";
-import { Inter, Nunito, Roboto } from "next/font/google";
+import { Inter, Nunito, Roboto, Space_Grotesk } from "next/font/google";
 
 export const inter = Inter({
   variable: "--font-inter",
@@ -17,6 +17,11 @@ export const roboto = Roboto({
   subsets: ["latin"],
 });
 
+export const spaceGrotesk = Space_Grotesk({
+  variable: "--font-spacegrotesk",
+  subsets: ["latin"],
+});
+
 export const geist = GeistSans;
 
 export const fontMapper = {
@@ -24,4 +29,5 @@ export const fontMapper = {
   "font-inter": inter.variable,
   "font-roboto": roboto.variable,
   "font-geist": GeistSans.variable,
+  "font-spacegrotesk": spaceGrotesk.variable,
 } as Record<string, string>;

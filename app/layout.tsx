@@ -1,5 +1,5 @@
 import { Providers } from "@/app/providers";
-import { geist } from "@/styles/fonts";
+import { spaceGrotesk } from "@/styles/fonts";
 import "@/styles/globals.css";
 import { Metadata } from "next";
 
@@ -32,7 +32,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geist.className} relative h-screen w-screen overflow-x-hidden bg-background`}
+        className={`${spaceGrotesk.className} relative h-screen w-screen overflow-x-hidden bg-background`}
       >
         <Providers>{children}</Providers>
       </body>

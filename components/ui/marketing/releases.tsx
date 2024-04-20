@@ -1,4 +1,4 @@
-import ReleaesCard from "@/components/ui/release-card";
+import ReleaesCard from "@/components/ui/marketing/release-card";
 import { createClient } from "@/lib/supabase/server";
 import { LucideGhost } from "lucide-react";
 import { notFound } from "next/navigation";
@@ -30,10 +30,8 @@ export default async function Releases({
     notFound();
   }
 
-  const blankCards = [];
-
   return data.length > 0 ? (
-    <div className="grid grid-cols-1 md:grid-cols-3">
+    <div className="mx-4 grid grid-cols-1 gap-8 md:grid-cols-3">
       {data.map((release) => (
         <ReleaesCard
           marketing={true}
