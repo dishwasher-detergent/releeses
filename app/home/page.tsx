@@ -67,7 +67,8 @@ export default function HomePage() {
             <LucideRocket className="mb-2 size-8 rounded-xl bg-primary p-2 text-primary-foreground" />
             <h4 className="font-bold">Releases</h4>
             <p>
-              Feel free to create as many releases as you want! We don't limit.
+              Feel free to create as many releases as you want! We don&apos;t
+              limit.
             </p>
           </div>
           <div>
