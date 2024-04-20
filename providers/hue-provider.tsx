@@ -46,9 +46,6 @@ const HueProvider = ({ children }: ProviderProps) => {
   const { mousePosition, mouseOut } = useMousePosition();
   const hovered = useMouseHover();
 
-  const windowPosX = typeof window !== "undefined" ? window.scrollX : 0;
-  const windowPosY = typeof window !== "undefined" ? window.scrollY : 0;
-
   const { x: original_x, y: original_y } = mousePosition;
 
   const calcHoveredSize = useMemo(
@@ -66,12 +63,12 @@ const HueProvider = ({ children }: ProviderProps) => {
   );
 
   const calcXPos = useMemo(
-    () => (original_x ? original_x - width / 2 : anchor.x) - windowPosX,
-    [original_x, width, anchor.x, windowPosX],
+    () => (original_x ? original_x - width / 2 : anchor.x),
+    [original_x, width, anchor.x],
   );
   const calcYPos = useMemo(
-    () => (original_y ? original_y - height / 2 : anchor.y) - windowPosY,
-    [original_y, height, anchor.y, windowPosY],
+    () => (original_y ? original_y - height / 2 : anchor.y),
+    [original_y, height, anchor.y],
   );
 
   let x = useMemo(() => (mouseOut ? anchor.x : calcXPos), [mouseOut, calcXPos]);

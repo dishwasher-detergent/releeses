@@ -13,8 +13,8 @@ export default function Hero() {
       const tempRef = ref.current as Element;
       const rect = tempRef.getBoundingClientRect();
       setAnchor({
-        x: rect.left + (rect.width / 2 - width / 2),
-        y: rect.top,
+        x: rect.left + (rect.width / 2 - width * 2),
+        y: rect.top - rect.height / 3,
       });
     }
   }, [ref.current, width]);

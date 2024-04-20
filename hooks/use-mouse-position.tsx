@@ -22,7 +22,6 @@ const useMousePosition = () => {
 
       const updateMouseOut = (ev: MouseEvent) => {
         if (ev.relatedTarget === null || ev.relatedTarget === undefined) {
-          console.log("test2");
           setMouseOut(true);
         } else {
           setMouseOut(false);
