@@ -33,8 +33,8 @@ export default function ReleaseCard({
   }
 
   return (
-    <article className="relative">
-      <div className="aspect-square w-full overflow-hidden rounded-xl">
+    <article className="relative flex flex-row flex-wrap gap-4">
+      <div className="aspect-square w-36 overflow-hidden rounded-xl">
         <BlurImage
           alt={
             data.image && data.title

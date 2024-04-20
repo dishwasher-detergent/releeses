@@ -6,7 +6,7 @@ import Link from "next/link";
 export default function Nav() {
   return (
     <header className="h-14 w-full border-b">
-      <div className="mx-auto flex h-full w-full max-w-4xl items-center px-4">
+      <div className="mx-auto flex h-full w-full max-w-5xl items-center px-4">
         <Link href="/" className="flex items-center gap-2 font-semibold">
           <LucideRocket className="size-6 rounded-lg text-foreground" />
           <span className="text-xl font-black">Releeses</span>

@@ -66,22 +66,16 @@ const HueProvider = ({ children }: ProviderProps) => {
   );
 
   const calcXPos = useMemo(
-    () => (original_x ? original_x - width / 2 : anchor.x),
-    [original_x, width, anchor.x],
+    () => (original_x ? original_x - width / 2 : anchor.x) - windowPosX,
+    [original_x, width, anchor.x, windowPosX],
   );
   const calcYPos = useMemo(
-    () => (original_y ? original_y - height / 2 : anchor.y),
-    [original_y, height, anchor.y],
+    () => (original_y ? original_y - height / 2 : anchor.y) - windowPosY,
+    [original_y, height, anchor.y, windowPosY],
   );
 
-  let x = useMemo(
-    () => (mouseOut ? anchor.x : calcXPos) - windowPosX,
-    [mouseOut, calcXPos, windowPosX],
-  );
-  let y = useMemo(
-    () => (mouseOut ? anchor.y : calcYPos) - windowPosY,
-    [mouseOut, calcYPos, windowPosY],
-  );
+  let x = useMemo(() => (mouseOut ? anchor.x : calcXPos), [mouseOut, calcXPos]);
+  let y = useMemo(() => (mouseOut ? anchor.y : calcYPos), [mouseOut, calcYPos]);
 
   if (isMobile) {
     x = anchor.x;

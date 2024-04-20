@@ -4,13 +4,18 @@ import Hero from "@/components/ui/marketing/hero";
 import Nav from "@/components/ui/marketing/nav";
 import Releases from "@/components/ui/marketing/releases";
 import { Separator } from "@/components/ui/separator";
-import { LucideRocket, LucideSparkles } from "lucide-react";
+import {
+  LucideBuilding2,
+  LucideGlobe,
+  LucideRocket,
+  LucideSparkles,
+} from "lucide-react";
 
 export default function HomePage() {
   return (
     <>
       <Nav />
-      <section className="mx-auto my-24 grid w-full max-w-4xl grid-cols-1 gap-4 md:grid-cols-3">
+      <section className="mx-auto my-24 grid w-full max-w-5xl grid-cols-1 gap-4 md:grid-cols-3">
         <div className="mx-4 flex justify-center md:col-start-2">
           <Badge className="rounded-full py-1">
             <LucideSparkles className="size-4" />
@@ -32,8 +37,8 @@ export default function HomePage() {
           </Button>
         </div>
       </section>
-      <section className="grid-col-1 mx-auto my-24 grid w-full max-w-4xl gap-4 md:grid-cols-3">
-        <p className="mx-4  mb-2 font-semibold text-muted-foreground md:row-start-1">
+      <section className="grid-col-1 mx-auto my-24 grid w-full max-w-5xl gap-4 md:grid-cols-3">
+        <p className="mx-4 font-semibold text-muted-foreground md:row-start-1">
           Recent Releases
         </p>
         <h2 className="mx-4 mb-12  text-5xl font-black md:col-span-2 md:row-start-2">
@@ -41,6 +46,37 @@ export default function HomePage() {
         </h2>
         <div className="md:col-span-3 md:row-start-3">
           <Releases limit={3} />
+        </div>
+      </section>
+      <section className="grid-col-1 mx-auto my-24 grid w-full max-w-5xl gap-4 md:grid-cols-3">
+        <p className="mx-4 font-semibold text-muted-foreground md:row-start-1">
+          Features
+        </p>
+        <h2 className="mx-4 mb-12  text-5xl font-black md:col-span-2 md:row-start-2">
+          Here's what we offer!
+        </h2>
+        <div className="mx-4 grid grid-cols-1 gap-8 md:col-span-3 md:row-start-3 md:grid-cols-3">
+          <div>
+            <LucideBuilding2 className="mb-2 size-8 rounded-xl bg-primary p-2 text-primary-foreground" />
+            <h4 className="font-bold">Organizations</h4>
+            <p>
+              Right off the bat, you can create up to 3 organizations, for free!
+            </p>
+          </div>
+          <div>
+            <LucideRocket className="mb-2 size-8 rounded-xl bg-primary p-2 text-primary-foreground" />
+            <h4 className="font-bold">Releases</h4>
+            <p>
+              Feel free to create as many releases as you want! We don't limit.
+            </p>
+          </div>
+          <div>
+            <LucideGlobe className="mb-2 size-8 rounded-xl bg-primary p-2 text-primary-foreground" />
+            <h4 className="font-bold">Domains</h4>
+            <p>
+              Free subdomains on the releeses.com domain, or bring your own!
+            </p>
+          </div>
         </div>
       </section>
     </>
