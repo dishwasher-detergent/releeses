@@ -16,20 +16,6 @@ import {
 export default async function HomePage() {
   const supabase = createClient();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  const { data: subscription, error } = await supabase
-    .from("subscriptions")
-    .select("*, prices(id, *, products(id, *))")
-    .in("status", ["trialing", "active"])
-    .maybeSingle();
-
-  if (error) {
-    console.log(error);
-  }
-
   const { data: products } = await supabase
     .from("products")
     .select("*, prices(*)")
@@ -111,11 +97,7 @@ export default async function HomePage() {
         <h2 className="mx-4 mb-12  text-5xl font-black md:col-span-2 md:row-start-2">
           Simple, we only have one plan!
         </h2>
-        <Pricing
-          user={user}
-          products={products ?? []}
-          subscription={subscription}
-        />
+        <Pricing products={products ?? []} />
       </section>
     </>
   );

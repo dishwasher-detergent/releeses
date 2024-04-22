@@ -110,7 +110,7 @@ export default function CustomerPortalForm({
           )}
         </div>
         <div>
-          {!subscription ?? (
+          {!subscription && (
             <Dialog>
               <DialogTrigger asChild>
                 <Button>Pick Your Plan</Button>
