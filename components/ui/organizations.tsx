@@ -4,7 +4,11 @@ import { createClient } from "@/lib/supabase/server";
 import { LucideGhost } from "lucide-react";
 import { notFound, redirect } from "next/navigation";
 
-export default async function Organizations({ limit = 4 }: { limit?: number }) {
+export default async function Organizations({
+  limit = 50,
+}: {
+  limit?: number;
+}) {
   const supabase = createClient();
   const session = await getSession();
 

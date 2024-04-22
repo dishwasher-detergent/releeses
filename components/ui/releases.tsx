@@ -6,7 +6,7 @@ import { notFound, redirect } from "next/navigation";
 
 export default async function Releases({
   orgId,
-  limit = 4,
+  limit = 50,
 }: {
   orgId?: string;
   limit?: number;
