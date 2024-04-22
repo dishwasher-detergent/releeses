@@ -42,6 +42,7 @@ export default function Form({
   const router = useRouter();
   return (
     <form
+      className="border-b bg-background"
       action={async (data: FormData) => {
         if (
           inputAttrs.name === "customDomain" &&

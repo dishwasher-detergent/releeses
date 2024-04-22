@@ -23,7 +23,7 @@ export default async function ReleaseSettings({
   }
 
   return (
-    <div className="flex flex-1 flex-col overflow-y-auto bg-background">
+    <div className="flex flex-1 flex-col overflow-y-auto">
       <Form
         title="Release Slug"
         description="The slug is the URL-friendly version of the name. It is usually all lowercase and contains only letters, numbers, and hyphens."

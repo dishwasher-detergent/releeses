@@ -32,9 +32,11 @@ export const createOrganization = async (formData: FormData) => {
 
     const { data: profile, error: profile_error } = await supabase
       .from("profiles")
-      .select("id, organization(*)")
+      .select("id, organization(*), subscriptions(*)")
       .eq("id", user_data.user.id)
       .single();
+
+    console.log(profile_error);
 
     if (profile_error) {
       throw new Error(
@@ -42,8 +44,14 @@ export const createOrganization = async (formData: FormData) => {
       );
     }
 
-    if (profile?.organization && profile?.organization.length >= 3) {
-      throw new Error(`You've already met your limit of 3 organizations.`);
+    if (
+      profile.subscriptions.filter((x) => x.status === "active").length === 0
+    ) {
+      if (profile?.organization && profile?.organization.length >= 1) {
+        throw new Error(
+          `You've already met or exceeded your limit of 1 organizations.`,
+        );
+      }
     }
 
     const { data, error } = await supabase

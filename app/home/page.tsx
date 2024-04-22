@@ -2,8 +2,10 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import Hero from "@/components/ui/marketing/hero";
 import Nav from "@/components/ui/marketing/nav";
+import Pricing from "@/components/ui/marketing/prices";
 import Releases from "@/components/ui/marketing/releases";
 import { Separator } from "@/components/ui/separator";
+import { createClient } from "@/lib/supabase/server";
 import {
   LucideBuilding2,
   LucideGlobe,
@@ -11,7 +13,31 @@ import {
   LucideSparkles,
 } from "lucide-react";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const supabase = createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  const { data: subscription, error } = await supabase
+    .from("subscriptions")
+    .select("*, prices(id, *, products(id, *))")
+    .in("status", ["trialing", "active"])
+    .maybeSingle();
+
+  if (error) {
+    console.log(error);
+  }
+
+  const { data: products } = await supabase
+    .from("products")
+    .select("*, prices(*)")
+    .eq("active", true)
+    .eq("prices.active", true)
+    .order("metadata->index")
+    .order("unit_amount", { referencedTable: "prices" });
+
   return (
     <>
       <Nav />
@@ -59,9 +85,7 @@ export default function HomePage() {
           <div>
             <LucideBuilding2 className="mb-2 size-8 rounded-xl bg-primary p-2 text-primary-foreground" />
             <h4 className="font-bold">Organizations</h4>
-            <p>
-              Right off the bat, you can create up to 3 organizations, for free!
-            </p>
+            <p>Right off the bat, you can create 1 organization, for free!</p>
           </div>
           <div>
             <LucideRocket className="mb-2 size-8 rounded-xl bg-primary p-2 text-primary-foreground" />
@@ -79,6 +103,13 @@ export default function HomePage() {
             </p>
           </div>
         </div>
+      </section>
+      <section>
+        <Pricing
+          user={user}
+          products={products ?? []}
+          subscription={subscription}
+        />
       </section>
     </>
   );

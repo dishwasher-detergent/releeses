@@ -19,6 +19,7 @@ export default function DeleteOrgForm({
   const router = useRouter();
   return (
     <form
+      className="border-b bg-background"
       action={async (data: FormData) =>
         deleteOrganization(data, id, "delete")
           .then(async (res) => {

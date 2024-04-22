@@ -23,6 +23,7 @@ export default function DeleteReleaseForm({
   const router = useRouter();
   return (
     <form
+      className="border-b bg-background"
       action={async (data: FormData) =>
         deleteRelease(data, id!, "delete").then((res) => {
           if (res.error) {

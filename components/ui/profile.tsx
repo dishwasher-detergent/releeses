@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/client";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
@@ -47,6 +48,9 @@ export default function Profile() {
         </>
       </DropdownMenuTrigger>
       <DropdownMenuContent side="top" align="end">
+        <DropdownMenuItem className="cursor-pointer" asChild>
+          <Link href="/account">Account</Link>
+        </DropdownMenuItem>
         <DropdownMenuItem
           className="cursor-pointer"
           onClick={async () => {

@@ -11,10 +11,10 @@ export default function HomeLayout({
         {children}
       </main>
       <div
-        className="fixed inset-0 z-0 mx-auto grid max-w-5xl grid-cols-1 border-x md:grid-cols-3"
+        className="fixed inset-0 z-0 mx-auto hidden max-w-5xl grid-cols-1 border-x md:grid md:grid-cols-3"
         style={{ left: "15px" }}
       >
-        <div className="col-start-2 hidden h-full border-x border-dashed md:block" />
+        <div className="col-start-2 h-full border-x border-dashed" />
       </div>
     </HueProvider>
   );

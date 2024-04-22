@@ -12,6 +12,7 @@ import {
   LucideNewspaper,
   LucideRocket,
   LucideSettings,
+  LucideUser,
 } from "lucide-react";
 import Link from "next/link";
 import { useParams, useSelectedLayoutSegments } from "next/navigation";
@@ -43,6 +44,17 @@ export default function DashboardLayoutComponent({
             Organizations
           </p>
           <CreateOrg />
+        </div>
+      );
+    }
+
+    if (segments[0] === "account") {
+      return (
+        <div className="flex flex-1 flex-row items-center justify-between">
+          <p className="flex flex-row items-center gap-2 font-bold">
+            <LucideUser className="size-4" />
+            Account
+          </p>
         </div>
       );
     }
