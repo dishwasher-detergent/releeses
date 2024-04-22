@@ -1,9 +1,18 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { getStripe } from "@/lib/stripe/client";
 import { checkoutWithStripe } from "@/lib/stripe/server";
-import { cn } from "@/lib/utils";
 import type { Tables } from "@/types/supabase";
 import { User } from "@supabase/supabase-js";
 import { usePathname, useRouter } from "next/navigation";
@@ -24,16 +33,16 @@ interface SubscriptionWithProduct extends Subscription {
 
 interface Props {
   user: User | null | undefined;
-  products: ProductWithPrices[];
+  products: ProductWithPrices[] | null;
   subscription: SubscriptionWithProduct | null;
 }
 
-type BillingInterval = "lifetime" | "year" | "month";
+type BillingInterval = "year" | "month";
 
 export default function Pricing({ user, products, subscription }: Props) {
   const intervals = Array.from(
     new Set(
-      products.flatMap(
+      products?.flatMap(
         (product) => product?.prices?.map((price) => price?.interval),
       ),
     ),
@@ -46,11 +55,6 @@ export default function Pricing({ user, products, subscription }: Props) {
 
   const handleStripeCheckout = async (price: Price) => {
     setPriceIdLoading(price.id);
-
-    if (!user) {
-      setPriceIdLoading(undefined);
-      return router.push("/signin/signup");
-    }
 
     const { errorRedirect, sessionId } = await checkoutWithStripe(
       price,
@@ -73,120 +77,81 @@ export default function Pricing({ user, products, subscription }: Props) {
     setPriceIdLoading(undefined);
   };
 
-  if (!products.length) {
+  if (!products?.length) {
     return (
-      <section className="bg-black">
-        <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-24 lg:px-8">
-          <div className="sm:align-center sm:flex sm:flex-col"></div>
-          <p className="text-4xl font-extrabold text-white sm:text-center sm:text-6xl">
-            No subscription pricing plans found. Create them in your{" "}
-            <a
-              className="text-pink-500 underline"
-              href="https://dashboard.stripe.com/products"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              Stripe Dashboard
-            </a>
-            .
-          </p>
-        </div>
-      </section>
+      <p className="mx-4 md:row-start-3">
+        We are currently not offering any paid for products!
+      </p>
     );
   } else {
     return (
-      <section className="bg-black">
-        <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-24 lg:px-8">
-          <div className="sm:align-center sm:flex sm:flex-col">
-            <h1 className="text-4xl font-extrabold text-white sm:text-center sm:text-6xl">
-              Pricing Plans
-            </h1>
-            <p className="m-auto mt-5 max-w-2xl text-xl text-zinc-200 sm:text-center sm:text-2xl">
-              Start building for free, then add a site plan to go live. Account
-              plans unlock additional features.
-            </p>
-            <div className="relative mt-6 flex self-center rounded-lg border border-zinc-800 bg-zinc-900 p-0.5 sm:mt-8">
-              {intervals.includes("month") && (
-                <button
-                  onClick={() => setBillingInterval("month")}
-                  type="button"
-                  className={`${
-                    billingInterval === "month"
-                      ? "relative w-1/2 border-zinc-800 bg-zinc-700 text-white shadow-sm"
-                      : "relative ml-0.5 w-1/2 border border-transparent text-zinc-400"
-                  } m-1 whitespace-nowrap rounded-md py-2 text-sm font-medium focus:z-10 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-opacity-50 sm:w-auto sm:px-8`}
-                >
-                  Monthly billing
-                </button>
-              )}
-              {intervals.includes("year") && (
-                <button
-                  onClick={() => setBillingInterval("year")}
-                  type="button"
-                  className={`${
-                    billingInterval === "year"
-                      ? "relative w-1/2 border-zinc-800 bg-zinc-700 text-white shadow-sm"
-                      : "relative ml-0.5 w-1/2 border border-transparent text-zinc-400"
-                  } m-1 whitespace-nowrap rounded-md py-2 text-sm font-medium focus:z-10 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-opacity-50 sm:w-auto sm:px-8`}
-                >
-                  Yearly billing
-                </button>
-              )}
-            </div>
-          </div>
-          <div className="mt-12 flex flex-wrap justify-center gap-6 space-y-4 sm:mt-16 sm:space-y-0 lg:mx-auto lg:max-w-4xl xl:mx-0 xl:max-w-none">
-            {products.map((product) => {
-              const price = product?.prices?.find(
-                (price) => price.interval === billingInterval,
-              );
-              if (!price) return null;
-              const priceString = new Intl.NumberFormat("en-US", {
-                style: "currency",
-                currency: price.currency!,
-                minimumFractionDigits: 0,
-              }).format((price?.unit_amount || 0) / 100);
-              return (
-                <div
-                  key={product.id}
-                  className={cn(
-                    "flex flex-col divide-y divide-zinc-600 rounded-lg bg-zinc-900 shadow-sm",
-                    {
-                      "border border-pink-500": subscription
-                        ? product.name === subscription?.prices?.products?.name
-                        : product.name === "Freelancer",
-                    },
-                    "flex-1", // This makes the flex item grow to fill the space
-                    "basis-1/3", // Assuming you want each card to take up roughly a third of the container's width
-                    "max-w-xs", // Sets a maximum width to the cards to prevent them from getting too large
-                  )}
-                >
-                  <div className="p-6">
-                    <h2 className="text-2xl font-semibold leading-6 text-white">
-                      {product.name}
-                    </h2>
-                    <p className="mt-4 text-zinc-300">{product.description}</p>
-                    <p className="mt-8">
-                      <span className="white text-5xl font-extrabold">
-                        {priceString}
-                      </span>
-                      <span className="text-base font-medium text-zinc-100">
-                        /{billingInterval}
-                      </span>
-                    </p>
-                    <Button
-                      type="button"
-                      onClick={() => handleStripeCheckout(price)}
-                      className="mt-8 block w-full rounded-md py-2 text-center text-sm font-semibold text-white hover:bg-zinc-900"
-                    >
-                      {subscription ? "Manage" : "Subscribe"}
-                    </Button>
-                  </div>
-                </div>
-              );
-            })}
+      <>
+        <div className="rounded-xl bg-muted px-4 py-2 md:col-start-2 md:row-start-3">
+          <p className="mb-2 text-sm font-bold">Billing Period</p>
+          <div className="flex flex-row items-center gap-2">
+            <Label htmlFor="interval">Monthly</Label>
+            <Switch
+              onCheckedChange={() => {
+                setBillingInterval(
+                  billingInterval === "month" ? "year" : "month",
+                );
+              }}
+              value={billingInterval}
+              id="interval"
+            />
+            <Label htmlFor="interval">Yearly</Label>
           </div>
         </div>
-      </section>
+        <div className="md:col-span-3 md:row-start-4">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Name</TableHead>
+                <TableHead>Description</TableHead>
+                <TableHead>Price</TableHead>
+                <TableHead />
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {products?.map((product) => {
+                const price = product?.prices?.find(
+                  (price) => price.interval === billingInterval,
+                );
+
+                if (!price) return null;
+
+                const priceString = new Intl.NumberFormat("en-US", {
+                  style: "currency",
+                  currency: price.currency!,
+                  minimumFractionDigits: 0,
+                }).format((price?.unit_amount || 0) / 100);
+                return (
+                  <TableRow key={product.id}>
+                    <TableCell>{product.name}</TableCell>
+                    <TableCell>
+                      {product.description ?? (
+                        <span className="italic text-muted-foreground">
+                          No Description
+                        </span>
+                      )}
+                    </TableCell>
+                    <TableCell>{priceString}</TableCell>
+                    <TableCell>
+                      <Button
+                        size="sm"
+                        type="button"
+                        onClick={() => handleStripeCheckout(price)}
+                      >
+                        {subscription ? "Manage" : "Subscribe"}
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </div>
+      </>
     );
   }
 }

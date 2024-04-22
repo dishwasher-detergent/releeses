@@ -104,7 +104,13 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
-      <section>
+      <section className="grid-col-1 mx-auto my-24 grid w-full max-w-5xl gap-4 md:grid-cols-3">
+        <p className="mx-4 font-semibold text-muted-foreground md:row-start-1">
+          Pricing
+        </p>
+        <h2 className="mx-4 mb-12  text-5xl font-black md:col-span-2 md:row-start-2">
+          Simple, we only have one plan!
+        </h2>
         <Pricing
           user={user}
           products={products ?? []}

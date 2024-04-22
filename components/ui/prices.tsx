@@ -1,14 +1,8 @@
 "use client";
 
-import { getStripe } from "@/lib/stripe/client";
-import { checkoutWithStripe } from "@/lib/stripe/server";
-import type { Tables } from "@/types/supabase";
-import { User } from "@supabase/supabase-js";
-import { usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
-import { Button } from "./button";
-import { Label } from "./label";
-import { Switch } from "./switch";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 import {
   Table,
   TableBody,
@@ -16,7 +10,13 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "./table";
+} from "@/components/ui/table";
+import { getStripe } from "@/lib/stripe/client";
+import { checkoutWithStripe } from "@/lib/stripe/server";
+import type { Tables } from "@/types/supabase";
+import { User } from "@supabase/supabase-js";
+import { usePathname, useRouter } from "next/navigation";
+import { useState } from "react";
 
 type Subscription = Tables<"subscriptions">;
 type Product = Tables<"products">;
