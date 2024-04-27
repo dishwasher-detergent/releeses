@@ -9,6 +9,7 @@ import { createClient } from "@/lib/supabase/server";
 import {
   LucideBuilding2,
   LucideGlobe,
+  LucideMap,
   LucideRocket,
   LucideSparkles,
 } from "lucide-react";
@@ -29,7 +30,7 @@ export default async function HomePage() {
       <Nav />
       <section className="mx-auto my-24 grid w-full max-w-5xl grid-cols-1 gap-4 md:grid-cols-3">
         <div className="mx-4 flex justify-center md:col-start-2">
-          <Badge className="rounded-full py-1">
+          <Badge className="rounded-full py-1" variant="secondary">
             <LucideSparkles className="size-4" />
             <Separator orientation="vertical" className="mx-2 h-3" />
             Releeses was just Released
@@ -80,6 +81,13 @@ export default async function HomePage() {
               Feel free to create as many releases as you want! We don&apos;t
               limit.
             </p>
+          </div>
+          <div>
+            <LucideMap className="mb-2 size-8 rounded-xl bg-primary p-2 text-primary-foreground" />
+            <h4 className="font-bold">
+              Roadmap <Badge variant="secondary">Coming Soon</Badge>
+            </h4>
+            <p>Let everyone know what you've got planned!</p>
           </div>
           <div>
             <LucideGlobe className="mb-2 size-8 rounded-xl bg-primary p-2 text-primary-foreground" />
