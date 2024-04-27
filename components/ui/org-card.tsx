@@ -43,7 +43,10 @@ export default function OrgCard({ org }: { org: Tables<"organization"> }) {
             {org.description ?? <span className="italic">No Description</span>}
           </CardDescription>
           <div>
-            <Badge className="z-10 max-w-full px-2 py-1" variant="secondary">
+            <Badge
+              className="relative z-10 max-w-full px-2 py-1"
+              variant="secondary"
+            >
               <a
                 href={
                   process.env.NEXT_PUBLIC_VERCEL_ENV

@@ -68,7 +68,10 @@ export default function ReleaseCard({
           </CardDescription>
           <div>
             {!blog && !marketing && data.published && (
-              <Badge className="z-10 max-w-full px-2 py-1" variant="secondary">
+              <Badge
+                className="relative z-10 max-w-full px-2 py-1"
+                variant="secondary"
+              >
                 <a
                   href={
                     process.env.NEXT_PUBLIC_VERCEL_ENV
