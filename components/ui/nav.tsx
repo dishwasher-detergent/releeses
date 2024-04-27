@@ -3,7 +3,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Nav } from "@/interfaces/nav";
+import { Nav as NavItems } from "@/interfaces/nav";
 import { getOrganizationFromReleaseId } from "@/lib/actions";
 import { cn } from "@/lib/utils";
 import {
@@ -11,6 +11,7 @@ import {
   LucideEdit3,
   LucideGlobe,
   LucideLayout,
+  LucideMap,
   LucideNewspaper,
   LucideSettings,
 } from "lucide-react";
@@ -37,7 +38,7 @@ export default function Nav({ children }: NavProps) {
     }
   }, [id]);
 
-  const tabs = useMemo<Nav[]>(() => {
+  const tabs = useMemo<NavItems[]>(() => {
     if (segments[0] === "organization" && id) {
       return [
         {
@@ -48,8 +49,16 @@ export default function Nav({ children }: NavProps) {
         {
           name: "Releases",
           href: `/organization/${id}`,
-          isActive: segments.length === 2,
+          isActive: segments[1] != "roadmaps" && segments.length === 2,
           icon: LucideNewspaper,
+        },
+        {
+          name: "Roadmaps",
+          href: `/organization/roadmaps/${id}`,
+          isActive: segments[1] === "roadmaps",
+          icon: LucideMap,
+          disabled: true,
+          badge: "Coming Soon",
         },
         {
           name: "Settings",
@@ -108,10 +117,16 @@ export default function Nav({ children }: NavProps) {
               link.isActive && "bg-primary text-background",
             )}
           >
-            <Link key={index} href={link.href}>
-              <link.icon className="mr-2 h-4 w-4" />
-              {link.name}
-              {link.badge && <Badge>{link.badge}</Badge>}
+            <Link key={index} href={link.disabled ? "#" : link.href}>
+              <span className="flex flex-1 flex-row items-center gap-1">
+                <link.icon className="mr-2 h-4 w-4" />
+                {link.name}
+              </span>
+              {link.badge && (
+                <Badge variant="secondary" className="rounded-full">
+                  {link.badge}
+                </Badge>
+              )}
             </Link>
           </Button>
         ))}

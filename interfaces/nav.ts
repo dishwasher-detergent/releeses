@@ -6,4 +6,5 @@ export interface Nav {
   icon: LucideIcon;
   isActive?: boolean;
   badge?: string;
+  disabled?: boolean;
 }
