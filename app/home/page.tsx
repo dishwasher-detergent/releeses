@@ -87,7 +87,7 @@ export default async function HomePage() {
             <h4 className="font-bold">
               Roadmap <Badge variant="secondary">Coming Soon</Badge>
             </h4>
-            <p>Let everyone know what you've got planned!</p>
+            <p>Let everyone know what you&apos;ve got planned!</p>
           </div>
           <div>
             <LucideGlobe className="mb-2 size-8 rounded-xl bg-primary p-2 text-primary-foreground" />
