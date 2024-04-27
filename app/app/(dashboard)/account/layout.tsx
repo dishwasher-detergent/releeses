@@ -7,7 +7,9 @@ export default async function AccountSettingsLayout({
 }) {
   return (
     <>
-      <div className="flex flex-1 flex-col overflow-y-auto">{children}</div>
+      <div className="m-4 flex flex-col gap-4 overflow-y-auto rounded-xl border border-dashed border-slate-300 p-4">
+        {children}
+      </div>
     </>
   );
 }

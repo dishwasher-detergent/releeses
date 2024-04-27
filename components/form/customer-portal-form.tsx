@@ -83,12 +83,12 @@ export default function CustomerPortalForm({
   const priceString = getPriceString(subscription);
 
   return (
-    <div className="border-b bg-background">
+    <div className="overflow-hidden rounded-xl border bg-background">
       <div className="relative flex flex-col space-y-4 p-4">
         <h2 className="text-xl font-bold">Your Plan</h2>
         <div className="flex flex-row">
           {subscription ? (
-            <Card>
+            <Card className="shadow-none">
               <CardHeader>
                 <CardTitle>{subscription?.prices?.products?.name}</CardTitle>
                 <CardDescription>
@@ -132,7 +132,7 @@ export default function CustomerPortalForm({
           )}
         </div>
       </div>
-      <div className="flex flex-row items-center justify-between border-t bg-muted px-4 py-2">
+      <div className="flex flex-row items-center justify-between rounded-b-xl border-t bg-muted px-4 py-2">
         <p className="text-sm text-foreground">
           Manage your subscriptions on Stripe.
         </p>

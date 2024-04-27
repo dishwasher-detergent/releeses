@@ -4,8 +4,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
-  CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import { placeholderBlurhash } from "@/lib/utils";
@@ -39,21 +37,16 @@ export default function ReleaseCard({
   }
 
   return (
-    <Card className="relative flex flex-col overflow-hidden rounded-none border-l-0 border-t-0 shadow-none">
-      <CardContent className="relative flex-1 p-0">
-        {!blog && !marketing ? (
-          <Badge className="absolute right-2 top-2 z-10">
-            {data.published ? "Published" : "Draft"}
-          </Badge>
-        ) : null}
-        <div className="aspect-[2/1] w-full overflow-hidden">
+    <Card className="relative flex flex-col overflow-hidden shadow-none">
+      <CardContent className="flex flex-1 flex-row gap-4 p-2">
+        <div className="h-24 w-24 flex-none overflow-hidden  rounded-xl">
           <BlurImage
             alt={
               data.image && data.title
                 ? data.title
                 : "Upload your own image at /settings"
             }
-            width={600}
+            width={300}
             height={300}
             className="h-full object-cover"
             src={data.image}
@@ -61,34 +54,39 @@ export default function ReleaseCard({
             blurDataURL={data.imageBlurhash ?? placeholderBlurhash}
           />
         </div>
-        <CardHeader>
-          <CardTitle className="truncate text-lg">
+        <div className="w-full space-y-2">
+          <CardTitle className="flex flex-row justify-between truncate text-lg">
             {data.title ?? <span className="italic">No Title</span>}
+            {!blog && !marketing ? (
+              <Badge variant="outline">
+                {data.published ? "Published" : "Draft"}
+              </Badge>
+            ) : null}
           </CardTitle>
-          <CardDescription className="line-clamp-4 h-20">
+          <CardDescription className="line-clamp-3 h-16">
             {data.description ?? <span className="italic">No Description</span>}
           </CardDescription>
-        </CardHeader>
+          <div>
+            {!blog && !marketing && data.published && (
+              <Badge className="z-10 max-w-full px-2 py-1" variant="secondary">
+                <a
+                  href={
+                    process.env.NEXT_PUBLIC_VERCEL_ENV
+                      ? `https://${url}`
+                      : `http://${org?.subdomain}.localhost:3000/${data.slug}`
+                  }
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex w-full flex-row items-center gap-2 overflow-hidden"
+                >
+                  <span className="flex-1 truncate">{url}</span>
+                  <LucideExternalLink className="size-4 flex-none" />
+                </a>
+              </Badge>
+            )}
+          </div>
+        </div>
       </CardContent>
-      {!blog && !marketing && data.published && (
-        <CardFooter>
-          <Badge className="z-10 max-w-full px-2 py-1" variant="secondary">
-            <a
-              href={
-                process.env.NEXT_PUBLIC_VERCEL_ENV
-                  ? `https://${url}`
-                  : `http://${org?.subdomain}.localhost:3000/${data.slug}`
-              }
-              target="_blank"
-              rel="noreferrer"
-              className="flex w-full flex-row items-center gap-2 overflow-hidden"
-            >
-              <span className="flex-1 truncate">{url}</span>
-              <LucideExternalLink className="size-4 flex-none" />
-            </a>
-          </Badge>
-        </CardFooter>
-      )}
       <Link href={link} className="absolute inset-0" />
     </Card>
   );

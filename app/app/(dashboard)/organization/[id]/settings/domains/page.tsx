@@ -1,5 +1,4 @@
 import Form from "@/components/form";
-import { Separator } from "@/components/ui/separator";
 import { updateOrganization } from "@/lib/actions";
 import { createClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
@@ -22,7 +21,7 @@ export default async function OrgSettingsDomains({
   }
 
   return (
-    <div className="flex flex-col">
+    <>
       <Form
         title="Subdomain"
         description="The subdomain for your organization."
@@ -36,7 +35,6 @@ export default async function OrgSettingsDomains({
         }}
         handleSubmit={updateOrganization}
       />
-      <Separator />
       <Form
         title="Custom Domain"
         description="The custom domain for your organization."
@@ -51,6 +49,6 @@ export default async function OrgSettingsDomains({
         }}
         handleSubmit={updateOrganization}
       />
-    </div>
+    </>
   );
 }

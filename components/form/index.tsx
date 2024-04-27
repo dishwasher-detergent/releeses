@@ -42,7 +42,7 @@ export default function Form({
   const router = useRouter();
   return (
     <form
-      className="border-b bg-background"
+      className="rounded-xl border bg-background"
       action={async (data: FormData) => {
         if (
           inputAttrs.name === "customDomain" &&
@@ -117,7 +117,7 @@ export default function Form({
           <DomainConfiguration domain={inputAttrs.defaultValue} />
         </div>
       )}
-      <div className="flex flex-row items-center justify-between border-t bg-muted px-4 py-2">
+      <div className="flex flex-row items-center justify-between rounded-b-xl border-t bg-muted px-4 py-2">
         <p className="text-sm text-foreground">{helpText}</p>
         <FormButton />
       </div>

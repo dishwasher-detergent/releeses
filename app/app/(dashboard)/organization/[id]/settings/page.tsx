@@ -1,6 +1,5 @@
 import Form from "@/components/form";
 import DeleteOrgForm from "@/components/form/delete-org-form";
-import { Separator } from "@/components/ui/separator";
 import { updateOrganization } from "@/lib/actions";
 import { createClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
@@ -23,7 +22,7 @@ export default async function OrgSettingsIndex({
   }
 
   return (
-    <div className="flex flex-col">
+    <>
       <Form
         title="Name"
         description="The name of your organization. This will be used as the meta title on Google as well."
@@ -37,7 +36,6 @@ export default async function OrgSettingsIndex({
         }}
         handleSubmit={updateOrganization}
       />
-      <Separator />
       <Form
         title="Description"
         description="The description of your organization. This will be used as the meta description on Google as well."
@@ -50,8 +48,7 @@ export default async function OrgSettingsIndex({
         }}
         handleSubmit={updateOrganization}
       />
-      <Separator />
       <DeleteOrgForm organizationName={data?.name!} />
-    </div>
+    </>
   );
 }

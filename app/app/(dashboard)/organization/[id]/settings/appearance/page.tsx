@@ -1,5 +1,4 @@
 import Form from "@/components/form";
-import { Separator } from "@/components/ui/separator";
 import { updateOrganization } from "@/lib/actions";
 import { createClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
@@ -22,7 +21,7 @@ export default async function OrgSettingsAppearance({
   }
 
   return (
-    <div className="flex flex-col">
+    <>
       <Form
         title="Thumbnail image"
         description="The thumbnail image for your organization. Accepted formats: .png, .jpg, .jpeg"
@@ -34,7 +33,6 @@ export default async function OrgSettingsAppearance({
         }}
         handleSubmit={updateOrganization}
       />
-      <Separator />
       <Form
         title="Logo"
         description="The logo for your organization. Accepted formats: .png, .jpg, .jpeg"
@@ -46,7 +44,6 @@ export default async function OrgSettingsAppearance({
         }}
         handleSubmit={updateOrganization}
       />
-      <Separator />
       <Form
         title="Font"
         description="The font for the heading text your organization."
@@ -58,7 +55,6 @@ export default async function OrgSettingsAppearance({
         }}
         handleSubmit={updateOrganization}
       />
-      <Separator />
       <Form
         title="404 Page Message"
         description="Message to be displayed on the 404 page."
@@ -72,6 +68,6 @@ export default async function OrgSettingsAppearance({
         }}
         handleSubmit={updateOrganization}
       />
-    </div>
+    </>
   );
 }

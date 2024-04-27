@@ -19,7 +19,7 @@ export default function DeleteOrgForm({
   const router = useRouter();
   return (
     <form
-      className="border-b bg-background"
+      className="overflow-hidden rounded-xl border bg-background"
       action={async (data: FormData) =>
         deleteOrganization(data, id, "delete")
           .then(async (res) => {
@@ -53,7 +53,7 @@ export default function DeleteOrgForm({
           className="max-w-sm"
         />
       </div>
-      <div className="flex flex-row items-center justify-between border-t bg-destructive/10 px-4 py-2">
+      <div className="flex flex-row items-center justify-between rounded-b-xl border-t bg-destructive/10 px-4 py-2">
         <p className="text-sm text-destructive">
           This action is irreversible. Please proceed with caution.
         </p>

@@ -1,6 +1,5 @@
 import Form from "@/components/form";
 import DeleteReleaseForm from "@/components/form/delete-release-form";
-import { Separator } from "@/components/ui/separator";
 import { updateReleaseMetadata } from "@/lib/actions";
 import { createClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
@@ -23,7 +22,7 @@ export default async function ReleaseSettings({
   }
 
   return (
-    <div className="flex flex-1 flex-col overflow-y-auto">
+    <div className="m-4 flex flex-col gap-4 overflow-y-auto rounded-xl border border-dashed border-slate-300 p-4">
       <Form
         title="Release Slug"
         description="The slug is the URL-friendly version of the name. It is usually all lowercase and contains only letters, numbers, and hyphens."
@@ -36,7 +35,6 @@ export default async function ReleaseSettings({
         }}
         handleSubmit={updateReleaseMetadata}
       />
-      <Separator />
       <Form
         title="Thumbnail image"
         description="The thumbnail image for your release. Accepted formats: .png, .jpg, .jpeg"
@@ -48,7 +46,6 @@ export default async function ReleaseSettings({
         }}
         handleSubmit={updateReleaseMetadata}
       />
-      <Separator />
       <DeleteReleaseForm
         orgId={data.organizationId}
         releaseName={data?.title!}

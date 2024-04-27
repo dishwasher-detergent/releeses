@@ -17,13 +17,9 @@ const nanoid = customAlphabet(
   7,
 ); // 7-character random string
 
-export const createOrganization = async (formData: FormData) => {
+export const canCreateOrganization = async () => {
   const supabase = createClient();
   const { data: user_data, error: user_error } = await getSession();
-
-  const name = formData.get("name") as string;
-  const description = formData.get("description") as string;
-  const subdomain = formData.get("subdomain") as string;
 
   try {
     if (!user_data.user || user_error) {
@@ -35,8 +31,6 @@ export const createOrganization = async (formData: FormData) => {
       .select("id, organization(*), subscriptions(*)")
       .eq("id", user_data.user.id)
       .single();
-
-    console.log(profile_error);
 
     if (profile_error) {
       throw new Error(
@@ -51,7 +45,32 @@ export const createOrganization = async (formData: FormData) => {
         throw new Error(
           `You've already met or exceeded your limit of 1 organizations.`,
         );
+      } else {
+        return true;
       }
+    }
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+};
+
+export const createOrganization = async (formData: FormData) => {
+  const supabase = createClient();
+  const { data: user_data, error: user_error } = await getSession();
+
+  const name = formData.get("name") as string;
+  const description = formData.get("description") as string;
+  const subdomain = formData.get("subdomain") as string;
+
+  try {
+    if (!user_data.user || user_error) {
+      throw new Error("Not Authenticated!");
+    }
+
+    try {
+      canCreateOrganization();
+    } catch (error: any) {
+      throw new Error(error.message);
     }
 
     const { data, error } = await supabase

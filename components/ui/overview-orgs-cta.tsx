@@ -6,7 +6,9 @@ import Link from "next/link";
 export default async function OverviewOrgsCTA() {
   const supabase = createClient();
 
-  const { count } = await supabase.from("organization").select();
+  const { count } = await supabase
+    .from("organization")
+    .select("*", { count: "exact" });
 
   return count ?? 0 > 0 ? (
     <Link

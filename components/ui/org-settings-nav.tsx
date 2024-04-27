@@ -1,7 +1,6 @@
 "use client";
 
 import { buttonVariants } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useParams, useSelectedLayoutSegment } from "next/navigation";
@@ -30,7 +29,7 @@ export default function OrgSettingsNav() {
 
   return (
     <>
-      <div className="flex bg-background p-2">
+      <div className="flex p-2">
         {items.map((item) => (
           <Link
             key={item.name}
@@ -44,7 +43,6 @@ export default function OrgSettingsNav() {
           </Link>
         ))}
       </div>
-      <Separator />
     </>
   );
 }
