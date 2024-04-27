@@ -1,4 +1,5 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
+import { updateSession } from "./lib/supabase/middleware";
 
 export const config = {
   matcher: [
@@ -38,9 +39,9 @@ export default async function middleware(req: NextRequest) {
 
   // rewrites for app pages
   if (hostname == `app.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`) {
-    return NextResponse.rewrite(
-      new URL(`/app${path === "/" ? "" : path}`, req.url),
-    );
+    const newUrl = new URL(`/app${path === "/" ? "" : path}`, req.url);
+
+    return updateSession(req, newUrl);
   }
 
   // rewrite root application to `/home` folder
@@ -48,11 +49,12 @@ export default async function middleware(req: NextRequest) {
     hostname === "localhost:3000" ||
     hostname === process.env.NEXT_PUBLIC_ROOT_DOMAIN
   ) {
-    return NextResponse.rewrite(
-      new URL(`/home${path === "/" ? "" : path}`, req.url),
-    );
+    const newUrl = new URL(`/home${path === "/" ? "" : path}`, req.url);
+
+    return updateSession(req, newUrl);
   }
 
   // rewrite everything else to `/[domain]/[slug] dynamic route
-  return NextResponse.rewrite(new URL(`/${hostname}${path}`, req.url));
+  const newUrl = new URL(`/${hostname}${path}`, req.url);
+  return updateSession(req, newUrl);
 }
