@@ -11,7 +11,7 @@ export const Hue = () => {
 
   return (
     <>
-      <div className="absolute inset-0 z-[-10] mx-auto w-full max-w-5xl">
+      <div className="absolute inset-0 z-[-10] mx-auto w-full max-w-5xl overflow-hidden">
         <div
           className="gap-15 pointer-events-none flex w-80 origin-center -rotate-45 scale-[200%] justify-center opacity-30"
           style={{

@@ -28,7 +28,7 @@ export default async function HomePage() {
   return (
     <>
       <Nav />
-      <section className="mx-auto my-24 grid w-full max-w-5xl grid-cols-1 gap-4 md:grid-cols-3">
+      <section className="mx-auto my-12 grid w-full max-w-5xl grid-cols-1 gap-4 md:my-24 md:grid-cols-3">
         <div className="mx-4 flex justify-center md:col-start-2">
           <Badge className="rounded-full py-1" variant="secondary">
             <LucideSparkles className="size-4" />
@@ -50,7 +50,7 @@ export default async function HomePage() {
           </Button>
         </div>
       </section>
-      <section className="grid-col-1 mx-auto my-24 grid w-full max-w-5xl gap-4 md:grid-cols-3">
+      <section className="grid-col-1 mx-auto my-12 grid w-full max-w-5xl gap-4 md:my-24 md:grid-cols-3">
         <p className="mx-4 font-semibold text-muted-foreground md:row-start-1">
           Recent Releases
         </p>
@@ -61,7 +61,7 @@ export default async function HomePage() {
           <Releases limit={3} />
         </div>
       </section>
-      <section className="grid-col-1 mx-auto my-24 grid w-full max-w-5xl gap-4 md:grid-cols-3">
+      <section className="grid-col-1 mx-auto my-12 grid w-full max-w-5xl gap-4 md:my-24 md:grid-cols-3">
         <p className="mx-4 font-semibold text-muted-foreground md:row-start-1">
           Features
         </p>
@@ -98,7 +98,7 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
-      <section className="grid-col-1 mx-auto my-24 grid w-full max-w-5xl gap-4 md:grid-cols-3">
+      <section className="grid-col-1 mx-auto my-12 grid w-full max-w-5xl gap-4 md:my-24 md:grid-cols-3">
         <p className="mx-4 font-semibold text-muted-foreground md:row-start-1">
           Pricing
         </p>
