@@ -112,6 +112,7 @@ export default function Nav({ children }: NavProps) {
             key={index}
             asChild
             variant="ghost"
+            size="sm"
             className={cn(
               "justify-start text-foreground",
               link.isActive && "bg-primary text-background",
