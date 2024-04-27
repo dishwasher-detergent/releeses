@@ -32,7 +32,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${spaceGrotesk.className} relative h-screen w-screen overflow-x-hidden bg-background`}
+        className={`${spaceGrotesk.className} relative h-lvh w-screen overflow-x-hidden bg-background`}
       >
         <Providers>{children}</Providers>
       </body>

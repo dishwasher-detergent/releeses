@@ -14,7 +14,7 @@ export default function HomeLayout({
         className="fixed inset-0 z-0 mx-auto hidden max-w-5xl grid-cols-1 border-x md:grid md:grid-cols-3"
         style={{ left: "15px" }}
       >
-        <div className="col-start-2 h-full border-x border-dashed" />
+        <div className="col-start-2 h-full border-x border-dashed border-muted border-slate-300 dark:border-slate-900" />
       </div>
     </HueProvider>
   );

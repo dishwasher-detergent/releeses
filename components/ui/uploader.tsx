@@ -89,7 +89,7 @@ export default function Uploader() {
         </div>
         <label
           htmlFor="image-upload"
-          className="group relative mt-2 flex h-72 cursor-pointer flex-col items-center justify-center rounded-md border border-slate-300 bg-background shadow-sm transition-all hover:bg-slate-50"
+          className="group relative mt-2 flex h-72 cursor-pointer flex-col items-center justify-center rounded-md border  bg-background shadow-sm transition-all hover:bg-slate-50"
         >
           <div
             className="absolute z-[5] h-full w-full rounded-md"
