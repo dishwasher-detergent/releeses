@@ -37,7 +37,7 @@ export default async function OrgLayout({
       >
         <div className="mx-auto flex h-full max-w-3xl flex-col">
           <Nav name={org.data.name} logo={org.data.logo} />
-          <div className="flex w-full flex-1 flex-col pb-8 md:pt-8">
+          <div className="flex w-full flex-1 flex-col pb-8 md:pt-4">
             {children}
           </div>
         </div>

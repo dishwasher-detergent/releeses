@@ -29,7 +29,7 @@ export default function ReleaseCard({
   let link = `/release/${data.id}`;
 
   if (blog) {
-    link = `${data.id}`;
+    link = `${data.slug}`;
   }
 
   if (marketing) {

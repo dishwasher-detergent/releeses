@@ -1,7 +1,6 @@
 import BlurImage from "@/components/ui/blur-image";
 import MDX from "@/components/ui/mdx";
 import ReleaseCard from "@/components/ui/release-card";
-import { Separator } from "@/components/ui/separator";
 import { getReleaseData } from "@/lib/fetchers";
 import { placeholderBlurhash } from "@/lib/utils";
 import { Tables } from "@/types/supabase";
@@ -79,7 +78,7 @@ export default async function OrgReleasePage({
         />
       </section>
       <section className="mb-8 w-full px-4">
-        <h1 className="truncate text-xl font-bold">{release?.data?.title}</h1>
+        <h1 className="truncate text-3xl font-bold">{release?.data?.title}</h1>
         <p className="text-sm font-semibold text-foreground/80">{createdAt}</p>
       </section>
       <section className="mb-8 w-full flex-1 px-4">
@@ -90,14 +89,11 @@ export default async function OrgReleasePage({
         <>
           {release?.adjacentReleases?.data &&
             release?.adjacentReleases?.data.length > 0 && (
-              <>
-                <div className="flex h-[52px] w-full items-center justify-between px-4 py-2">
-                  <p className="text-xl font-bold">Recent Releases</p>
-                </div>
-                <Separator />
-              </>
+              <div className="flex h-[52px] w-full items-center justify-between px-4 py-2">
+                <p className="text-xl font-bold">Recent Releases</p>
+              </div>
             )}
-          <section className="grid w-full grid-cols-2 border-l lg:grid-cols-3">
+          <section className="grid w-full grid-cols-1 md:grid-cols-2">
             {release?.adjacentReleases.data?.map(
               (item: Tables<"release">, index: number) => (
                 <ReleaseCard

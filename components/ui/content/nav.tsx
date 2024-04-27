@@ -9,7 +9,7 @@ interface NavProps {
 
 export function Nav({ name, logo }: NavProps) {
   return (
-    <header className="flex h-14 w-full flex-none items-center justify-between border-b px-4">
+    <header className="flex h-14 w-full flex-none items-center justify-between px-4">
       <Link href="/" className="flex items-center justify-center">
         {logo && (
           <div className="inline-block size-8 overflow-hidden rounded-full align-middle">

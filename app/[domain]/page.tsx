@@ -1,17 +1,11 @@
+import { Badge } from "@/components/ui/badge";
 import BlurImage from "@/components/ui/blur-image";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 import { getOrgData } from "@/lib/fetchers";
 import { createClient } from "@/lib/supabase/server";
 import { placeholderBlurhash } from "@/lib/utils";
 import { LucideArrowRight, LucideCalendar } from "lucide-react";
 import { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
 export async function generateMetadata({
@@ -73,8 +67,8 @@ export default async function OrgHomePage({
 
   return (
     <>
-      <section>
-        <div className="relative m-auto h-60 w-full max-w-screen-lg overflow-hidden md:rounded-2xl">
+      <section className="mb-8">
+        <div className="relative m-auto h-96 w-full max-w-screen-lg overflow-hidden md:rounded-2xl">
           <BlurImage
             alt={response.data?.name ?? "Organization Image"}
             width={1200}
@@ -84,87 +78,77 @@ export default async function OrgHomePage({
             blurDataURL={response.data?.imageBlurhash ?? placeholderBlurhash}
             src={response.data?.image}
           />
-        </div>
-        <div className="-mt-24 ml-4 pb-8">
-          <div className="relative z-10 mb-4 h-36 w-36 overflow-hidden rounded-full border-4 border-background">
-            <BlurImage
-              alt={response.data?.logo ?? "Organization Logo"}
-              width={400}
-              height={400}
-              className="h-full w-full object-cover"
-              placeholder="blur"
-              blurDataURL={placeholderBlurhash}
-              src={response.data?.logo}
-            />
+          <div className="absolute bottom-4 left-4 z-10">
+            <h1 className="truncate text-2xl font-bold text-white">
+              {response.data?.name ?? <span className="italic">No Name</span>}
+            </h1>
           </div>
-          <h1 className="truncate pb-4 text-2xl font-bold">
-            {response.data?.name ?? <span className="italic">No Name</span>}
-          </h1>
-          <p className="text-sm">
-            {response.data?.description ?? (
-              <span className="italic">No Description</span>
-            )}
-          </p>
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-950 to-transparent" />
         </div>
+        <p className="p-4 text-sm">
+          {response.data?.description ?? (
+            <span className="italic">No Description</span>
+          )}
+        </p>
       </section>
-      <section className="px-4 pb-4">
-        <h1 className="text-2xl font-bold">Changelog</h1>
-      </section>
-      <section className="flex w-full flex-col px-4">
-        {response.data?.release
-          .sort(
-            (a, b) =>
-              new Date(b.created_at).getTime() -
-              new Date(a.created_at).getTime(),
-          )
-          .map((release) => {
-            const createdAt = new Date(release.created_at).toLocaleDateString(
-              "en-us",
-              {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              },
-            );
-            return (
-              <article key={release.id} className="group">
-                <div className="flex flex-row items-center gap-2 pb-4">
-                  <LucideCalendar className="size-4 flex-none text-foreground/80" />
-                  <p className="text-sm font-semibold text-foreground/80">
-                    {createdAt}
-                  </p>
-                </div>
-                <div className="flex flex-row gap-2">
-                  <div className="flex w-4 flex-none items-center justify-center pb-2">
-                    <Separator orientation="vertical" />
+      <section className="w-full px-4">
+        <h2 className="mb-4 text-2xl font-bold">Changelog</h2>
+        <ul className="flex flex-col gap-8">
+          {response.data?.release
+            .sort(
+              (a, b) =>
+                new Date(b.created_at).getTime() -
+                new Date(a.created_at).getTime(),
+            )
+            .map((release) => {
+              const createdAt = new Date(release.created_at).toLocaleDateString(
+                "en-us",
+                {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                },
+              );
+              return (
+                <li
+                  key={release.id}
+                  className="group/link group flex flex-row flex-nowrap gap-2"
+                >
+                  <div className="-mt-16 flex w-6 flex-col pb-2 group-first:m-0">
+                    <div className="h-full border-l-4" />
+                    <div className="size-6 rounded-bl-xl border-b-4 border-l-4" />
                   </div>
-                  <Card className="group/link relative mb-8 flex-1 shadow-none group-last:mb-0">
-                    <a
-                      href={release.slug ?? "/"}
-                      target="_blank"
-                      className="absolute inset-0 cursor-pointer rounded-xl ring-slate-100 transition-all hover:bg-slate-50/20 hover:ring-4"
-                    />
-                    <CardHeader>
-                      <CardTitle className="text-xl">{release.title}</CardTitle>
-                    </CardHeader>
-                    {release.description && (
-                      <CardContent>{release.description}</CardContent>
-                    )}
-                    <CardFooter>
-                      <a
+                  <div className="relative">
+                    <div className="mb-4">
+                      <Badge variant="secondary">
+                        <LucideCalendar className="mr-2 size-3" />
+                        <p>{createdAt}</p>
+                      </Badge>
+                    </div>
+                    <div className="space-y-4">
+                      <div>
+                        <h3 className="text-3xl font-bold">{release.title}</h3>
+                      </div>
+                      {release.description && (
+                        <p className="max-w-2xl">{release.description}</p>
+                      )}
+                      <Link
                         href={release.slug ?? "/"}
-                        target="_blank"
                         className="flex flex-row items-center gap-2 text-sm text-primary"
                       >
                         Read More
                         <LucideArrowRight className="size-4 transition-all group-hover/link:translate-x-0.5" />
-                      </a>
-                    </CardFooter>
-                  </Card>
-                </div>
-              </article>
-            );
-          })}
+                      </Link>
+                    </div>
+                    <Link
+                      href={release.slug ?? "/"}
+                      className="absolute inset-0"
+                    />
+                  </div>
+                </li>
+              );
+            })}
+        </ul>
         {response.data?.release.length === 0 && (
           <div className="w-full rounded-xl bg-muted p-8 text-center font-bold">
             No releases, yet!
