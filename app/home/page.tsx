@@ -1,7 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import Hero from "@/components/ui/marketing/hero";
-import Nav from "@/components/ui/marketing/nav";
 import Pricing from "@/components/ui/marketing/prices";
 import Releases from "@/components/ui/marketing/releases";
 import { Separator } from "@/components/ui/separator";
@@ -27,7 +26,6 @@ export default async function HomePage() {
 
   return (
     <>
-      <Nav />
       <section className="mx-auto my-12 grid w-full max-w-5xl grid-cols-1 gap-4 px-4 md:my-24 md:grid-cols-3">
         <div className="mx-4 flex justify-center md:col-start-2">
           <Badge className="rounded-full py-1" variant="secondary">
