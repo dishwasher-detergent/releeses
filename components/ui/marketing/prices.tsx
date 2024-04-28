@@ -31,7 +31,7 @@ export default function Pricing({ products }: Props) {
   } else {
     return (
       <>
-        <div className="mx-4 md:col-start-2 md:row-start-4">
+        <div className="mx-4 md:row-start-3">
           {products?.map((product) => {
             const price = product?.prices?.find(
               (price) => price.type === "one_time",
