@@ -1,5 +1,5 @@
+import { Organization } from "@/interfaces/organization";
 import { Json } from "@/types/supabase";
-import { Organization } from "./organization";
 
 export interface Release {
   content: string | null;

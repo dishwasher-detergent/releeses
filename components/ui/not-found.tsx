@@ -1,4 +1,4 @@
-import { Badge } from "./badge";
+import { Badge } from "@/components/ui/badge";
 
 interface NotFoundProps {
   message?: string;

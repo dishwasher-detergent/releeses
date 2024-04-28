@@ -48,8 +48,8 @@ export default async function Releases({
       ))}
     </div>
   ) : (
-    <div className="flex w-full flex-row items-center justify-center gap-4 pt-24">
-      <LucideGhost className="h-10 w-10 flex-none rounded-xl bg-primary-foreground p-2 text-primary dark:bg-primary dark:text-primary-foreground" />
+    <div className="m-2 flex flex-col items-center justify-center gap-4 overflow-y-auto rounded-xl border border-dashed border-slate-300 p-2 dark:border-slate-900 md:m-4 md:p-4">
+      <LucideGhost className="h-10 w-10 flex-none rounded-xl bg-primary p-2 text-primary-foreground" />
       <p>Time to start releasing stuff!</p>
     </div>
   );

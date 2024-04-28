@@ -2,6 +2,7 @@
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import Profile from "@/components/ui/profile";
 import { Separator } from "@/components/ui/separator";
 import { Nav as NavItems } from "@/interfaces/nav";
 import { getOrganizationFromReleaseId } from "@/lib/actions";
@@ -18,7 +19,6 @@ import {
 import Link from "next/link";
 import { useParams, useSelectedLayoutSegments } from "next/navigation";
 import { ReactNode, useEffect, useMemo, useState } from "react";
-import Profile from "./profile";
 
 interface NavProps {
   children?: ReactNode;

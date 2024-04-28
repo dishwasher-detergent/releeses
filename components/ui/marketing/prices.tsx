@@ -1,10 +1,6 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
-import type { Tables } from "@/types/supabase";
-import { useState } from "react";
 import {
   Card,
   CardContent,
@@ -12,7 +8,8 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "../card";
+} from "@/components/ui/card";
+import type { Tables } from "@/types/supabase";
 
 type Product = Tables<"products">;
 type Price = Tables<"prices">;
@@ -24,12 +21,7 @@ interface Props {
   products: ProductWithPrices[] | null;
 }
 
-type BillingInterval = "year" | "month";
-
 export default function Pricing({ products }: Props) {
-  const [billingInterval, setBillingInterval] =
-    useState<BillingInterval>("month");
-
   if (!products?.length) {
     return (
       <p className="mx-4 md:row-start-3">
@@ -39,26 +31,10 @@ export default function Pricing({ products }: Props) {
   } else {
     return (
       <>
-        <div className="mx-4 rounded-xl bg-muted px-4 py-2 md:col-start-2 md:row-start-3">
-          <p className="mb-2 text-sm font-bold">Billing Period</p>
-          <div className="flex flex-row items-center gap-2">
-            <Label htmlFor="interval">Monthly</Label>
-            <Switch
-              onCheckedChange={() => {
-                setBillingInterval(
-                  billingInterval === "month" ? "year" : "month",
-                );
-              }}
-              value={billingInterval}
-              id="interval"
-            />
-            <Label htmlFor="interval">Yearly</Label>
-          </div>
-        </div>
         <div className="mx-4 md:col-start-2 md:row-start-4">
           {products?.map((product) => {
             const price = product?.prices?.find(
-              (price) => price.interval === billingInterval,
+              (price) => price.type === "one_time",
             );
 
             if (!price) return null;
@@ -75,19 +51,17 @@ export default function Pricing({ products }: Props) {
                   <CardDescription>{product.description}</CardDescription>
                 </CardHeader>
                 <CardContent className="py-12">
-                  <p className="text-5xl font-black">
-                    {priceString}/{billingInterval}
-                  </p>
+                  <p className="text-3xl font-black">{priceString}/Lifetime</p>
                 </CardContent>
                 <CardFooter>
-                  <Button size="sm" type="button" asChild>
+                  <Button size="sm" type="button" asChild className="w-full">
                     <a
                       target="_blank"
                       href={`${process.env.NEXT_PUBLIC_DOMAIN?.split("//").join(
                         "//app.",
                       )}/account`}
                     >
-                      Subscribe
+                      Purchase
                     </a>
                   </Button>
                 </CardFooter>

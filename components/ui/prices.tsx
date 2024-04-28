@@ -1,8 +1,6 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
 import {
   Table,
   TableBody,
@@ -37,19 +35,8 @@ interface Props {
   subscription: SubscriptionWithProduct | null;
 }
 
-type BillingInterval = "year" | "month";
-
 export default function Pricing({ user, products, subscription }: Props) {
-  const intervals = Array.from(
-    new Set(
-      products?.flatMap(
-        (product) => product?.prices?.map((price) => price?.interval),
-      ),
-    ),
-  );
   const router = useRouter();
-  const [billingInterval, setBillingInterval] =
-    useState<BillingInterval>("month");
   const [priceIdLoading, setPriceIdLoading] = useState<string>();
   const currentPath = usePathname();
 
@@ -86,22 +73,6 @@ export default function Pricing({ user, products, subscription }: Props) {
   } else {
     return (
       <>
-        <div className="rounded-xl bg-muted px-4 py-2">
-          <p className="mb-2 text-sm font-bold">Billing Period</p>
-          <div className="flex flex-row items-center gap-2">
-            <Label htmlFor="interval">Monthly</Label>
-            <Switch
-              onCheckedChange={() => {
-                setBillingInterval(
-                  billingInterval === "month" ? "year" : "month",
-                );
-              }}
-              value={billingInterval}
-              id="interval"
-            />
-            <Label htmlFor="interval">Yearly</Label>
-          </div>
-        </div>
         <Table>
           <TableHeader>
             <TableRow>
@@ -114,7 +85,7 @@ export default function Pricing({ user, products, subscription }: Props) {
           <TableBody>
             {products?.map((product) => {
               const price = product?.prices?.find(
-                (price) => price.interval === billingInterval,
+                (price) => price.type === "one_time",
               );
 
               if (!price) return null;
@@ -141,7 +112,7 @@ export default function Pricing({ user, products, subscription }: Props) {
                       type="button"
                       onClick={() => handleStripeCheckout(price)}
                     >
-                      {subscription ? "Manage" : "Subscribe"}
+                      {subscription ? "Manage" : "Purchase"}
                     </Button>
                   </TableCell>
                 </TableRow>

@@ -1,8 +1,8 @@
 "use client";
 
+import { Hue } from "@/components/ui/marketing/hue";
 import { HueContext } from "@/providers/hue-provider";
 import { useContext, useEffect, useRef } from "react";
-import { Hue } from "./hue";
 
 export default function Hero() {
   const { setAnchor, width } = useContext(HueContext);

@@ -1,5 +1,5 @@
+import { updateSession } from "@/lib/supabase/middleware";
 import { NextRequest } from "next/server";
-import { updateSession } from "./lib/supabase/middleware";
 
 export const config = {
   matcher: [
@@ -42,6 +42,7 @@ export default async function middleware(req: NextRequest) {
     const newUrl = new URL(`/app${path === "/" ? "" : path}`, req.url);
 
     return updateSession(req, newUrl);
+    // return NextResponse.rewrite(newUrl.toString());
   }
 
   // rewrite root application to `/home` folder
@@ -52,9 +53,11 @@ export default async function middleware(req: NextRequest) {
     const newUrl = new URL(`/home${path === "/" ? "" : path}`, req.url);
 
     return updateSession(req, newUrl);
+    // return NextResponse.rewrite(newUrl.toString());
   }
 
   // rewrite everything else to `/[domain]/[slug] dynamic route
   const newUrl = new URL(`/${hostname}${path}`, req.url);
   return updateSession(req, newUrl);
+  // return NextResponse.rewrite(newUrl.toString());
 }

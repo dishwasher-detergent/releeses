@@ -3,6 +3,13 @@
 import { Loader } from "@/components/loading/loader";
 import { Button } from "@/components/ui/button";
 import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
   Dialog,
   DialogContent,
   DialogDescription,
@@ -16,13 +23,6 @@ import { Tables } from "@/types/supabase";
 import { User } from "@supabase/supabase-js";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "../ui/card";
 
 type Subscription = Tables<"subscriptions">;
 type Price = Tables<"prices">;
