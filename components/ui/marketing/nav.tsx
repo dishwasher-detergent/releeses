@@ -1,20 +1,16 @@
 import { Button } from "@/components/ui/button";
-import { ThemeToggle } from "@/components/ui/theme-toggle";
-import { LucideRocket } from "lucide-react";
+import { Logo } from "@/components/ui/logo";
 import Link from "next/link";
 
 export default function Nav() {
   return (
-    <header className="h-14 w-full border-b">
-      <div className="mx-auto flex h-full w-full max-w-5xl items-center px-8">
+    <header className="relative z-10 h-14 w-full border-b border-white/20">
+      <div className="mx-auto flex h-full w-full max-w-5xl items-center px-12">
         <Link href="/" className="flex items-center gap-2 font-semibold">
-          <LucideRocket className="size-6 rounded-lg text-foreground" />
-          <span className="text-xl font-black">Releeses</span>
+          <Logo variant="light" />
+          <span className="text-xl font-black text-white">Releeses</span>
         </Link>
         <ul className="flex flex-1 flex-row items-center justify-end gap-2">
-          <li>
-            <ThemeToggle />
-          </li>
           <li>
             <Button asChild size="sm">
               <a

@@ -34,7 +34,7 @@ export default function ReleaseCard({
 
   return (
     <article className="relative flex flex-row flex-wrap gap-4">
-      <div className="aspect-square w-36 overflow-hidden rounded-xl">
+      <div className="aspect-video w-full overflow-hidden rounded-2xl bg-emerald-800 lg:aspect-[5/4]">
         <BlurImage
           alt={
             data.image && data.title
@@ -50,8 +50,10 @@ export default function ReleaseCard({
         />
       </div>
       <div>
-        <h4 className="truncate text-lg font-bold">{data.title}</h4>
-        <p className="relative z-50 truncate">
+        <h4 className="truncate font-bold text-white md:text-lg">
+          {data.title}
+        </h4>
+        <p className="relative z-50 truncate text-sm text-white md:text-base">
           <a
             href={
               process.env.NEXT_PUBLIC_VERCEL_ENV

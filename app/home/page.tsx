@@ -1,16 +1,13 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import Hero from "@/components/ui/marketing/hero";
 import Pricing from "@/components/ui/marketing/prices";
 import Releases from "@/components/ui/marketing/releases";
-import { Separator } from "@/components/ui/separator";
 import { createClient } from "@/lib/supabase/server";
 import {
   LucideBuilding2,
   LucideGlobe,
   LucideMap,
   LucideRocket,
-  LucideSparkles,
 } from "lucide-react";
 
 export default async function HomePage() {
@@ -21,88 +18,80 @@ export default async function HomePage() {
     .select("*, prices(*)")
     .eq("active", true)
     .eq("prices.active", true)
-    .order("metadata->index")
-    .order("unit_amount", { referencedTable: "prices" });
+    .order("unit_amount", { ascending: true, referencedTable: "prices" });
+
+  console.log(products);
 
   return (
     <>
-      <section className="mx-auto my-12 grid w-full max-w-5xl grid-cols-1 gap-4 px-4 md:my-24 md:grid-cols-3">
-        <div className="mx-4 flex justify-center md:col-start-2">
-          <Badge className="rounded-full py-1" variant="secondary">
-            <LucideSparkles className="size-4" />
-            <Separator orientation="vertical" className="mx-2 h-3" />
-            Releeses was just Released
-          </Badge>
-        </div>
-        <Hero />
-        <div className="mx-4 flex justify-center md:col-start-2">
-          <Button size="lg" asChild className="md:w-full">
-            <a
-              href={`${process.env.NEXT_PUBLIC_DOMAIN?.split("//").join(
-                "//app.",
-              )}`}
-            >
-              <LucideRocket className="mr-2 size-4" />
-              Get Started
-            </a>
+      <section className="mb-24 mt-12 w-full px-12">
+        <h1 className="mb-6 text-4xl font-bold text-white md:text-6xl">
+          Releeses is the best way to manager your changelog and roadmap.
+        </h1>
+        <p className="mb-12 text-white md:text-lg">
+          Easily manage and publish public changelogs for your applications,
+          keeping your audience informed and engaged with every update.
+        </p>
+        <div className="flex items-center justify-center">
+          <Button
+            size="lg"
+            className="w-full bg-emerald-600 ring-2 ring-emerald-400 transition-all hover:bg-emerald-700 hover:ring-4 hover:ring-emerald-500 md:w-[30%]"
+          >
+            Get Started
           </Button>
         </div>
       </section>
-      <section className="grid-col-1 mx-auto my-12 grid w-full max-w-5xl gap-4 px-4 md:my-24 md:grid-cols-3">
-        <p className="mx-4 font-semibold text-muted-foreground md:row-start-1">
-          Recent Releases
-        </p>
-        <h2 className="mx-4 mb-12  text-5xl font-black md:col-span-2 md:row-start-2">
+      <section className="mb-24 w-full rounded-[48px] bg-emerald-950/30 p-12">
+        <h2 className="text-white">Recent Releases</h2>
+        <p className="mb-6 text-xl font-bold text-white md:text-3xl">
           See what everyone else is releasing!
-        </h2>
-        <div className="md:col-span-3 md:row-start-3">
-          <Releases limit={3} />
-        </div>
-      </section>
-      <section className="grid-col-1 mx-auto my-12 grid w-full max-w-5xl gap-4 px-4 md:my-24 md:grid-cols-3">
-        <p className="mx-4 font-semibold text-muted-foreground md:row-start-1">
-          Features
         </p>
-        <h2 className="mx-4 mb-12  text-5xl font-black md:col-span-2 md:row-start-2">
+        <Releases />
+      </section>
+      <section className="w-full p-12">
+        <h2 className="text-white">Features</h2>
+        <p className="mb-6 text-xl font-bold text-white md:text-3xl">
           Here&apos;s what we offer!
-        </h2>
+        </p>
         <div className="mx-4 grid grid-cols-1 gap-8 md:col-span-3 md:row-start-3 md:grid-cols-3">
           <div>
-            <LucideBuilding2 className="mb-2 size-8 rounded-xl bg-primary p-2 text-primary-foreground" />
-            <h4 className="font-bold">Organizations</h4>
-            <p>Right off the bat, you can create 1 organization, for free!</p>
+            <LucideBuilding2 className="mb-2 size-8 rounded-xl bg-emerald-600 p-2 text-white" />
+            <h4 className="font-bold text-white">Organizations</h4>
+            <p className="text-white">
+              Right off the bat, you can create 1 organization, for free!
+            </p>
           </div>
           <div>
-            <LucideRocket className="mb-2 size-8 rounded-xl bg-primary p-2 text-primary-foreground" />
-            <h4 className="font-bold">Releases</h4>
-            <p>
+            <LucideRocket className="mb-2 size-8 rounded-xl bg-emerald-600 p-2 text-white" />
+            <h4 className="font-bold text-white">Releases</h4>
+            <p className="text-white">
               Feel free to create as many releases as you want! We don&apos;t
               limit.
             </p>
           </div>
           <div>
-            <LucideMap className="mb-2 size-8 rounded-xl bg-primary p-2 text-primary-foreground" />
-            <h4 className="font-bold">
+            <LucideMap className="mb-2 size-8 rounded-xl bg-emerald-600 p-2 text-white" />
+            <h4 className="font-bold text-white">
               Roadmap <Badge variant="secondary">Coming Soon</Badge>
             </h4>
-            <p>Let everyone know what you&apos;ve got planned!</p>
+            <p className="text-white">
+              Let everyone know what you&apos;ve got planned!
+            </p>
           </div>
           <div>
-            <LucideGlobe className="mb-2 size-8 rounded-xl bg-primary p-2 text-primary-foreground" />
-            <h4 className="font-bold">Domains</h4>
-            <p>
+            <LucideGlobe className="mb-2 size-8 rounded-xl bg-emerald-600 p-2 text-white" />
+            <h4 className="font-bold text-white">Domains</h4>
+            <p className="text-white">
               Free subdomains on the releeses.com domain, or bring your own!
             </p>
           </div>
         </div>
       </section>
-      <section className="grid-col-1 mx-auto my-12 grid w-full max-w-5xl gap-4 px-4 md:my-24 md:grid-cols-3">
-        <p className="mx-4 font-semibold text-muted-foreground md:row-start-1">
-          Pricing
-        </p>
-        <h2 className="mx-4 mb-12  text-5xl font-black md:col-span-2 md:row-start-2">
+      <section className="mb-24 w-full rounded-[48px] bg-emerald-950/30 p-12">
+        <h2 className="text-white">Pricing</h2>
+        <p className="mb-6 text-xl font-bold text-white md:text-3xl">
           Simple, we only have one plan!
-        </h2>
+        </p>
         <Pricing products={products ?? []} />
       </section>
     </>
