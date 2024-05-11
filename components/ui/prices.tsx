@@ -1,41 +1,40 @@
 "use client";
 
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { getStripe } from "@/lib/stripe/client";
 import { checkoutWithStripe } from "@/lib/stripe/server";
 import type { Tables } from "@/types/supabase";
-import { User } from "@supabase/supabase-js";
+import { LucideCheck } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
+import { Loader } from "../loading/loader";
 
-type Subscription = Tables<"subscriptions">;
 type Product = Tables<"products">;
 type Price = Tables<"prices">;
 interface ProductWithPrices extends Product {
   prices: Price[];
 }
-interface PriceWithProduct extends Price {
-  products: Product | null;
-}
-interface SubscriptionWithProduct extends Subscription {
-  prices: PriceWithProduct | null;
-}
 
 interface Props {
-  user: User | null | undefined;
   products: ProductWithPrices[] | null;
-  subscription: SubscriptionWithProduct | null;
 }
 
-export default function Pricing({ user, products, subscription }: Props) {
+// Helper function to get the one-time price
+const getOneTimePrice = (prices: Price[]) => {
+  return prices?.find((price) => price.type === "one_time")?.unit_amount || 0;
+};
+
+// Helper function to format the price
+const formatPrice = (price: Price) => {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: price.currency!,
+    minimumFractionDigits: 0,
+  }).format((price?.unit_amount || 0) / 100);
+};
+
+export default function Pricing({ products }: Props) {
   const router = useRouter();
   const [priceIdLoading, setPriceIdLoading] = useState<string>();
   const currentPath = usePathname();
@@ -64,63 +63,59 @@ export default function Pricing({ user, products, subscription }: Props) {
     setPriceIdLoading(undefined);
   };
 
-  if (!products?.length) {
-    return (
-      <div>
-        <p>We are currently not offering any paid for products!</p>
-      </div>
-    );
-  } else {
-    return (
-      <>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Name</TableHead>
-              <TableHead>Description</TableHead>
-              <TableHead>Price</TableHead>
-              <TableHead />
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {products?.map((product) => {
-              const price = product?.prices?.find(
-                (price) => price.type === "one_time",
-              );
+  if (!products || products.length === 0) return null;
 
-              if (!price) return null;
+  return (
+    <div className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3">
+      {products
+        .sort((a, b) => getOneTimePrice(a.prices) - getOneTimePrice(b.prices))
+        .map((product) => {
+          const price = product?.prices?.find(
+            (price) => price.type === "one_time",
+          );
 
-              const priceString = new Intl.NumberFormat("en-US", {
-                style: "currency",
-                currency: price.currency!,
-                minimumFractionDigits: 0,
-              }).format((price?.unit_amount || 0) / 100);
-              return (
-                <TableRow key={product.id}>
-                  <TableCell>{product.name}</TableCell>
-                  <TableCell>
-                    {product.description ?? (
-                      <span className="italic text-muted-foreground">
-                        No Description
-                      </span>
+          if (!price) return null;
+
+          const priceString = formatPrice(price);
+
+          return (
+            <div key={product.id} className="rounded-lg border p-2">
+              <div className="flex justify-end">
+                <Badge>{product.name}</Badge>
+              </div>
+              <p className="mb-2 text-sm text-foreground">
+                {product.description}
+              </p>
+              <h4 className="text-text-foreground text-5xl font-black">
+                {priceString}
+                <span className="text-base font-semibold">/Lifetime</span>
+              </h4>
+              <ul className="text-text-foreground my-8">
+                {Object.entries(product.metadata || {}).map(([key, value]) => (
+                  <li key={key} className="flex flex-row items-center gap-2">
+                    {["org", "release", "roadmap"].includes(key) && (
+                      <>
+                        <LucideCheck className="size-4 text-emerald-500" />
+                        <p>{value}</p>
+                      </>
                     )}
-                  </TableCell>
-                  <TableCell>{priceString}</TableCell>
-                  <TableCell>
-                    <Button
-                      size="sm"
-                      type="button"
-                      onClick={() => handleStripeCheckout(price)}
-                    >
-                      {subscription ? "Manage" : "Purchase"}
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
-      </>
-    );
-  }
+                  </li>
+                ))}
+              </ul>
+              <Button
+                size="sm"
+                type="button"
+                onClick={() => handleStripeCheckout(price)}
+                className="w-full bg-emerald-600 ring-2 ring-emerald-400 transition-all hover:bg-emerald-700 hover:ring-4 hover:ring-emerald-500"
+              >
+                {priceIdLoading && (
+                  <Loader className="mr-2 size-4 text-white" />
+                )}
+                {price.unit_amount == 0 ? "Get Started!" : "Purchase!"}
+              </Button>
+            </div>
+          );
+        })}
+    </div>
+  );
 }

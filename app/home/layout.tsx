@@ -1,3 +1,4 @@
+import Footer from "@/components/ui/marketing/footer";
 import Nav from "@/components/ui/marketing/nav";
 
 export default function HomeLayout({
@@ -9,6 +10,7 @@ export default function HomeLayout({
     <main className="relative flex min-h-screen flex-col bg-black">
       <Nav />
       <div className="relative z-10 mx-auto max-w-5xl py-4">{children}</div>
+      <Footer />
       <div className="space-between absolute inset-0 z-0 h-full">
         <div className="mx-auto flex h-full max-w-5xl flex-row flex-nowrap justify-between px-8">
           <div className="border-l border-white/20" />

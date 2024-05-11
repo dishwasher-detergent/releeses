@@ -24,6 +24,7 @@ export default async function Account() {
     .select("*, prices(*)")
     .eq("active", true)
     .eq("prices.active", true)
+    .gt("prices.unit_amount", 0)
     .order("metadata->index")
     .order("unit_amount", { referencedTable: "prices" });
 

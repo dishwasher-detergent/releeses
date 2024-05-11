@@ -9,14 +9,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import Prices from "@/components/ui/prices";
 import { createStripePortal } from "@/lib/stripe/server";
 import { Tables } from "@/types/supabase";
@@ -109,28 +101,7 @@ export default function CustomerPortalForm({
             <p>You are not currently subscribed to any plan.</p>
           )}
         </div>
-        <div>
-          {!subscription && (
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button>Pick Your Plan</Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Pick Your Plan</DialogTitle>
-                  <DialogDescription>
-                    Pick the best plan for your needs.
-                  </DialogDescription>
-                </DialogHeader>
-                <Prices
-                  subscription={subscription}
-                  products={products}
-                  user={user}
-                />
-              </DialogContent>
-            </Dialog>
-          )}
-        </div>
+        <div>{!subscription && <Prices products={products} />}</div>
       </div>
       <div className="flex flex-row items-center justify-between rounded-b-xl border-t bg-muted px-4 py-2">
         <p className="text-sm text-foreground">
