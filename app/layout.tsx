@@ -9,7 +9,7 @@ const description =
 
 export const metadata: Metadata = {
   icons: {
-    icon: "/rocket.png",
+    icon: "/Logo.svg",
   },
   title,
   description,
