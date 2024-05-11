@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import CreateOrg from "@/components/ui/create-org";
 import CreateRelease from "@/components/ui/create-release";
+import { Logo } from "@/components/ui/logo";
 import Nav from "@/components/ui/nav";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import {
@@ -105,7 +106,7 @@ export default function DashboardLayoutComponent({
         <div className="flex h-full max-h-screen flex-col">
           <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
             <Link href="/" className="flex items-center gap-2 font-semibold">
-              <LucideRocket className="size-8 rounded-lg bg-foreground p-2 text-background" />
+              <Logo size="sm" variant="dynamic" />
               <span className="text-xl font-black">Releeses</span>
             </Link>
           </div>
@@ -140,7 +141,7 @@ export default function DashboardLayoutComponent({
           </Sheet>
           {title}
         </header>
-        <main className="dotted relative flex flex-1 flex-col overflow-y-auto bg-muted">
+        <main className="dotted relative flex flex-1 flex-col overflow-y-auto bg-muted dark:bg-slate-900">
           {children}
         </main>
       </div>

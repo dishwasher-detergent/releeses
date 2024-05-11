@@ -9,6 +9,7 @@ const logoVariants = cva("", {
       dark: "text-dark",
       secondary: "text-secondary",
       primary: "text-primary",
+      dynamic: "text-foreground",
     },
     size: {
       default: "w-8 h-8",

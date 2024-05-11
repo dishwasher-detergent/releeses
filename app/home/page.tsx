@@ -41,14 +41,14 @@ export default async function HomePage() {
           </Button>
         </div>
       </section>
-      <section className="mb-24 w-full rounded-[48px] bg-emerald-950/30 p-12">
+      <section className="mb-12 w-full rounded-[48px] bg-emerald-950/30 p-12">
         <h2 className="text-white">Recent Releases</h2>
         <p className="mb-6 text-xl font-bold text-white md:text-3xl">
           See what everyone else is releasing!
         </p>
         <Releases />
       </section>
-      <section className="w-full p-12">
+      <section className="mb-12 w-full p-12">
         <h2 className="text-white">Features</h2>
         <p className="mb-6 text-xl font-bold text-white md:text-3xl">
           Here&apos;s what we offer!
@@ -87,7 +87,7 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
-      <section className="mb-24 w-full rounded-[48px] bg-emerald-950/30 p-12">
+      <section className="mb-12 w-full rounded-[48px] bg-emerald-950/30 p-12">
         <h2 className="text-white">Pricing</h2>
         <p className="mb-6 text-xl font-bold text-white md:text-3xl">
           Simple, we only have one plan!

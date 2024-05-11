@@ -8,13 +8,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Logo } from "@/components/ui/logo";
 import { createClient } from "@/lib/supabase/client";
-import {
-  LucideGitBranch,
-  LucideGithub,
-  LucideGitlab,
-  LucideRocket,
-} from "lucide-react";
+import { LucideGitBranch, LucideGithub, LucideGitlab } from "lucide-react";
 import Link from "next/link";
 
 export default function SignInPage() {
@@ -22,7 +18,7 @@ export default function SignInPage() {
     <Card className="mx-auto w-full max-w-sm p-4">
       <CardHeader className="mb-4 border-b">
         <Link href="/" className="mb-4 flex items-center gap-2 font-semibold">
-          <LucideRocket className="size-8 rounded-lg bg-foreground p-2 text-background" />
+          <Logo variant="dynamic" />
           <span className="text-xl font-black">Releeses</span>
         </Link>
         <CardTitle className="text-lg">Sign In</CardTitle>
