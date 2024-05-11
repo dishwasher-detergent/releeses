@@ -50,4 +50,6 @@ const Logo = React.forwardRef<SVGSVGElement, LogoProps>(
   },
 );
 
+Logo.displayName = "Logo";
+
 export { Logo, logoVariants };
