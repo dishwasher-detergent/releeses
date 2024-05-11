@@ -26,7 +26,7 @@
     "@supabase/ssr": "^0.1.0",
     "@supabase/supabase-js": "^2.41.1",
     "@upstash/ratelimit": "^1.0.1",
-    "@vercel/analytics": "^1.1.1",
+    "@vercel/analytics": "^1.2.2",
     "@vercel/kv": "^1.0.1",
     "ai": "^2.2.22",
     "class-variance-authority": "^0.7.0",

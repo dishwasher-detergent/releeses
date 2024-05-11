@@ -1,6 +1,7 @@
 import { Providers } from "@/app/providers";
 import { spaceGrotesk } from "@/styles/fonts";
 import "@/styles/globals.css";
+import { Analytics } from "@vercel/analytics/react";
 import { Metadata } from "next";
 
 const title = "Releeses";
@@ -35,6 +36,7 @@ export default function RootLayout({
         className={`${spaceGrotesk.className} relative h-lvh w-screen overflow-x-hidden bg-background`}
       >
         <Providers>{children}</Providers>
+        <Analytics />
       </body>
     </html>
   );
