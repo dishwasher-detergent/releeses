@@ -20,8 +20,6 @@ export default async function HomePage() {
     .eq("prices.active", true)
     .order("unit_amount", { ascending: true, referencedTable: "prices" });
 
-  console.log(products);
-
   return (
     <>
       <section className="mb-24 mt-12 w-full px-12">

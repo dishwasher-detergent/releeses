@@ -25,6 +25,11 @@ export default function OrgSettingsNav() {
       href: `/organization/${id}/settings/appearance`,
       isActive: segment == "appearance",
     },
+    {
+      name: "Git",
+      href: `/organization/${id}/settings/git`,
+      isActive: segment == "git",
+    },
   ];
 
   return (

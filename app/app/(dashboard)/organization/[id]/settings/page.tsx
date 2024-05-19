@@ -13,7 +13,7 @@ export default async function OrgSettingsIndex({
 
   const { data, error } = await supabase
     .from("organization")
-    .select()
+    .select("name, description")
     .eq("id", decodeURIComponent(params.id))
     .single();
 

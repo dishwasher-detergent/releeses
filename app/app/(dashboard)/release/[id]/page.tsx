@@ -17,7 +17,9 @@ export default async function ReleasePage({
 
   const { data, error } = await supabase
     .from("release")
-    .select("*, organization(subdomain, customDomain)")
+    .select(
+      "*, organization(subdomain, customDomain, organization, repository)",
+    )
     .eq("id", decodeURIComponent(params.id))
     .eq("user_id", session?.data?.user?.id)
     .single();
@@ -26,5 +28,6 @@ export default async function ReleasePage({
     notFound();
   }
 
+  // @ts-ignore
   return <Editor release={data} />;
 }

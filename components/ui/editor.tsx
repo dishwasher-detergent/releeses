@@ -6,21 +6,29 @@ import NovelEditor from "@/components/ui/novel";
 import { updateRelease, updateReleaseMetadata } from "@/lib/actions";
 import { Tables } from "@/types/supabase";
 import { ExternalLink } from "lucide-react";
-import { EditorInstance } from "novel";
+import { EditorInstance, useEditor } from "novel";
 import { useEffect, useState, useTransition } from "react";
 import TextareaAutosize from "react-textarea-autosize";
 import { toast } from "sonner";
 
-export default function Editor({ release }: { release: Tables<"release"> }) {
+type Release = {
+  organization: {
+    subdomain?: string;
+    customDomain?: string;
+    organization?: string;
+    repository?: string;
+  };
+} & Tables<"release">;
+
+export default function Editor({ release }: { release: Release }) {
   let [isPendingSaving, startTransitionSaving] = useTransition();
   let [isPendingPublishing, startTransitionPublishing] = useTransition();
   const [data, setData] = useState(release);
+  const { editor } = useEditor();
 
   const url = process.env.NEXT_PUBLIC_VERCEL_ENV
-    ? //@ts-ignore
-      `https://${data.organization?.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}/${data.slug}`
-    : //@ts-ignore
-      `http://${data.organization?.subdomain}.localhost:3000/${data.slug}`;
+    ? `https://${data.organization?.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}/${data.slug}`
+    : `http://${data.organization?.subdomain}.localhost:3000/${data.slug}`;
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
@@ -95,19 +103,21 @@ export default function Editor({ release }: { release: Tables<"release"> }) {
         <input
           type="text"
           placeholder="Title"
-          defaultValue={release?.title || ""}
           autoFocus
           onChange={(e) => setData({ ...data, title: e.target.value })}
+          value={data.title ?? ""}
           className="border-none bg-background px-0 text-3xl placeholder:text-muted-foreground focus:outline-none focus:ring-0 dark:text-foreground"
         />
         <TextareaAutosize
           placeholder="Description"
-          defaultValue={release?.description || ""}
           onChange={(e) => setData({ ...data, description: e.target.value })}
+          value={data.description ?? ""}
           className="border-none bg-background px-0 placeholder:text-muted-foreground focus:outline-none focus:ring-0 dark:text-foreground"
         />
       </div>
       <NovelEditor
+        repository={release.organization.repository}
+        organization={release.organization.organization}
         defaultValue={release.contentJson}
         onUpdate={(editor: EditorInstance) => {
           setData((prev) => ({

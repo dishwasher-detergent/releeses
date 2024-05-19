@@ -7,6 +7,7 @@ import {
   ImageIcon,
   List,
   ListOrdered,
+  Rocket,
   Text,
   TextQuote,
 } from "lucide-react";
@@ -14,6 +15,17 @@ import { Command, createSuggestionItems, renderItems } from "novel/extensions";
 import { uploadFn } from "./image-upload";
 
 export const suggestionItems = createSuggestionItems([
+  {
+    title: "Import",
+    description: "Import a release.",
+    searchTerms: ["import", "github", "bitbucket", "gitlab", "release"],
+    icon: <Rocket size={18} />,
+    // @ts-ignore
+    command: ({ editor, range }, setOpenDialog, setEditor) => {
+      setOpenDialog(true);
+      setEditor({ editor, range });
+    },
+  },
   {
     title: "Text",
     description: "Just start typing with plain text.",
