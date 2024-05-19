@@ -7,8 +7,6 @@ import { Tables } from "@/types/supabase";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-export const dynamic = "force-dynamic";
-
 export async function generateMetadata({
   params,
 }: {
@@ -93,7 +91,7 @@ export default async function OrgReleasePage({
                 <p className="text-xl font-bold">Recent Releases</p>
               </div>
             )}
-          <section className="grid w-full grid-cols-1 md:grid-cols-2">
+          <section className="grid w-full grid-cols-1 gap-4 md:grid-cols-2">
             {release?.adjacentReleases.data?.map(
               (item: Tables<"release">, index: number) => (
                 <ReleaseCard

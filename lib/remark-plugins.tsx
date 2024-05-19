@@ -1,4 +1,3 @@
-import { LucideExternalLink } from "lucide-react";
 import { findAndReplace } from "mdast-util-find-and-replace";
 import Link from "next/link";
 import { ReactNode } from "react";
@@ -23,10 +22,9 @@ export function replaceLinks({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="flex flex-row items-center gap-2"
+      className="inline-flex flex-row items-center gap-2"
     >
       {children}
-      <LucideExternalLink className="size-4" />
     </a>
   );
 }
@@ -91,7 +89,7 @@ export function remarkGithub() {
 
     let message = "";
     if (value.includes("/pull/")) {
-      message = `${id}`;
+      message = `#${id}`;
     } else if (value.includes("/commit/")) {
       message = `${id.slice(0, 7)}`;
     } else if (value.includes("/compare/")) {
@@ -124,7 +122,7 @@ export function remarkGitlab() {
 
     let message = "";
     if (value.includes("/merge_requests/")) {
-      message = `${id}`;
+      message = `#${id}`;
     } else if (value.includes("/commit/")) {
       message = `${id.slice(0, 7)}`;
     } else if (value.includes("/compare/")) {
@@ -157,7 +155,7 @@ export function remarkBitbucket() {
 
     let message = "";
     if (value.includes("/pull-requests/")) {
-      message = `${id}`;
+      message = `#${id}`;
     } else if (value.includes("/commits/")) {
       message = `${id.slice(0, 7)}`;
     }
