@@ -40,8 +40,8 @@ export default async function middleware(req: NextRequest) {
   if (hostname == `app.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`) {
     const newUrl = new URL(`/app${path === "/" ? "" : path}`, req.url);
 
-    // return updateSession(req, newUrl);
-    return NextResponse.rewrite(newUrl.toString());
+    return updateSession(req, newUrl);
+    // return NextResponse.rewrite(newUrl.toString());
   }
 
   // rewrite root application to `/home` folder
