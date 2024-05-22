@@ -1,8 +1,4 @@
-# Releeses.com
-
-Easily manage and publish public changelogs for your applications, keeping your audience informed and engaged with every update.
-
----
+![image](https://github.com/dishwasher-detergent/releeses/blob/main/docs/releeses.png)
 
 ## Built on open source
 This working demo site was built using the Platforms Starter Kit and:
