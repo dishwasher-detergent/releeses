@@ -1,9 +1,11 @@
+import { Badge } from "@/components/ui/badge";
 import BlurImage from "@/components/ui/blur-image";
 import MDX from "@/components/ui/mdx";
 import ReleaseCard from "@/components/ui/release-card";
 import { getReleaseData } from "@/lib/fetchers";
 import { placeholderBlurhash } from "@/lib/utils";
 import { Tables } from "@/types/supabase";
+import { LucideCalendar } from "lucide-react";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -64,20 +66,34 @@ export default async function OrgReleasePage({
 
   return (
     <>
-      <section className="relative m-auto mb-8 h-80 w-full max-w-screen-lg overflow-hidden md:rounded-2xl">
-        <BlurImage
-          alt={release?.data?.title ?? "Post image"}
-          width={1200}
-          height={630}
-          className="h-full w-full object-cover"
-          placeholder="blur"
-          blurDataURL={release?.data?.imageBlurhash ?? placeholderBlurhash}
-          src={release?.data?.image}
-        />
-      </section>
+      {release?.data?.imageBlurhash && release?.data?.image ? (
+        <section className="relative m-auto mb-8 h-80 w-full max-w-screen-lg overflow-hidden md:rounded-2xl">
+          <BlurImage
+            alt={release?.data?.title ?? "Post image"}
+            width={1200}
+            height={630}
+            className="h-full w-full object-cover"
+            placeholder="blur"
+            blurDataURL={release?.data?.imageBlurhash ?? placeholderBlurhash}
+            src={release?.data?.image}
+          />
+        </section>
+      ) : null}
       <section className="mb-8 w-full px-4">
-        <h1 className="truncate text-3xl font-bold">{release?.data?.title}</h1>
-        <p className="text-sm font-semibold text-foreground/80">{createdAt}</p>
+        <h1 className="truncate pb-2 text-3xl font-bold">
+          {release?.data?.title}
+        </h1>
+        <div className="mb-4">
+          <Badge variant="secondary">
+            <LucideCalendar className="mr-2 size-3" />
+            <p>{createdAt}</p>
+          </Badge>
+        </div>
+        <p>
+          {release?.data?.description ?? (
+            <span className="italic text-muted-foreground">No Description</span>
+          )}
+        </p>
       </section>
       <section className="mb-8 w-full flex-1 px-4">
         <MDX source={release?.mdxSource} />
@@ -91,7 +107,7 @@ export default async function OrgReleasePage({
                 <p className="text-xl font-bold">Recent Releases</p>
               </div>
             )}
-          <section className="grid w-full grid-cols-1 gap-4 md:grid-cols-2">
+          <section className="grid w-full grid-cols-1 gap-4 rounded-xl border border-dashed border-slate-300 md:grid-cols-2">
             {release?.adjacentReleases.data?.map(
               (item: Tables<"release">, index: number) => (
                 <ReleaseCard

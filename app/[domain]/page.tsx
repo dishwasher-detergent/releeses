@@ -68,31 +68,34 @@ export default async function OrgHomePage({
   return (
     <>
       <section className="mb-8">
-        <div className="relative m-auto h-96 w-full max-w-screen-lg overflow-hidden md:rounded-2xl">
-          <BlurImage
-            alt={response.data?.name ?? "Organization Image"}
-            width={1200}
-            height={630}
-            className="h-full w-full object-cover"
-            placeholder="blur"
-            blurDataURL={response.data?.imageBlurhash ?? placeholderBlurhash}
-            src={response.data?.image}
-          />
-          <div className="absolute bottom-4 left-4 z-10">
-            <h1 className="truncate text-2xl font-bold text-white">
-              {response.data?.name ?? <span className="italic">No Name</span>}
-            </h1>
+        {response.data?.image && response.data?.imageBlurhash ? (
+          <div className="relative m-auto h-96 w-full max-w-screen-lg overflow-hidden md:rounded-2xl">
+            <BlurImage
+              alt={response.data?.name ?? "Organization Image"}
+              width={1200}
+              height={630}
+              className="h-full w-full object-cover"
+              placeholder="blur"
+              blurDataURL={response.data?.imageBlurhash ?? placeholderBlurhash}
+              src={response.data?.image}
+            />
           </div>
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-950 to-transparent" />
-        </div>
-        <p className="p-4 text-sm">
+        ) : null}
+      </section>
+      <section className="mb-8">
+        <h1 className="truncate pb-4 text-4xl font-bold">
+          {response.data?.name ?? (
+            <span className="italic text-muted-foreground">No Name</span>
+          )}
+        </h1>
+        <p>
           {response.data?.description ?? (
-            <span className="italic">No Description</span>
+            <span className="italic text-muted-foreground">No Description</span>
           )}
         </p>
       </section>
-      <section className="w-full px-4">
-        <h2 className="mb-4 text-2xl font-bold">Changelog</h2>
+      <section className="w-full">
+        <h2 className="mb-4 text-3xl font-bold">Changelog</h2>
         <ul className="flex flex-col gap-8">
           {response.data?.release
             .sort(
@@ -112,26 +115,32 @@ export default async function OrgHomePage({
               return (
                 <li
                   key={release.id}
-                  className="group/link group flex flex-row flex-nowrap gap-2"
+                  className="group/link group flex flex-row flex-nowrap gap-2 px-4"
                 >
-                  <div className="-mt-16 flex w-6 flex-col pb-2 group-first:m-0">
-                    <div className="h-full border-l-4" />
-                    <div className="size-6 rounded-bl-xl border-b-4 border-l-4" />
+                  <div className="-mt-16 flex w-6 flex-col pb-6 group-first:m-0">
+                    <div className="h-full border-l-2" />
+                    <div className="size-6 rounded-bl-xl border-b-2 border-l-2" />
                   </div>
-                  <div className="relative">
-                    <div className="mb-4">
-                      <Badge variant="secondary">
-                        <LucideCalendar className="mr-2 size-3" />
-                        <p>{createdAt}</p>
-                      </Badge>
-                    </div>
+                  <div className="relative flex-1 rounded-xl border border-dashed border-slate-300 p-4 group-hover/link:bg-primary-foreground dark:border-slate-900">
                     <div className="space-y-4">
                       <div>
-                        <h3 className="text-3xl font-bold">{release.title}</h3>
+                        <h3 className="mb-2 text-2xl font-bold">
+                          {release.title}
+                        </h3>
+                        <div className="mb-2">
+                          <Badge variant="secondary">
+                            <LucideCalendar className="mr-2 size-3" />
+                            <p>{createdAt}</p>
+                          </Badge>
+                        </div>
                       </div>
-                      {release.description && (
-                        <p className="max-w-2xl">{release.description}</p>
-                      )}
+                      <p className="max-w-2xl">
+                        {release.description ?? (
+                          <span className="italic text-muted-foreground">
+                            No Description
+                          </span>
+                        )}
+                      </p>
                       <Link
                         href={release.slug ?? "/"}
                         className="flex flex-row items-center gap-2 text-sm text-primary"

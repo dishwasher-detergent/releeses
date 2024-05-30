@@ -37,7 +37,7 @@ export default function ReleaseCard({
   }
 
   return (
-    <Card className="relative flex flex-col overflow-hidden shadow-none">
+    <Card className="relative flex flex-col overflow-hidden border-none p-0 shadow-none">
       <CardContent className="flex flex-1 flex-row gap-4 p-2">
         <div className="h-24 w-24 flex-none overflow-hidden  rounded-xl">
           <BlurImage
