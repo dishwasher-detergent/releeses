@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import RoadmapCard from "../roadmap-card";
 
 interface Point {
@@ -81,17 +81,22 @@ export default function Roadmap() {
       <div className="flex w-auto flex-row gap-4">
         {points.map((point, index) => {
           return (
-            <>
+            <React.Fragment key={index}>
               {index == 1 && (
                 <div
+                  key={`${index}-spacer`}
                   className="flex-none rounded-xl bg-muted"
                   style={{ width: xIncrement - 8 }}
                 />
               )}
               {index % 2 !== 0 && (
-                <RoadmapCard index={index} xIncrement={xIncrement} />
+                <RoadmapCard
+                  key={`${index}-card`}
+                  index={index}
+                  xIncrement={xIncrement}
+                />
               )}
-            </>
+            </React.Fragment>
           );
         })}
       </div>
@@ -106,14 +111,15 @@ export default function Roadmap() {
           strokeLinecap="round"
         />
         {points.map((point, index) => (
-          <>
+          <React.Fragment key={index}>
             <svg
+              key={`${index}-flag`}
               className="text-slate-800 dark:text-slate-50"
               fill="none"
               stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
               x={point.x - 4}
               y={point.y - 28}
             >
@@ -122,30 +128,35 @@ export default function Roadmap() {
             </svg>
             <circle
               className="text-slate-800 dark:text-slate-50"
-              key={index}
+              key={`${index}-circle`}
               cx={point.x}
               cy={point.y}
               r={6}
               fill="currentColor"
               stroke="none"
             />
-          </>
+          </React.Fragment>
         ))}
       </svg>
       <div className="flex w-auto flex-row gap-4">
         {points.map((point, index) => {
           return (
-            <>
+            <React.Fragment key={index}>
               {index % 2 !== 0 && (
-                <RoadmapCard index={index} xIncrement={xIncrement} />
+                <RoadmapCard
+                  key={`${index}-card-1`}
+                  index={index}
+                  xIncrement={xIncrement}
+                />
               )}
               {index == points.length - 1 && (
                 <div
+                  key={`${index}-spacer-1`}
                   className="flex-none rounded-xl bg-muted"
                   style={{ width: xIncrement - 8 }}
                 />
               )}
-            </>
+            </React.Fragment>
           );
         })}
       </div>

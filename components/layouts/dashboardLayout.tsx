@@ -26,7 +26,10 @@ export default function DashboardLayoutComponent({
   children: ReactNode;
 }) {
   const segments = useSelectedLayoutSegments();
-  const { id } = useParams() as { id?: string };
+  const { org_id, release_id } = useParams() as {
+    org_id?: number;
+    release_id?: number;
+  };
 
   const title = useMemo<React.ReactNode>(() => {
     if (segments.length === 0) {
@@ -38,30 +41,7 @@ export default function DashboardLayoutComponent({
       );
     }
 
-    if (segments[0] === "organizations") {
-      return (
-        <div className="flex flex-1 flex-row items-center justify-between">
-          <p className="flex flex-row items-center gap-2 font-bold">
-            <LucideGlobe className="size-4" />
-            Organizations
-          </p>
-          <CreateOrg />
-        </div>
-      );
-    }
-
-    if (segments[0] === "account") {
-      return (
-        <div className="flex flex-1 flex-row items-center justify-between">
-          <p className="flex flex-row items-center gap-2 font-bold">
-            <LucideUser className="size-4" />
-            Account
-          </p>
-        </div>
-      );
-    }
-
-    if (segments[0] === "release" && id) {
+    if (segments[2] === "releases" && org_id && release_id) {
       if (segments.includes("settings"))
         return (
           <p className="flex flex-row items-center gap-2 font-bold">
@@ -78,7 +58,7 @@ export default function DashboardLayoutComponent({
       );
     }
 
-    if (segments[0] === "organization" && id) {
+    if (segments[0] === "organizations" && org_id) {
       if (segments.includes("settings"))
         return (
           <p className="flex flex-row items-center gap-2 font-bold">
@@ -106,8 +86,31 @@ export default function DashboardLayoutComponent({
       );
     }
 
+    if (segments[0] === "organizations") {
+      return (
+        <div className="flex flex-1 flex-row items-center justify-between">
+          <p className="flex flex-row items-center gap-2 font-bold">
+            <LucideGlobe className="size-4" />
+            Organizations
+          </p>
+          <CreateOrg />
+        </div>
+      );
+    }
+
+    if (segments[0] === "account") {
+      return (
+        <div className="flex flex-1 flex-row items-center justify-between">
+          <p className="flex flex-row items-center gap-2 font-bold">
+            <LucideUser className="size-4" />
+            Account
+          </p>
+        </div>
+      );
+    }
+
     return "";
-  }, [segments, id]);
+  }, [segments, org_id, release_id]);
 
   return (
     <div className="grid h-screen w-full overflow-hidden md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">

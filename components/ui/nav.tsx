@@ -31,7 +31,29 @@ export default function Nav({ children }: NavProps) {
   };
 
   const tabs = useMemo<NavItems[]>(() => {
-    if (segments[0] === "organization" && org_id) {
+    if (segments[2] === "releases" && org_id && release_id) {
+      return [
+        {
+          name: "Back to All Releases",
+          href: org_id ? `/organizations/${org_id}` : "/organizations",
+          icon: LucideArrowLeft,
+        },
+        {
+          name: "Editor",
+          href: `/organizations/${org_id}/releases/${release_id}`,
+          isActive: segments.length === 2,
+          icon: LucideEdit3,
+        },
+        {
+          name: "Settings",
+          href: `/organizations/${org_id}/releases/${release_id}/settings`,
+          isActive: segments.includes("settings"),
+          icon: LucideSettings,
+        },
+      ];
+    }
+
+    if (segments[0] === "organizations" && org_id) {
       return [
         {
           name: "Back to All Orgs",
@@ -57,27 +79,8 @@ export default function Nav({ children }: NavProps) {
           icon: LucideSettings,
         },
       ];
-    } else if (segments[0] === "release" && org_id && release_id) {
-      return [
-        {
-          name: "Back to All Releases",
-          href: org_id ? `/organizations/${org_id}` : "/organizations",
-          icon: LucideArrowLeft,
-        },
-        {
-          name: "Editor",
-          href: `/organizations/${org_id}/releases/${release_id}`,
-          isActive: segments.length === 2,
-          icon: LucideEdit3,
-        },
-        {
-          name: "Settings",
-          href: `/organizations/${org_id}/releases/${release_id}/settings`,
-          isActive: segments.includes("settings"),
-          icon: LucideSettings,
-        },
-      ];
     }
+
     return [
       {
         name: "Overview",
