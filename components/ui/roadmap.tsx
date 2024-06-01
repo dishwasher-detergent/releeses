@@ -102,7 +102,7 @@ export default function Roadmap() {
           stroke="currentColor"
           fill="none"
           strokeWidth={6}
-          strokeDasharray="4 24"
+          strokeDasharray="6 16"
           strokeLinecap="round"
         />
         {points.map((point, index) => (
@@ -115,17 +115,17 @@ export default function Roadmap() {
               stroke-linecap="round"
               stroke-linejoin="round"
               x={point.x - 4}
-              y={point.y - 30}
+              y={point.y - 28}
             >
               <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z" />
               <line x1="4" x2="4" y1="22" y2="15" />
             </svg>
             <circle
-              className="fill-red-600"
+              className="text-slate-800 dark:text-slate-50"
               key={index}
               cx={point.x}
               cy={point.y}
-              r={8}
+              r={6}
               fill="currentColor"
               stroke="none"
             />
