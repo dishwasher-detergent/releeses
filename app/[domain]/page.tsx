@@ -1,5 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import BlurImage from "@/components/ui/blur-image";
+import Roadmap from "@/components/ui/roadmap";
 import { getOrgData } from "@/lib/fetchers";
 import { createClient } from "@/lib/supabase/server";
 import { placeholderBlurhash } from "@/lib/utils";
@@ -94,7 +95,13 @@ export default async function OrgHomePage({
           )}
         </p>
       </section>
-      <section className="w-full">
+      <section className="mb-8">
+        <h2 className="mb-4 text-3xl font-bold">Roadmap</h2>
+        <div className="rounded-xl border border-dashed border-slate-300 bg-primary-foreground p-4 dark:border-slate-900">
+          <Roadmap />
+        </div>
+      </section>
+      <section className="mb-8">
         <h2 className="mb-4 text-3xl font-bold">Changelog</h2>
         <ul className="flex flex-col gap-8">
           {response.data?.release
