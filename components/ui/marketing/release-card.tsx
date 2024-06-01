@@ -22,7 +22,7 @@ export default function ReleaseCard({
       : `${org?.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`
   }`;
 
-  let link = `/release/${data.id}`;
+  let link = `/organizations/${data.organizationId}/releases/${data.id}`;
 
   if (blog) {
     link = `${data.id}`;

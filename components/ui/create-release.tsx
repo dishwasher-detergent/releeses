@@ -25,7 +25,9 @@ export default function CreateRelease() {
           );
           va.track("Created Release");
           router.refresh();
-          router.push(`/release/${release.id}`);
+          router.push(
+            `organizations/${release.organizationId}/releases/${release.id}`,
+          );
         })
       }
       disabled={isPending}

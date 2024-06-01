@@ -9,6 +9,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import {
   LucideGlobe,
   LucideLayout,
+  LucideMap,
   LucideMenu,
   LucideNewspaper,
   LucideRocket,
@@ -83,6 +84,14 @@ export default function DashboardLayoutComponent({
           <p className="flex flex-row items-center gap-2 font-bold">
             <LucideSettings className="size-4" />
             Organization Settings
+          </p>
+        );
+
+      if (segments.includes("roadmap"))
+        return (
+          <p className="flex flex-row items-center gap-2 font-bold">
+            <LucideMap className="size-4" />
+            Roadmap
           </p>
         );
 

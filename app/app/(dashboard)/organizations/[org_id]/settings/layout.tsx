@@ -7,7 +7,7 @@ export default async function OrgSettingsLayout({
   params,
   children,
 }: {
-  params: { id: string };
+  params: { org_id: string };
   children: ReactNode;
 }) {
   const supabase = createClient();
@@ -15,7 +15,7 @@ export default async function OrgSettingsLayout({
   const { data, error } = await supabase
     .from("organization")
     .select()
-    .eq("id", decodeURIComponent(params.id))
+    .eq("id", decodeURIComponent(params.org_id))
     .single();
 
   if (error || !data) {

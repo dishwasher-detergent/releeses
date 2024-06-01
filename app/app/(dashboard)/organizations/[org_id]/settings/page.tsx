@@ -7,14 +7,14 @@ import { notFound } from "next/navigation";
 export default async function OrgSettingsIndex({
   params,
 }: {
-  params: { id: string };
+  params: { org_id: string };
 }) {
   const supabase = createClient();
 
   const { data, error } = await supabase
     .from("organization")
     .select("name, description")
-    .eq("id", decodeURIComponent(params.id))
+    .eq("id", decodeURIComponent(params.org_id))
     .single();
 
   if (error || !data) {

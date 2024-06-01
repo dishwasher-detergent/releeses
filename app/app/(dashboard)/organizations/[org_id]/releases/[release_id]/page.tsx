@@ -6,7 +6,7 @@ import { notFound, redirect } from "next/navigation";
 export default async function ReleasePage({
   params,
 }: {
-  params: { id: string };
+  params: { release_id: string };
 }) {
   const supabase = createClient();
   const session = await getSession();
@@ -20,7 +20,7 @@ export default async function ReleasePage({
     .select(
       "*, organization(subdomain, customDomain, organization, repository)",
     )
-    .eq("id", decodeURIComponent(params.id))
+    .eq("id", decodeURIComponent(params.release_id))
     .eq("user_id", session?.data?.user?.id)
     .single();
 

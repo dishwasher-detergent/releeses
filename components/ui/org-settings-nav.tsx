@@ -12,22 +12,22 @@ export default function OrgSettingsNav() {
   const items = [
     {
       name: "General",
-      href: `/organization/${id}/settings`,
+      href: `/organizations/${id}/settings`,
       isActive: segment == null,
     },
     {
       name: "Domains",
-      href: `/organization/${id}/settings/domains`,
+      href: `/organizations/${id}/settings/domains`,
       isActive: segment == "domains",
     },
     {
       name: "Appearance",
-      href: `/organization/${id}/settings/appearance`,
+      href: `/organizations/${id}/settings/appearance`,
       isActive: segment == "appearance",
     },
     {
       name: "Git",
-      href: `/organization/${id}/settings/git`,
+      href: `/organizations/${id}/settings/git`,
       isActive: segment == "git",
     },
   ];

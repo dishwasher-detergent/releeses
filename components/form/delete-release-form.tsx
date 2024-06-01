@@ -31,7 +31,7 @@ export default function DeleteReleaseForm({
           } else {
             va.track("Deleted Release");
             router.refresh();
-            router.push(`/organization/${orgId}`);
+            router.push(`/organizations/${orgId}`);
             toast.success(`Successfully deleted release!`);
           }
         })

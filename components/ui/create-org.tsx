@@ -57,7 +57,7 @@ export default function CreateOrg() {
             } else {
               va.track("Created Organization");
               router.refresh();
-              router.push(`/organization/${org?.id}`);
+              router.push(`/organizations/${org?.id}`);
               toast.success(`Successfully created organization!`);
             }
           }}

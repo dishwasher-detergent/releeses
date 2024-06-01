@@ -64,7 +64,7 @@ export default function OrgCard({ org }: { org: Tables<"organization"> }) {
           </div>
         </div>
       </CardContent>
-      <Link href={`/organization/${org.id}`} className="absolute inset-0" />
+      <Link href={`/organizations/${org.id}`} className="absolute inset-0" />
     </Card>
   );
 }

@@ -26,7 +26,7 @@ export default function ReleaseCard({
 }: ReleaseCardProps) {
   const url = `${org?.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}/${data.slug}`;
 
-  let link = `/release/${data.id}`;
+  let link = `/organizations/${data.organizationId}/releases/${data.id}`;
 
   if (blog) {
     link = `${data.slug}`;
