@@ -15,13 +15,13 @@ export default function DeleteOrgForm({
 }: {
   organizationName: string;
 }) {
-  const { id } = useParams() as { id: string };
+  const { org_id } = useParams() as { org_id: string };
   const router = useRouter();
   return (
     <form
       className="overflow-hidden rounded-xl border bg-background"
       action={async (data: FormData) =>
-        deleteOrganization(data, id, "delete")
+        deleteOrganization(data, org_id, "delete")
           .then(async (res) => {
             if (res.error) {
               toast.error(res.error);

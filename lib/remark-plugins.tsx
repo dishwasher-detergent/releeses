@@ -75,8 +75,7 @@ export function replaceTweets() {
 
 export function remarkGithub() {
   // Regular expression to match pulls, commits, compares, and user profiles
-  const regex =
-    /(https:\/\/github\.com\/(?:[^/]+\/[^/]+\/(?:pull\/\d+|commit\/[a-f0-9]+|compare\/[\w.-]+)|(?:[^/]+)))/gi;
+  const regex = /https:\/\/github\.com\/[\S]*/g;
 
   // @ts-ignore
   return (tree, _file) => {
@@ -86,6 +85,7 @@ export function remarkGithub() {
 
   function replaceMention(value: string) {
     const id = getVal(value);
+    const url = new URL(value);
 
     let message = "";
     if (value.includes("/pull/")) {
@@ -94,8 +94,10 @@ export function remarkGithub() {
       message = `${id.slice(0, 7)}`;
     } else if (value.includes("/compare/")) {
       message = `${id}`;
-    } else {
+    } else if (url.pathname.split("/").length === 2) {
       message = `@${id}`;
+    } else {
+      message = value;
     }
 
     return [
@@ -109,8 +111,7 @@ export function remarkGithub() {
 
 export function remarkGitlab() {
   // Regular expression to match pulls, commits, compares, and user profiles
-  const regex =
-    /https:\/\/gitlab\.com\/(?:[^\/]+\/[^\/]+\/(?:-\/merge_requests\/\d+|-\/commit\/[a-f0-9]+)|[^\/]+(?:\/[^\/]+)?)/gi;
+  const regex = /https:\/\/gitlab\.com\/[\S]*/g;
   // @ts-ignore
   return (tree, _file) => {
     // @ts-ignore
@@ -119,6 +120,7 @@ export function remarkGitlab() {
 
   function replaceMention(value: string) {
     const id = getVal(value);
+    const url = new URL(value);
 
     let message = "";
     if (value.includes("/merge_requests/")) {
@@ -127,8 +129,10 @@ export function remarkGitlab() {
       message = `${id.slice(0, 7)}`;
     } else if (value.includes("/compare/")) {
       message = `${id}`;
-    } else {
+    } else if (url.pathname.split("/").length === 2) {
       message = `@${id}`;
+    } else {
+      message = value;
     }
 
     return [
@@ -142,8 +146,7 @@ export function remarkGitlab() {
 
 export function remarkBitbucket() {
   // Regular expression to match pulls, commits, compares, and user profiles
-  const regex =
-    /(https:\/\/bitbucket\.org\/(?:[^/]+\/[^/]+\/(?:pull-requests\/\d+|commits\/[a-f0-9]+)|(?:[^/]+)))/gi;
+  const regex = /https:\/\/bitbucket\.com\/[\S]*/g;
   // @ts-ignore
   return (tree, _file) => {
     // @ts-ignore
@@ -152,6 +155,7 @@ export function remarkBitbucket() {
 
   function replaceMention(value: string) {
     const id = getVal(value);
+    const url = new URL(value);
 
     let message = "";
     if (value.includes("/pull-requests/")) {
