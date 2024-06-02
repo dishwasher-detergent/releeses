@@ -98,7 +98,7 @@ export default function Roadmap({ data }: { data: Tables<"roadmap">[] }) {
                 {index == 1 && (
                   <div
                     key={`${index}-spacer`}
-                    className="flex-none rounded-xl bg-muted"
+                    className="flex-none rounded-xl bg-transparent"
                     style={{ width: xIncrement - 8 }}
                   />
                 )}
@@ -177,7 +177,7 @@ export default function Roadmap({ data }: { data: Tables<"roadmap">[] }) {
                 {index == points.length - 1 && (
                   <div
                     key={`${index}-spacer-1`}
-                    className="flex-none rounded-xl bg-muted"
+                    className="flex-none rounded-xl bg-transparent"
                     style={{ width: xIncrement - 8 }}
                   />
                 )}

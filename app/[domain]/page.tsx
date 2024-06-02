@@ -97,9 +97,7 @@ export default async function OrgHomePage({
       {response.data?.roadmap && (
         <section className="mb-8 px-4">
           <h2 className="mb-4 text-3xl font-bold">Roadmap</h2>
-          <div className="rounded-xl border border-dashed border-slate-300 bg-primary-foreground p-4 dark:border-slate-900">
-            <Roadmap data={response.data?.roadmap} />
-          </div>
+          <Roadmap data={response.data?.roadmap} />
         </section>
       )}
       <section className="mb-8 px-4">
