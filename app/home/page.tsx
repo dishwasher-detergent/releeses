@@ -1,4 +1,3 @@
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import Pricing from "@/components/ui/marketing/prices";
 import Releases from "@/components/ui/marketing/releases";
@@ -69,9 +68,7 @@ export default async function HomePage() {
           </div>
           <div>
             <LucideMap className="mb-2 size-8 rounded-xl bg-emerald-600 p-2 text-white" />
-            <h4 className="font-bold text-white">
-              Roadmap <Badge variant="secondary">Coming Soon</Badge>
-            </h4>
+            <h4 className="font-bold text-white">Roadmap</h4>
             <p className="text-white">
               Let everyone know what you&apos;ve got planned!
             </p>
