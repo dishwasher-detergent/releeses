@@ -38,7 +38,7 @@ export default function Form({
   };
   handleSubmit: any;
 }) {
-  const { id } = useParams() as { id?: string };
+  const { org_id } = useParams() as { org_id?: string };
   const router = useRouter();
   return (
     <form
@@ -53,10 +53,10 @@ export default function Form({
           return;
         }
         try {
-          await handleSubmit(data, id, inputAttrs.name);
+          await handleSubmit(data, org_id, inputAttrs.name);
 
-          va.track(`Updated ${inputAttrs.name}`, id ? { id } : {});
-          if (id) {
+          va.track(`Updated ${inputAttrs.name}`, org_id ? { org_id } : {});
+          if (org_id) {
             router.refresh();
           } else {
             router.refresh();

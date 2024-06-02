@@ -6,28 +6,28 @@ import Link from "next/link";
 import { useParams, useSelectedLayoutSegment } from "next/navigation";
 
 export default function OrgSettingsNav() {
-  const { id } = useParams() as { id?: string };
+  const { org_id } = useParams() as { org_id?: string };
   const segment = useSelectedLayoutSegment();
 
   const items = [
     {
       name: "General",
-      href: `/organizations/${id}/settings`,
+      href: `/organizations/${org_id}/settings`,
       isActive: segment == null,
     },
     {
       name: "Domains",
-      href: `/organizations/${id}/settings/domains`,
+      href: `/organizations/${org_id}/settings/domains`,
       isActive: segment == "domains",
     },
     {
       name: "Appearance",
-      href: `/organizations/${id}/settings/appearance`,
+      href: `/organizations/${org_id}/settings/appearance`,
       isActive: segment == "appearance",
     },
     {
       name: "Git",
-      href: `/organizations/${id}/settings/git`,
+      href: `/organizations/${org_id}/settings/git`,
       isActive: segment == "git",
     },
   ];

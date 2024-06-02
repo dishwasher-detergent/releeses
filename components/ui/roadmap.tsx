@@ -1,5 +1,6 @@
 "use client";
 
+import { Tables } from "@/types/supabase";
 import React, { useEffect, useState } from "react";
 import RoadmapCard from "../roadmap-card";
 
@@ -9,18 +10,19 @@ interface Point {
 }
 
 const generateNewPoints = (
-  nextX: number,
+  data: Tables<"roadmap">[],
   svgWidth: number,
+  nextX: number,
   xIncrement: number,
   highY: number,
   lowY: number,
 ) => {
-  const newPoints = [];
+  const newPoints: Point[] = [];
   let currentX = nextX;
   let previousX = currentX;
   const padding = 50;
 
-  for (let i = 0; i < 10; i++) {
+  data.forEach((item) => {
     const nextY: any = newPoints.length % 2 === 0 ? lowY : highY;
     newPoints.push({ x: currentX, y: nextY });
     previousX = currentX;
@@ -29,7 +31,7 @@ const generateNewPoints = (
     if (previousX + padding > svgWidth) {
       svgWidth = previousX + padding;
     }
-  }
+  });
 
   return { newPoints, currentX, svgWidth };
 };
@@ -57,7 +59,7 @@ const generatePath = (points: Point[]): string => {
     .join(" ");
 };
 
-export default function Roadmap() {
+export default function Roadmap({ data }: { data: Tables<"roadmap">[] }) {
   const [points, setPoints] = useState<Point[]>([]);
   const [nextX, setNextX] = useState<number>(50);
   const [svgWidth, setSvgWidth] = useState<number>(400);
@@ -70,7 +72,7 @@ export default function Roadmap() {
       newPoints,
       currentX,
       svgWidth: width,
-    } = generateNewPoints(nextX, svgWidth, xIncrement, highY, lowY);
+    } = generateNewPoints(data, svgWidth, nextX, xIncrement, highY, lowY);
     setPoints(newPoints);
     setNextX(currentX);
     setSvgWidth(width);
@@ -79,7 +81,7 @@ export default function Roadmap() {
   return (
     <div className="relative w-full snap-x scroll-px-4 overflow-x-auto pb-2">
       <div className="flex w-auto flex-row gap-4">
-        {points.map((point, index) => {
+        {data.map((point, index) => {
           return (
             <React.Fragment key={index}>
               {index == 1 && (
@@ -94,6 +96,8 @@ export default function Roadmap() {
                   key={`${index}-card`}
                   index={index}
                   xIncrement={xIncrement}
+                  title={point.title}
+                  description={point.description}
                 />
               )}
             </React.Fragment>
@@ -139,16 +143,18 @@ export default function Roadmap() {
         ))}
       </svg>
       <div className="flex w-auto flex-row gap-4">
-        {points.map((point, index) => {
+        {data.map((point, index) => {
           return (
             <React.Fragment key={index}>
-              {index % 2 !== 0 && (
+              {index % 2 == 0 || index == 0 ? (
                 <RoadmapCard
                   key={`${index}-card-1`}
                   index={index}
                   xIncrement={xIncrement}
+                  title={point.title}
+                  description={point.description}
                 />
-              )}
+              ) : null}
               {index == points.length - 1 && (
                 <div
                   key={`${index}-spacer-1`}

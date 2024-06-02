@@ -3,9 +3,16 @@ import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 interface RoadmapCardProps {
   index: number;
   xIncrement: number;
+  title?: string;
+  description?: string;
 }
 
-export default function RoadmapCard({ index, xIncrement }: RoadmapCardProps) {
+export default function RoadmapCard({
+  index,
+  xIncrement,
+  title,
+  description,
+}: RoadmapCardProps) {
   return (
     <Card
       key={index}
@@ -13,15 +20,10 @@ export default function RoadmapCard({ index, xIncrement }: RoadmapCardProps) {
       style={{ width: (xIncrement - 8) * 2 }}
     >
       <CardHeader>
-        <CardTitle>Test</CardTitle>
+        <CardTitle>{title}</CardTitle>
       </CardHeader>
       <CardContent>
-        <p className="text-xs">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Ratione,
-          mollitia laborum dolorem labore eius similique eos voluptate, error
-          delectus officia ipsum aliquam ex consequuntur quod quam deleniti
-          reiciendis, magnam unde.
-        </p>
+        <p className="text-xs">{description}</p>
       </CardContent>
     </Card>
   );
