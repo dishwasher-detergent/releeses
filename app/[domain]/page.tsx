@@ -59,7 +59,7 @@ export default async function OrgHomePage({
     ? domain.replace(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`, "")
     : null;
 
-  let query = supabase.from("organization").select("*, release(*)");
+  let query = supabase.from("organization").select("*, release(*), roadmap(*)");
   query = subdomain
     ? query.eq("subdomain", subdomain)
     : query.eq("customDomain", domain);
@@ -95,12 +95,14 @@ export default async function OrgHomePage({
           )}
         </p>
       </section>
-      <section className="mb-8">
-        <h2 className="mb-4 text-3xl font-bold">Roadmap</h2>
-        <div className="rounded-xl border border-dashed border-slate-300 bg-primary-foreground p-4 dark:border-slate-900">
-          <Roadmap />
-        </div>
-      </section>
+      {response.data?.roadmap && (
+        <section className="mb-8">
+          <h2 className="mb-4 text-3xl font-bold">Roadmap</h2>
+          <div className="rounded-xl border border-dashed border-slate-300 bg-primary-foreground p-4 dark:border-slate-900">
+            <Roadmap data={response.data?.roadmap} />
+          </div>
+        </section>
+      )}
       <section className="mb-8">
         <h2 className="mb-4 text-3xl font-bold">Changelog</h2>
         <ul className="flex flex-col gap-8">

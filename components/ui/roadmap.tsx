@@ -81,28 +81,35 @@ export default function Roadmap({ data }: { data: Tables<"roadmap">[] }) {
   return (
     <div className="relative w-full snap-x scroll-px-4 overflow-x-auto pb-2">
       <div className="flex w-auto flex-row gap-4">
-        {data.map((point, index) => {
-          return (
-            <React.Fragment key={index}>
-              {index == 1 && (
-                <div
-                  key={`${index}-spacer`}
-                  className="flex-none rounded-xl bg-muted"
-                  style={{ width: xIncrement - 8 }}
-                />
-              )}
-              {index % 2 !== 0 && (
-                <RoadmapCard
-                  key={`${index}-card`}
-                  index={index}
-                  xIncrement={xIncrement}
-                  title={point.title}
-                  description={point.description}
-                />
-              )}
-            </React.Fragment>
-          );
-        })}
+        {data
+          .sort(
+            (a, b) =>
+              new Date(a.created_at).getTime() -
+              new Date(b.created_at).getTime(),
+          )
+          .map((point, index) => {
+            return (
+              <React.Fragment key={index}>
+                {index == 1 && (
+                  <div
+                    key={`${index}-spacer`}
+                    className="flex-none rounded-xl bg-muted"
+                    style={{ width: xIncrement - 8 }}
+                  />
+                )}
+                {index % 2 !== 0 && (
+                  <RoadmapCard
+                    key={`${index}-card`}
+                    variant={point.accomplished ? "accomplished" : "default"}
+                    xIncrement={xIncrement}
+                    title={point.title}
+                    description={point.description}
+                    createdAt={point.created_at}
+                  />
+                )}
+              </React.Fragment>
+            );
+          })}
       </div>
       <svg id="svg" width={svgWidth} height="150" className="my-4">
         <path
@@ -143,28 +150,35 @@ export default function Roadmap({ data }: { data: Tables<"roadmap">[] }) {
         ))}
       </svg>
       <div className="flex w-auto flex-row gap-4">
-        {data.map((point, index) => {
-          return (
-            <React.Fragment key={index}>
-              {index % 2 == 0 || index == 0 ? (
-                <RoadmapCard
-                  key={`${index}-card-1`}
-                  index={index}
-                  xIncrement={xIncrement}
-                  title={point.title}
-                  description={point.description}
-                />
-              ) : null}
-              {index == points.length - 1 && (
-                <div
-                  key={`${index}-spacer-1`}
-                  className="flex-none rounded-xl bg-muted"
-                  style={{ width: xIncrement - 8 }}
-                />
-              )}
-            </React.Fragment>
-          );
-        })}
+        {data
+          .sort(
+            (a, b) =>
+              new Date(a.created_at).getTime() -
+              new Date(b.created_at).getTime(),
+          )
+          .map((point, index) => {
+            return (
+              <React.Fragment key={index}>
+                {index % 2 == 0 || index == 0 ? (
+                  <RoadmapCard
+                    key={`${index}-card-1`}
+                    variant={point.accomplished ? "accomplished" : "default"}
+                    xIncrement={xIncrement}
+                    title={point.title}
+                    description={point.description}
+                    createdAt={point.created_at}
+                  />
+                ) : null}
+                {index == points.length - 1 && (
+                  <div
+                    key={`${index}-spacer-1`}
+                    className="flex-none rounded-xl bg-muted"
+                    style={{ width: xIncrement - 8 }}
+                  />
+                )}
+              </React.Fragment>
+            );
+          })}
       </div>
     </div>
   );
