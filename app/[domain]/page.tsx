@@ -1,10 +1,9 @@
-import { Badge } from "@/components/ui/badge";
 import BlurImage from "@/components/ui/blur-image";
 import Roadmap from "@/components/ui/roadmap";
 import { getOrgData } from "@/lib/fetchers";
 import { createClient } from "@/lib/supabase/server";
 import { placeholderBlurhash, toDateString } from "@/lib/utils";
-import { LucideArrowRight, LucideCalendar } from "lucide-react";
+import { LucideArrowRight } from "lucide-react";
 import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -124,17 +123,12 @@ export default async function OrgHomePage({
                     <div className="size-6 rounded-bl-xl border-b-2 border-l-2" />
                   </div>
                   <div className="relative flex-1 rounded-xl border border-dashed border-slate-300 p-4 group-hover/link:bg-primary-foreground dark:border-slate-900">
-                    <div className="space-y-2">
-                      <Badge variant="secondary">
-                        <LucideCalendar className="mr-2 size-3" />
-                        <p>{createdAt}</p>
-                      </Badge>
-
-                      <h3 className="text-base font-bold md:text-2xl">
+                    <div>
+                      <h3 className="mb-1.5 text-base font-bold md:text-2xl">
                         {release.title}
                       </h3>
-
-                      <p className="max-w-2xl text-sm md:text-base">
+                      <p className="mb-4 text-xs">{createdAt}</p>
+                      <p className="mb-4 max-w-2xl text-sm md:text-base">
                         {release.description ?? (
                           <span className="italic text-muted-foreground">
                             No Description
