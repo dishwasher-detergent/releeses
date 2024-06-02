@@ -9,7 +9,7 @@ const roadmapCardVariants = cva(
       variant: {
         default: "",
         accomplished:
-          "bg-emerald-100 border-emerald-300 dark:bg-emerald-900 dark:border-emerald-700",
+          "bg-emerald-100 border-emerald-300 dark:bg-emerald-900 dark:border-emerald-600",
       },
     },
     defaultVariants: {

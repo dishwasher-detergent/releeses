@@ -7,6 +7,7 @@ import React, { useEffect, useState } from "react";
 interface Point {
   x: number;
   y: number;
+  accomplished: boolean;
 }
 
 const generateNewPoints = (
@@ -24,7 +25,11 @@ const generateNewPoints = (
 
   data.forEach((item) => {
     const nextY: any = newPoints.length % 2 === 0 ? lowY : highY;
-    newPoints.push({ x: currentX, y: nextY });
+    newPoints.push({
+      x: currentX,
+      y: nextY,
+      accomplished: item.accomplished ?? false,
+    });
     previousX = currentX;
     currentX += xIncrement;
 
@@ -64,8 +69,8 @@ export default function Roadmap({ data }: { data: Tables<"roadmap">[] }) {
   const [nextX, setNextX] = useState<number>(50);
   const [svgWidth, setSvgWidth] = useState<number>(400);
   const xIncrement = 200;
-  const highY = 36;
-  const lowY = 114;
+  const highY = 35;
+  const lowY = 135;
 
   useEffect(() => {
     const {
@@ -93,7 +98,7 @@ export default function Roadmap({ data }: { data: Tables<"roadmap">[] }) {
                 {index == 1 && (
                   <div
                     key={`${index}-spacer`}
-                    className="flex-none rounded-xl bg-muted"
+                    className="flex-none rounded-xl bg-transparent"
                     style={{ width: xIncrement - 8 }}
                   />
                 )}
@@ -125,7 +130,7 @@ export default function Roadmap({ data }: { data: Tables<"roadmap">[] }) {
           <React.Fragment key={index}>
             <svg
               key={`${index}-flag`}
-              className="text-slate-800 dark:text-slate-50"
+              className={`${point.accomplished ? "fill-emerald-300 stroke-emerald-700 dark:fill-emerald-900 dark:stroke-emerald-600" : "text-slate-800 dark:text-slate-50"}`}
               fill="none"
               stroke="currentColor"
               strokeWidth="2"
@@ -138,7 +143,7 @@ export default function Roadmap({ data }: { data: Tables<"roadmap">[] }) {
               <line x1="4" x2="4" y1="22" y2="15" />
             </svg>
             <circle
-              className="text-slate-800 dark:text-slate-50"
+              className={`${point.accomplished ? "fill-emerald-700 dark:fill-emerald-600" : "text-slate-800 dark:text-slate-50"}`}
               key={`${index}-circle`}
               cx={point.x}
               cy={point.y}
@@ -172,7 +177,7 @@ export default function Roadmap({ data }: { data: Tables<"roadmap">[] }) {
                 {index == points.length - 1 && (
                   <div
                     key={`${index}-spacer-1`}
-                    className="flex-none rounded-xl bg-muted"
+                    className="flex-none rounded-xl bg-transparent"
                     style={{ width: xIncrement - 8 }}
                   />
                 )}
