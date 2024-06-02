@@ -1,8 +1,9 @@
 import { Badge } from "@/components/ui/badge";
 import BlurImage from "@/components/ui/blur-image";
+import Roadmap from "@/components/ui/roadmap";
 import { getOrgData } from "@/lib/fetchers";
 import { createClient } from "@/lib/supabase/server";
-import { placeholderBlurhash } from "@/lib/utils";
+import { placeholderBlurhash, toDateString } from "@/lib/utils";
 import { LucideArrowRight, LucideCalendar } from "lucide-react";
 import { Metadata } from "next";
 import Link from "next/link";
@@ -58,7 +59,7 @@ export default async function OrgHomePage({
     ? domain.replace(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`, "")
     : null;
 
-  let query = supabase.from("organization").select("*, release(*)");
+  let query = supabase.from("organization").select("*, release(*), roadmap(*)");
   query = subdomain
     ? query.eq("subdomain", subdomain)
     : query.eq("customDomain", domain);
@@ -94,7 +95,15 @@ export default async function OrgHomePage({
           )}
         </p>
       </section>
-      <section className="w-full">
+      {response.data?.roadmap && (
+        <section className="mb-8">
+          <h2 className="mb-4 text-3xl font-bold">Roadmap</h2>
+          <div className="rounded-xl border border-dashed border-slate-300 bg-primary-foreground p-4 dark:border-slate-900">
+            <Roadmap data={response.data?.roadmap} />
+          </div>
+        </section>
+      )}
+      <section className="mb-8">
         <h2 className="mb-4 text-3xl font-bold">Changelog</h2>
         <ul className="flex flex-col gap-8">
           {response.data?.release
@@ -104,14 +113,7 @@ export default async function OrgHomePage({
                 new Date(a.created_at).getTime(),
             )
             .map((release) => {
-              const createdAt = new Date(release.created_at).toLocaleDateString(
-                "en-us",
-                {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                },
-              );
+              const createdAt = toDateString(release.created_at);
               return (
                 <li
                   key={release.id}

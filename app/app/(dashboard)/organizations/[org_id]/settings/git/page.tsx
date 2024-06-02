@@ -6,14 +6,14 @@ import { notFound } from "next/navigation";
 export default async function OrgSettingsGit({
   params,
 }: {
-  params: { id: string };
+  params: { org_id: string };
 }) {
   const supabase = createClient();
 
   const { data, error } = await supabase
     .from("organization")
     .select("organization, repository")
-    .eq("id", decodeURIComponent(params.id))
+    .eq("id", decodeURIComponent(params.org_id))
     .single();
 
   if (error || !data) {

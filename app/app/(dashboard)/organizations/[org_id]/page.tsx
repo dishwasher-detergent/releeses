@@ -8,7 +8,7 @@ import { Suspense } from "react";
 export default async function OrgReleases({
   params,
 }: {
-  params: { id: string };
+  params: { org_id: string };
 }) {
   const supabase = createClient();
   const session = await getSession();
@@ -20,7 +20,7 @@ export default async function OrgReleases({
   const { data, error } = await supabase
     .from("organization")
     .select()
-    .eq("id", decodeURIComponent(params.id))
+    .eq("id", decodeURIComponent(params.org_id))
     .eq("user_id", session?.data?.user?.id)
     .single();
 
@@ -39,7 +39,7 @@ export default async function OrgReleases({
           </div>
         }
       >
-        <Releases orgId={params.id} />
+        <Releases orgId={params.org_id} />
       </Suspense>
     </section>
   );

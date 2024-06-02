@@ -7,14 +7,14 @@ import { notFound } from "next/navigation";
 export default async function ReleaseSettings({
   params,
 }: {
-  params: { id: string };
+  params: { release_id: string };
 }) {
   const supabase = createClient();
 
   const { data, error } = await supabase
     .from("release")
     .select()
-    .eq("id", decodeURIComponent(params.id))
+    .eq("id", decodeURIComponent(params.release_id))
     .single();
 
   if (error || !data) {

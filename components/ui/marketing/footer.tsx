@@ -1,7 +1,7 @@
+import { Button } from "@/components/ui/button";
+import { Logo } from "@/components/ui/logo";
 import { LucideGithub } from "lucide-react";
 import Link from "next/link";
-import { Button } from "../button";
-import { Logo } from "../logo";
 
 export default function Footer() {
   return (
