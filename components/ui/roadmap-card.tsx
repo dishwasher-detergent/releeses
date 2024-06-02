@@ -1,6 +1,6 @@
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn, toDateString } from "@/lib/utils";
 import { cva, type VariantProps } from "class-variance-authority";
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 
 const roadmapCardVariants = cva(
   "flex-none snap-start border border-dashed border-slate-300 shadow-none dark:border-slate-900",

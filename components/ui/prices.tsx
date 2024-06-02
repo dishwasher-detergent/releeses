@@ -1,5 +1,6 @@
 "use client";
 
+import { Loader } from "@/components/loading/loader";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { getStripe } from "@/lib/stripe/client";
@@ -8,7 +9,6 @@ import type { Tables } from "@/types/supabase";
 import { LucideCheck } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
-import { Loader } from "../loading/loader";
 
 type Product = Tables<"products">;
 type Price = Tables<"prices">;

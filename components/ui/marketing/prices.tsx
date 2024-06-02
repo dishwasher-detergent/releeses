@@ -1,9 +1,9 @@
 "use client";
 
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import type { Tables } from "@/types/supabase";
 import { LucideCheck } from "lucide-react";
-import { Badge } from "../badge";
 
 type Product = Tables<"products">;
 type Price = Tables<"prices">;

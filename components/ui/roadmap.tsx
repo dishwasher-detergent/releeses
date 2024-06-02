@@ -1,8 +1,8 @@
 "use client";
 
+import RoadmapCard from "@/components/ui/roadmap-card";
 import { Tables } from "@/types/supabase";
 import React, { useEffect, useState } from "react";
-import RoadmapCard from "../roadmap-card";
 
 interface Point {
   x: number;

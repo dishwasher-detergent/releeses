@@ -3,7 +3,7 @@ import BlurImage from "@/components/ui/blur-image";
 import Roadmap from "@/components/ui/roadmap";
 import { getOrgData } from "@/lib/fetchers";
 import { createClient } from "@/lib/supabase/server";
-import { placeholderBlurhash } from "@/lib/utils";
+import { placeholderBlurhash, toDateString } from "@/lib/utils";
 import { LucideArrowRight, LucideCalendar } from "lucide-react";
 import { Metadata } from "next";
 import Link from "next/link";
@@ -113,14 +113,7 @@ export default async function OrgHomePage({
                 new Date(a.created_at).getTime(),
             )
             .map((release) => {
-              const createdAt = new Date(release.created_at).toLocaleDateString(
-                "en-us",
-                {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                },
-              );
+              const createdAt = toDateString(release.created_at);
               return (
                 <li
                   key={release.id}
