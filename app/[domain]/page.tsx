@@ -83,7 +83,7 @@ export default async function OrgHomePage({
           </div>
         ) : null}
       </section>
-      <section className="mb-8">
+      <section className="mb-8 px-4">
         <h1 className="truncate pb-4 text-4xl font-bold">
           {response.data?.name ?? (
             <span className="italic text-muted-foreground">No Name</span>
@@ -96,14 +96,14 @@ export default async function OrgHomePage({
         </p>
       </section>
       {response.data?.roadmap && (
-        <section className="mb-8">
+        <section className="mb-8 px-4">
           <h2 className="mb-4 text-3xl font-bold">Roadmap</h2>
           <div className="rounded-xl border border-dashed border-slate-300 bg-primary-foreground p-4 dark:border-slate-900">
             <Roadmap data={response.data?.roadmap} />
           </div>
         </section>
       )}
-      <section className="mb-8">
+      <section className="mb-8 px-4">
         <h2 className="mb-4 text-3xl font-bold">Changelog</h2>
         <ul className="flex flex-col gap-8">
           {response.data?.release
@@ -124,19 +124,17 @@ export default async function OrgHomePage({
                     <div className="size-6 rounded-bl-xl border-b-2 border-l-2" />
                   </div>
                   <div className="relative flex-1 rounded-xl border border-dashed border-slate-300 p-4 group-hover/link:bg-primary-foreground dark:border-slate-900">
-                    <div className="space-y-4">
-                      <div>
-                        <h3 className="mb-2 text-2xl font-bold">
-                          {release.title}
-                        </h3>
-                        <div className="mb-2">
-                          <Badge variant="secondary">
-                            <LucideCalendar className="mr-2 size-3" />
-                            <p>{createdAt}</p>
-                          </Badge>
-                        </div>
-                      </div>
-                      <p className="max-w-2xl">
+                    <div className="space-y-2">
+                      <Badge variant="secondary">
+                        <LucideCalendar className="mr-2 size-3" />
+                        <p>{createdAt}</p>
+                      </Badge>
+
+                      <h3 className="text-base font-bold md:text-2xl">
+                        {release.title}
+                      </h3>
+
+                      <p className="max-w-2xl text-sm md:text-base">
                         {release.description ?? (
                           <span className="italic text-muted-foreground">
                             No Description
