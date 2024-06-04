@@ -33,8 +33,15 @@ export default async function HomePage() {
           <Button
             size="lg"
             className="w-full bg-emerald-600 ring-2 ring-emerald-400 transition-all hover:bg-emerald-700 hover:ring-4 hover:ring-emerald-500 md:w-[30%]"
+            asChild
           >
-            Get Started
+            <a
+              href={`${process.env.NEXT_PUBLIC_DOMAIN?.split("//").join(
+                "//app.",
+              )}`}
+            >
+              Get Started
+            </a>
           </Button>
         </div>
       </section>
