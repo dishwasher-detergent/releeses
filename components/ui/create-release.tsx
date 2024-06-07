@@ -10,7 +10,7 @@ import { useTransition } from "react";
 
 export default function CreateRelease() {
   const router = useRouter();
-  const { id } = useParams() as { id: string };
+  const { org_id } = useParams() as { org_id: string };
   const [isPending, startTransition] = useTransition();
 
   return (
@@ -20,12 +20,14 @@ export default function CreateRelease() {
         startTransition(async () => {
           const release: Tables<"release"> = await createRelease(
             null,
-            id,
+            org_id,
             null,
           );
           va.track("Created Release");
           router.refresh();
-          router.push(`/release/${release.id}`);
+          router.push(
+            `/organizations/${release.organizationId}/releases/${release.id}`,
+          );
         })
       }
       disabled={isPending}

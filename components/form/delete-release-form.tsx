@@ -19,19 +19,19 @@ export default function DeleteReleaseForm({
   releaseName,
   orgId,
 }: DeleteReleaseFormProps) {
-  const { id } = useParams() as { id?: number };
+  const { release_id } = useParams() as { release_id?: number };
   const router = useRouter();
   return (
     <form
       className="overflow-hidden rounded-xl border bg-background"
       action={async (data: FormData) =>
-        deleteRelease(data, id!, "delete").then((res) => {
+        deleteRelease(data, release_id!, "delete").then((res) => {
           if (res.error) {
             toast.error(res.error);
           } else {
             va.track("Deleted Release");
             router.refresh();
-            router.push(`/organization/${orgId}`);
+            router.push(`/organizations/${orgId}`);
             toast.success(`Successfully deleted release!`);
           }
         })

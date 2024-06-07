@@ -1,9 +1,9 @@
 "use client";
 
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import type { Tables } from "@/types/supabase";
 import { LucideCheck } from "lucide-react";
-import { Badge } from "../badge";
 
 type Product = Tables<"products">;
 type Price = Tables<"prices">;
@@ -60,7 +60,7 @@ export default function Pricing({ products }: Props) {
                   <li key={key} className="flex flex-row items-center gap-2">
                     {["org", "release", "roadmap"].includes(key) && (
                       <>
-                        <LucideCheck className="size-4 text-emerald-500" />
+                        <LucideCheck className="size-4 text-pink-500" />
                         <p>{value}</p>
                       </>
                     )}
@@ -71,7 +71,7 @@ export default function Pricing({ products }: Props) {
                 size="sm"
                 type="button"
                 asChild
-                className="w-full bg-emerald-600 ring-2 ring-emerald-400 transition-all hover:bg-emerald-700 hover:ring-4 hover:ring-emerald-500"
+                className="w-full bg-pink-600 transition-all hover:bg-pink-700"
               >
                 <a
                   target="_blank"

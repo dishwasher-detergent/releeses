@@ -9,6 +9,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import {
   LucideGlobe,
   LucideLayout,
+  LucideMap,
   LucideMenu,
   LucideNewspaper,
   LucideRocket,
@@ -25,7 +26,10 @@ export default function DashboardLayoutComponent({
   children: ReactNode;
 }) {
   const segments = useSelectedLayoutSegments();
-  const { id } = useParams() as { id?: string };
+  const { org_id, release_id } = useParams() as {
+    org_id?: number;
+    release_id?: number;
+  };
 
   const title = useMemo<React.ReactNode>(() => {
     if (segments.length === 0) {
@@ -34,6 +38,51 @@ export default function DashboardLayoutComponent({
           <LucideLayout className="size-4" />
           Overview
         </p>
+      );
+    }
+
+    if (segments[2] === "releases" && org_id && release_id) {
+      if (segments.includes("settings"))
+        return (
+          <p className="flex flex-row items-center gap-2 font-bold">
+            <LucideSettings className="size-4" />
+            Release Settings
+          </p>
+        );
+
+      return (
+        <p className="flex flex-row items-center gap-2 font-bold">
+          <LucideNewspaper className="size-4" />
+          Release
+        </p>
+      );
+    }
+
+    if (segments[0] === "organizations" && org_id) {
+      if (segments.includes("settings"))
+        return (
+          <p className="flex flex-row items-center gap-2 font-bold">
+            <LucideSettings className="size-4" />
+            Organization Settings
+          </p>
+        );
+
+      if (segments.includes("roadmap"))
+        return (
+          <p className="flex flex-row items-center gap-2 font-bold">
+            <LucideMap className="size-4" />
+            Roadmap
+          </p>
+        );
+
+      return (
+        <div className="flex flex-1 flex-row items-center justify-between">
+          <p className="flex flex-row items-center gap-2 font-bold">
+            <LucideNewspaper className="size-4" />
+            Releases
+          </p>
+          <CreateRelease />
+        </div>
       );
     }
 
@@ -60,45 +109,8 @@ export default function DashboardLayoutComponent({
       );
     }
 
-    if (segments[0] === "release" && id) {
-      if (segments.includes("settings"))
-        return (
-          <p className="flex flex-row items-center gap-2 font-bold">
-            <LucideSettings className="size-4" />
-            Release Settings
-          </p>
-        );
-
-      return (
-        <p className="flex flex-row items-center gap-2 font-bold">
-          <LucideNewspaper className="size-4" />
-          Release
-        </p>
-      );
-    }
-
-    if (segments[0] === "organization" && id) {
-      if (segments.includes("settings"))
-        return (
-          <p className="flex flex-row items-center gap-2 font-bold">
-            <LucideSettings className="size-4" />
-            Organization Settings
-          </p>
-        );
-
-      return (
-        <div className="flex flex-1 flex-row items-center justify-between">
-          <p className="flex flex-row items-center gap-2 font-bold">
-            <LucideNewspaper className="size-4" />
-            Releases
-          </p>
-          <CreateRelease />
-        </div>
-      );
-    }
-
     return "";
-  }, [segments, id]);
+  }, [segments, org_id, release_id]);
 
   return (
     <div className="grid h-screen w-full overflow-hidden md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">

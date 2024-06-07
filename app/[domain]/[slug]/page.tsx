@@ -3,7 +3,7 @@ import BlurImage from "@/components/ui/blur-image";
 import MDX from "@/components/ui/mdx";
 import ReleaseCard from "@/components/ui/release-card";
 import { getReleaseData } from "@/lib/fetchers";
-import { placeholderBlurhash } from "@/lib/utils";
+import { placeholderBlurhash, toDateString } from "@/lib/utils";
 import { Tables } from "@/types/supabase";
 import { LucideCalendar } from "lucide-react";
 import { Metadata } from "next";
@@ -55,14 +55,7 @@ export default async function OrgReleasePage({
     notFound();
   }
 
-  const createdAt = new Date(release?.data?.created_at!).toLocaleDateString(
-    "en-us",
-    {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    },
-  );
+  const createdAt = toDateString(release?.data?.created_at!);
 
   return (
     <>
@@ -100,14 +93,14 @@ export default async function OrgReleasePage({
       </section>
 
       {release?.adjacentReleases && (
-        <>
+        <section className="w-full px-4">
           {release?.adjacentReleases?.data &&
             release?.adjacentReleases?.data.length > 0 && (
               <div className="flex h-[52px] w-full items-center justify-between px-4 py-2">
                 <p className="text-xl font-bold">Recent Releases</p>
               </div>
             )}
-          <section className="grid w-full grid-cols-1 gap-4 rounded-xl border border-dashed border-slate-300 md:grid-cols-2">
+          <div className="grid w-full grid-cols-1 gap-4 rounded-xl border border-dashed border-slate-300 md:grid-cols-2">
             {release?.adjacentReleases.data?.map(
               (item: Tables<"release">, index: number) => (
                 <ReleaseCard
@@ -118,8 +111,8 @@ export default async function OrgReleasePage({
                 />
               ),
             )}
-          </section>
-        </>
+          </div>
+        </section>
       )}
     </>
   );

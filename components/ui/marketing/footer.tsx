@@ -1,11 +1,11 @@
+import { Button } from "@/components/ui/button";
+import { Logo } from "@/components/ui/logo";
 import { LucideGithub } from "lucide-react";
 import Link from "next/link";
-import { Button } from "../button";
-import { Logo } from "../logo";
 
 export default function Footer() {
   return (
-    <footer className="w-full bg-emerald-950/30 py-12 text-white">
+    <footer className="w-full bg-pink-950/30 py-12 text-white">
       <div className="mx-auto w-full max-w-5xl space-y-8 px-12">
         <div className="flex w-full flex-row items-center">
           <Link

@@ -1,5 +1,6 @@
 "use client";
 
+import { Loader } from "@/components/loading/loader";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { getStripe } from "@/lib/stripe/client";
@@ -8,7 +9,6 @@ import type { Tables } from "@/types/supabase";
 import { LucideCheck } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
-import { Loader } from "../loading/loader";
 
 type Product = Tables<"products">;
 type Price = Tables<"prices">;
@@ -106,7 +106,7 @@ export default function Pricing({ products }: Props) {
                 size="sm"
                 type="button"
                 onClick={() => handleStripeCheckout(price)}
-                className="w-full bg-emerald-600 ring-2 ring-emerald-400 transition-all hover:bg-emerald-700 hover:ring-4 hover:ring-emerald-500"
+                className="w-full bg-pink-600 transition-all hover:bg-pink-700"
               >
                 {priceIdLoading && (
                   <Loader className="mr-2 size-4 text-white" />

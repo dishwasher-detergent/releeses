@@ -1,9 +1,9 @@
-import { Badge } from "@/components/ui/badge";
 import BlurImage from "@/components/ui/blur-image";
+import Roadmap from "@/components/ui/roadmap";
 import { getOrgData } from "@/lib/fetchers";
 import { createClient } from "@/lib/supabase/server";
-import { placeholderBlurhash } from "@/lib/utils";
-import { LucideArrowRight, LucideCalendar } from "lucide-react";
+import { placeholderBlurhash, toDateString } from "@/lib/utils";
+import { LucideArrowRight } from "lucide-react";
 import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -58,7 +58,7 @@ export default async function OrgHomePage({
     ? domain.replace(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`, "")
     : null;
 
-  let query = supabase.from("organization").select("*, release(*)");
+  let query = supabase.from("organization").select("*, release(*), roadmap(*)");
   query = subdomain
     ? query.eq("subdomain", subdomain)
     : query.eq("customDomain", domain);
@@ -82,7 +82,7 @@ export default async function OrgHomePage({
           </div>
         ) : null}
       </section>
-      <section className="mb-8">
+      <section className="mb-8 px-4">
         <h1 className="truncate pb-4 text-4xl font-bold">
           {response.data?.name ?? (
             <span className="italic text-muted-foreground">No Name</span>
@@ -94,7 +94,13 @@ export default async function OrgHomePage({
           )}
         </p>
       </section>
-      <section className="w-full">
+      {response.data?.roadmap && (
+        <section className="mb-8 px-4">
+          <h2 className="mb-4 text-3xl font-bold">Roadmap</h2>
+          <Roadmap data={response.data?.roadmap} />
+        </section>
+      )}
+      <section className="mb-8 px-4">
         <h2 className="mb-4 text-3xl font-bold">Changelog</h2>
         <ul className="flex flex-col gap-8">
           {response.data?.release
@@ -104,14 +110,7 @@ export default async function OrgHomePage({
                 new Date(a.created_at).getTime(),
             )
             .map((release) => {
-              const createdAt = new Date(release.created_at).toLocaleDateString(
-                "en-us",
-                {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                },
-              );
+              const createdAt = toDateString(release.created_at);
               return (
                 <li
                   key={release.id}
@@ -122,19 +121,12 @@ export default async function OrgHomePage({
                     <div className="size-6 rounded-bl-xl border-b-2 border-l-2" />
                   </div>
                   <div className="relative flex-1 rounded-xl border border-dashed border-slate-300 p-4 group-hover/link:bg-primary-foreground dark:border-slate-900">
-                    <div className="space-y-4">
-                      <div>
-                        <h3 className="mb-2 text-2xl font-bold">
-                          {release.title}
-                        </h3>
-                        <div className="mb-2">
-                          <Badge variant="secondary">
-                            <LucideCalendar className="mr-2 size-3" />
-                            <p>{createdAt}</p>
-                          </Badge>
-                        </div>
-                      </div>
-                      <p className="max-w-2xl">
+                    <div>
+                      <h3 className="mb-1.5 text-base font-bold md:text-2xl">
+                        {release.title}
+                      </h3>
+                      <p className="mb-4 text-xs">{createdAt}</p>
+                      <p className="mb-4 max-w-2xl text-sm md:text-base">
                         {release.description ?? (
                           <span className="italic text-muted-foreground">
                             No Description

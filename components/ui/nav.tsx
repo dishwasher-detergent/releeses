@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import Profile from "@/components/ui/profile";
 import { Separator } from "@/components/ui/separator";
 import { Nav as NavItems } from "@/interfaces/nav";
-import { getOrganizationFromReleaseId } from "@/lib/actions";
 import { cn } from "@/lib/utils";
 import {
   LucideArrowLeft,
@@ -18,7 +17,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useParams, useSelectedLayoutSegments } from "next/navigation";
-import { ReactNode, useEffect, useMemo, useState } from "react";
+import { ReactNode, useMemo } from "react";
 
 interface NavProps {
   children?: ReactNode;
@@ -26,20 +25,35 @@ interface NavProps {
 
 export default function Nav({ children }: NavProps) {
   const segments = useSelectedLayoutSegments();
-  const { id } = useParams() as { id?: number };
-
-  const [orgId, setOrgId] = useState<number | null>();
-
-  useEffect(() => {
-    if (segments[0] === "release" && id) {
-      getOrganizationFromReleaseId(id).then((res) => {
-        setOrgId(res?.organizationId);
-      });
-    }
-  }, [id]);
+  const { org_id, release_id } = useParams() as {
+    org_id?: number;
+    release_id?: number;
+  };
 
   const tabs = useMemo<NavItems[]>(() => {
-    if (segments[0] === "organization" && id) {
+    if (segments[2] === "releases" && org_id && release_id) {
+      return [
+        {
+          name: "Back to All Releases",
+          href: org_id ? `/organizations/${org_id}` : "/organizations",
+          icon: LucideArrowLeft,
+        },
+        {
+          name: "Editor",
+          href: `/organizations/${org_id}/releases/${release_id}`,
+          isActive: segments.length === 2,
+          icon: LucideEdit3,
+        },
+        {
+          name: "Settings",
+          href: `/organizations/${org_id}/releases/${release_id}/settings`,
+          isActive: segments.includes("settings"),
+          icon: LucideSettings,
+        },
+      ];
+    }
+
+    if (segments[0] === "organizations" && org_id) {
       return [
         {
           name: "Back to All Orgs",
@@ -48,46 +62,25 @@ export default function Nav({ children }: NavProps) {
         },
         {
           name: "Releases",
-          href: `/organization/${id}`,
+          href: `/organizations/${org_id}`,
           isActive: segments[1] != "roadmaps" && segments.length === 2,
           icon: LucideNewspaper,
         },
         {
-          name: "Roadmaps",
-          href: `/organization/roadmaps/${id}`,
-          isActive: segments[1] === "roadmaps",
+          name: "Roadmap",
+          href: `/organizations/${org_id}/roadmap`,
+          isActive: segments[1] === "roadmap",
           icon: LucideMap,
-          disabled: true,
-          badge: "Coming Soon",
         },
         {
           name: "Settings",
-          href: `/organization/${id}/settings`,
-          isActive: segments.includes("settings"),
-          icon: LucideSettings,
-        },
-      ];
-    } else if (segments[0] === "release" && id) {
-      return [
-        {
-          name: "Back to All Releases",
-          href: orgId ? `/organization/${orgId}` : "/organizations",
-          icon: LucideArrowLeft,
-        },
-        {
-          name: "Editor",
-          href: `/release/${id}`,
-          isActive: segments.length === 2,
-          icon: LucideEdit3,
-        },
-        {
-          name: "Settings",
-          href: `/release/${id}/settings`,
+          href: `/organizations/${org_id}/settings`,
           isActive: segments.includes("settings"),
           icon: LucideSettings,
         },
       ];
     }
+
     return [
       {
         name: "Overview",
@@ -102,7 +95,7 @@ export default function Nav({ children }: NavProps) {
         icon: LucideGlobe,
       },
     ];
-  }, [segments, id, orgId]);
+  }, [segments, org_id, release_id]);
 
   return (
     <div className="flex flex-1 flex-col gap-2 py-2">
