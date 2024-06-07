@@ -21,7 +21,7 @@ export default function HomeLayout({
       </div>
       <div
         className="absolute inset-0 bg-contain bg-no-repeat"
-        style={{ backgroundImage: "url(/main_gradient.png)" }}
+        style={{ backgroundImage: "url(/Gradients.png)" }}
       />
     </main>
   );

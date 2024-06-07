@@ -33,8 +33,8 @@ export default function ReleaseCard({
   }
 
   return (
-    <article className="relative flex flex-row flex-wrap gap-4">
-      <div className="aspect-video w-full overflow-hidden rounded-2xl bg-emerald-800 lg:aspect-[5/4]">
+    <article className="relative flex flex-row flex-wrap gap-2">
+      <div className="aspect-video w-full overflow-hidden rounded-2xl bg-pink-800 lg:aspect-[5/4]">
         <BlurImage
           alt={
             data.image && data.title
