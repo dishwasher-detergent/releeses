@@ -1,4 +1,5 @@
 import { Nav } from "@/components/ui/content/nav";
+import { Logo } from "@/components/ui/logo";
 import { getOrgData } from "@/lib/fetchers";
 import { cn } from "@/lib/utils";
 import { fontMapper } from "@/styles/fonts";
@@ -40,6 +41,19 @@ export default async function OrgLayout({
           <div className="flex w-full flex-1 flex-col pb-8 md:pt-4">
             {children}
           </div>
+          <footer className="grid w-full place-items-center py-8">
+            <p className="flex flex-row items-center text-sm">
+              Powered by
+              <a
+                className="inline-flex flex-row items-center"
+                href={process.env.NEXT_PUBLIC_DOMAIN}
+                target="_blank"
+              >
+                <Logo className="ml-2 size-4" />
+                <span className="font-bold">Releeses</span>
+              </a>
+            </p>
+          </footer>
         </div>
       </main>
     )
