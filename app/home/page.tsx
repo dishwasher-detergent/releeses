@@ -38,7 +38,7 @@ export default async function HomePage() {
           </Button>
         </div>
       </section>
-      <section className="mb-24 w-full rounded-[48px] bg-pink-950/50 px-8 py-8">
+      <section className="mb-24 w-full rounded-[48px] bg-pink-950/30 px-8 py-8">
         <h2 className="text-white">Recent Releases</h2>
         <p className="mb-6 text-xl font-bold text-white md:text-3xl">
           See what everyone else is releasing!
@@ -82,7 +82,7 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
-      <section className="mb-24 w-full rounded-[48px] bg-pink-950/50 px-8 py-8">
+      <section className="mb-24 w-full rounded-[48px] bg-pink-950/30 px-8 py-8">
         <h2 className="text-white">Pricing</h2>
         <p className="mb-6 text-xl font-bold text-white md:text-3xl">
           Simple, we only have one plan!

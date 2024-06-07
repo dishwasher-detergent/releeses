@@ -12,7 +12,7 @@ export default function Nav() {
         </Link>
         <ul className="flex flex-1 flex-row items-center justify-end gap-2">
           <li>
-            <Button asChild size="sm">
+            <Button asChild size="sm" variant="secondary">
               <a
                 href={`${process.env.NEXT_PUBLIC_DOMAIN?.split("//").join(
                   "//app.",
