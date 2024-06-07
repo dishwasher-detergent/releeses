@@ -174,13 +174,6 @@ export default function Roadmap({ data }: { data: Tables<"roadmap">[] }) {
                     createdAt={point.created_at}
                   />
                 ) : null}
-                {index == points.length - 1 && (
-                  <div
-                    key={`${index}-spacer-1`}
-                    className="flex-none rounded-xl bg-transparent"
-                    style={{ width: xIncrement - 8 }}
-                  />
-                )}
               </React.Fragment>
             );
           })}
