@@ -106,7 +106,7 @@ export default function Pricing({ products }: Props) {
                 size="sm"
                 type="button"
                 onClick={() => handleStripeCheckout(price)}
-                className="w-full bg-emerald-600 ring-2 ring-emerald-400 transition-all hover:bg-emerald-700 hover:ring-4 hover:ring-emerald-500"
+                className="w-full bg-pink-600 transition-all hover:bg-pink-700"
               >
                 {priceIdLoading && (
                   <Loader className="mr-2 size-4 text-white" />
