@@ -5,8 +5,9 @@ import ReleaseCard from "@/components/ui/release-card";
 import { getReleaseData } from "@/lib/fetchers";
 import { placeholderBlurhash, toDateString } from "@/lib/utils";
 import { Tables } from "@/types/supabase";
-import { LucideCalendar } from "lucide-react";
+import { LucideArrowLeft, LucideCalendar } from "lucide-react";
 import { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
 export async function generateMetadata({
@@ -59,6 +60,15 @@ export default async function OrgReleasePage({
 
   return (
     <>
+      <div className="p-4">
+        <Link
+          href={"/"}
+          className="group/link group flex flex-row items-center gap-2 text-sm text-primary"
+        >
+          <LucideArrowLeft className="size-4 transition-all group-hover/link:-translate-x-0.5" />
+          Back to overview
+        </Link>
+      </div>
       {release?.data?.imageBlurhash && release?.data?.image ? (
         <section className="relative m-auto mb-8 h-80 w-full max-w-screen-lg overflow-hidden md:rounded-2xl">
           <BlurImage
