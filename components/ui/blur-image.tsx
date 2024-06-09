@@ -26,8 +26,10 @@ export default function BlurImage(props: ImageWithoutSrcProps) {
       onLoad={() => setLoading(false)}
     />
   ) : (
-    <div className="flex h-full w-full items-center justify-center bg-muted p-4">
-      <p className="truncate font-black text-foreground/40">{props.alt}</p>
+    <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-pink-600 to-pink-400 p-4">
+      <p className="line-clamp-3 text-3xl font-semibold text-white">
+        {props.alt}
+      </p>
     </div>
   );
 }

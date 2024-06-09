@@ -41,11 +41,7 @@ export default function ReleaseCard({
       <CardContent className="flex flex-1 flex-row gap-4 p-2">
         <div className="h-24 w-24 flex-none overflow-hidden  rounded-xl">
           <BlurImage
-            alt={
-              data.image && data.title
-                ? data.title
-                : "Upload your own image at /settings"
-            }
+            alt={data.title ? data.title : "Upload your own image at /settings"}
             width={300}
             height={300}
             className="h-full object-cover"

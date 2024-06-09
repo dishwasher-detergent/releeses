@@ -24,6 +24,8 @@ export default function ReleaseCard({
 
   let link = `/organizations/${data.organizationId}/releases/${data.id}`;
 
+  console.log(data);
+
   if (blog) {
     link = `${data.id}`;
   }
@@ -36,11 +38,7 @@ export default function ReleaseCard({
     <article className="relative flex flex-row flex-wrap gap-2">
       <div className="aspect-video w-full overflow-hidden rounded-2xl bg-pink-800 lg:aspect-[5/4]">
         <BlurImage
-          alt={
-            data.image && data.title
-              ? data.title
-              : "Upload your own image at /settings"
-          }
+          alt={data.title ? data.title : "Upload your own image at /settings"}
           width={600}
           height={600}
           className="h-full object-cover"
