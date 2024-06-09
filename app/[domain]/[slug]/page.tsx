@@ -106,22 +106,24 @@ export default async function OrgReleasePage({
         <section className="w-full px-4">
           {release?.adjacentReleases?.data &&
             release?.adjacentReleases?.data.length > 0 && (
-              <div className="flex h-[52px] w-full items-center justify-between px-4 py-2">
-                <p className="text-xl font-bold">Recent Releases</p>
-              </div>
+              <>
+                <div className="flex h-[52px] w-full items-center justify-between px-4 py-2">
+                  <p className="text-xl font-bold">Recent Releases</p>
+                </div>
+                <div className="grid w-full grid-cols-1 gap-4 rounded-xl border border-dashed border-slate-300 md:grid-cols-2">
+                  {release?.adjacentReleases.data?.map(
+                    (item: Tables<"release">, index: number) => (
+                      <ReleaseCard
+                        key={index}
+                        data={item}
+                        org={release?.data?.organization!}
+                        blog
+                      />
+                    ),
+                  )}
+                </div>
+              </>
             )}
-          <div className="grid w-full grid-cols-1 gap-4 rounded-xl border border-dashed border-slate-300 md:grid-cols-2">
-            {release?.adjacentReleases.data?.map(
-              (item: Tables<"release">, index: number) => (
-                <ReleaseCard
-                  key={index}
-                  data={item}
-                  org={release?.data?.organization!}
-                  blog
-                />
-              ),
-            )}
-          </div>
         </section>
       )}
     </>

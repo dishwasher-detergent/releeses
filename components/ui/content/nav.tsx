@@ -12,7 +12,7 @@ export function Nav({ name, logo }: NavProps) {
     <header className="flex h-14 w-full flex-none items-center justify-between px-4">
       <Link href="/" className="flex items-center justify-center">
         {logo && (
-          <div className="inline-block size-8 overflow-hidden rounded-full align-middle">
+          <div className="mr-3 inline-block size-8 overflow-hidden rounded-full align-middle">
             <Image
               alt={name || ""}
               height={40}
@@ -22,7 +22,7 @@ export function Nav({ name, logo }: NavProps) {
             />
           </div>
         )}
-        <span className="font-title ml-3 inline-block truncate font-bold">
+        <span className="font-title inline-block truncate font-bold">
           {name}
         </span>
       </Link>

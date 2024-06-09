@@ -94,7 +94,7 @@ export default async function OrgHomePage({
           )}
         </p>
       </section>
-      {response.data?.roadmap && (
+      {response.data?.roadmap && response.data?.roadmap.length > 0 && (
         <section className="mb-8 px-4">
           <h2 className="mb-4 text-3xl font-bold">Roadmap</h2>
           <Roadmap data={response.data?.roadmap} />
