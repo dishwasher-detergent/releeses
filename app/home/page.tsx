@@ -23,7 +23,7 @@ export default async function HomePage() {
     <>
       <section className="mb-24 mt-12 w-full px-8">
         <h1 className="mb-6 text-6xl font-bold text-white md:mb-12 md:text-7xl">
-          Releeses is the best way to manager your changelog and roadmap.
+          Releeses is the best way to manage your releases and roadmap.
         </h1>
         <p className="mb-6 text-base text-white md:mb-12 md:text-xl">
           Easily manage and publish public changelogs for your applications,
