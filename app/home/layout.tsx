@@ -9,7 +9,7 @@ export default function HomeLayout({
   return (
     <main className="relative flex min-h-screen flex-col bg-black">
       <Nav />
-      <div className="relative z-10 mx-auto max-w-5xl py-4">{children}</div>
+      <div className="relative z-10 mx-auto max-w-7xl py-4">{children}</div>
       <Footer />
       <div className="space-between absolute inset-0 z-0 h-full">
         <div className="mx-auto flex h-full max-w-5xl flex-row flex-nowrap justify-between px-4">
