@@ -19,10 +19,6 @@ export default function HomeLayout({
           <div className="border-l border-white/20" />
         </div>
       </div>
-      <div
-        className="absolute inset-0 bg-contain bg-no-repeat"
-        style={{ backgroundImage: "url(/Gradients.png)" }}
-      />
     </main>
   );
 }
